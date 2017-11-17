@@ -55,7 +55,7 @@
 		    	<br>
 		    	<div id="OpVuelo">
 		    		<div class="row">
-		    			<div class="col-md-8">
+		    			<div class="col-md-8 col-xs-6 col-sm-4">
 		    				<h5>Opciones de vuelo</h5>
 		    			</div>
 		    		
@@ -76,6 +76,36 @@
 		    				</div>
 
 		    		</div>
+	    		</div>
+
+	    		<div id="opterceros">
+	    			<div class="row">
+	    				<div class="col-md-12 col-xs-6 col-sm-4">
+	    					<h5>Reserva para terceros</h5>
+	    				</div>
+	    			</div>
+	    			<div class="row">
+	    					<div class="col-md-4 col-xs-6 col-sm-4">
+	    						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radioSi">
+	    						  <input type="radio" id="radioSi" class="mdl-radio__button" name="options" value="si" onChange="validaTercero(this.value)">
+	    						  <span class="mdl-radio__label">Si</span>
+	    						</label>
+	    					</div>
+	    					<div class="col-md-4 col-xs-6 col-sm-4">
+	    						<label class="mdl-radio mdl-js-radio mdl-js-ripple-effect" for="radioNo">
+	    						  <input type="radio" id="radioNo" class="mdl-radio__button" name="options" value="no" onChange="validaTercero(this.value)">
+	    						  <span class="mdl-radio__label">No</span>
+	    						</label>
+	    					</div>
+	    					<div class="col-md-8 col-xs-6 col-sm-4">
+			    				<div class="mdl-textfield mdl-js-textfield" id="txt_nomtercero">
+			    					  <input class="mdl-textfield__input" type="text" >
+			    					  <label class="mdl-textfield__label" for="txt_nomtercero">Nombre del tercero</label>
+			    				</div>
+			    			</div>
+		    		</div>
+	    			
+	    			
 	    		</div>
 	    		<br>
 	    	</div>

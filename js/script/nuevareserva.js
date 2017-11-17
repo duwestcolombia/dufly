@@ -1,5 +1,6 @@
 $(document).ready(function(){
 		$("#OpVuelo").hide();
+		$("#txt_nomtercero").hide();
 		//$('select').material_select();
 		$("#dataVuelo").hide();
 		$("#dataHotel").hide();
@@ -159,7 +160,15 @@ $(document).ready(function(){
 			document.getElementById("opcionVuelo").value = tipoVuelo;
 		}
 	}
-
+	function validaTercero(value){
+		if (value=="si") {
+			$("#txt_nomtercero").show();
+		}
+		else
+		{
+			$("#txt_nomtercero").hide();
+		}
+	}
 
 	/*$(function () {
         $('#datetimepicker_fingreso').datetimepicker({
