@@ -88,7 +88,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="mdl-layout__header-row" style="height: 150px;"></div>
 		  <span class="mdl-layout-title"></span>
 		  <nav class="mdl-navigation">
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/inicio">Inicio</a>
+		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/principal">Inicio</a>
 		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/reserva">Nueva reserva</a>
 		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/repgastos">Reporte Gastos</a>
 		    <a class="mdl-navigation__link" href="#" id="madm-resviaje">Resumen de viajes</a>
