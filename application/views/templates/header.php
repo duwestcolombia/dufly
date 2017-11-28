@@ -31,7 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!--<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.teal-green.min.css" />-->
 
-	<!--<script src="<?php echo base_url();?>style/bootstrap/js/bootstrap.min.js"></script>-->
+	<!--<script src="<?php //echo base_url();?>style/bootstrap/js/bootstrap.min.js"></script>-->
 
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -52,75 +52,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 </head>
 <body>
 
-<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer
-            mdl-layout--fixed-header">
-  <header class="mdl-layout__header">
-    <div class="mdl-layout__header-row">
-    			  <!-- Title -->
-    	  			   <span class="mdl-layout-title">DuFly <i class="material-icons">flight_takeoff</i></span>
-      <div class="mdl-layout-spacer"></div>
-		  		<!--Boton flotante entre header y content
-		  		<a href="<?php //echo base_url();?>index.php/reserva" style="position: relative; margin-top: 58px; margin-right: 20px">
-		  			<button class="mdl-button mdl-button--fab mdl-button--colored" style="/">
-		  			  <i class="material-icons">add</i> 
-		  			</button>
-
-
-		  		</a>-->
-				<!-- Right aligned menu below button -->
-				<button id="demo-menu-lower-right"
-				        class="mdl-button mdl-js-button mdl-button--icon">
-				  <i class="material-icons">more_vert</i>
-				</button>
-
-				<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-				    for="demo-menu-lower-right">
-				  <li class="mdl-menu__item">Acerca de</li>
-				  <li class="mdl-menu__item">Version</li>
-				</ul>
-    
-
-    </div>
-
-  </header>
-
-		<div class="mdl-layout__drawer">
-			<div class="mdl-layout__header-row" style="height: 150px;"></div>
-		  <span class="mdl-layout-title"></span>
-		  <nav class="mdl-navigation">
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/inicio">Inicio</a>
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/reserva">Nueva reserva</a>
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/repgastos">Reporte Gastos</a>
-		    <a class="mdl-navigation__link" href="#" id="madm-resviaje">Resumen de viajes</a>
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/misreservas" id="madm-reserva">Mis reservas</a>
-		    <hr>
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/dashboard"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i> Dashboard</a>
-			<a href="<?php echo base_url();?>index.php/allreservas" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons">confirmation_number</i> Ver Reservas</a>
-		    <hr>
-		    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/gestionbd">
-		    	<i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i> Gestion BD
-		    </a>
-
-		    <div class="mdl-navigation__link">
-		    	<i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i> Gestion BD
-		    		<!-- Right aligned menu below button -->
-		    		<button id="btn_option admin"
-		    		        class="mdl-button mdl-js-button mdl-button--icon">
-		    		  <i class="material-icons">more_vert</i>
-		    		</button>
-
-		    		<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
-		    		    for="btn_option admin">
-		    		  <li class="mdl-menu__item">Some Action</li>
-		    		  <li class="mdl-menu__item">Another Action</li>
-		    		  <li disabled class="mdl-menu__item">Disabled Action</li>
-		    		  <li class="mdl-menu__item">Yet Another Action</li>
-		    		</ul>
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+		  <header class="mdl-layout__header">
+		    <div class="mdl-layout__header-row">
+		      <!-- Title -->
+		      <span class="mdl-layout-title">DuFly <i class="material-icons">flight_takeoff</i></span>
+		      <!-- Add spacer, to align navigation to the right -->
+		      <div class="mdl-layout-spacer"></div>
+		      <!-- Navigation. We hide it in small screens. -->
+		      <nav class="mdl-navigation mdl-layout--large-screen-only">
+		      	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/reserva">Nueva reserva</a>
+		      	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/login/cerrarsesion">Cerrar Sesion</a>
+		      </nav>
 		    </div>
-		   
-		  </nav>
-		  
-		</div>
+		  </header>
+		  <div class="mdl-layout__drawer">
+		    
+		    <span class="mdl-layout-title">Dyfly</span>
+
+		    <nav class="mdl-navigation">
+		    	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/principal">Inicio</a>
+		    	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/reserva">Nueva reserva</a>
+		    	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/repgastos">Reporte Gastos</a>
+		    	    <a class="mdl-navigation__link" href="#" id="madm-resviaje">Resumen de viajes</a>
+		    	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/misreservas" id="madm-reserva">Mis reservas</a>
+		    	    <hr>
+		    	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/dashboard"><i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">home</i> Dashboard</a>
+		    		<a href="<?php echo base_url();?>index.php/allreservas" class="mdl-navigation__link"><i class="mdl-color-text--blue-grey-400 material-icons">confirmation_number</i> Ver Reservas</a>
+		    	    <hr>
+		    	    <a class="mdl-navigation__link" href="<?php echo base_url();?>index.php/gestionbd">
+		    	    	<i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i> Gestion BD
+		    	    </a>
+
+		    	    <div class="mdl-navigation__link">
+		    	    	<i class="mdl-color-text--blue-grey-400 material-icons" role="presentation">settings</i> Gestion BD
+		    	    		<!-- Right aligned menu below button -->
+		    	    		<button id="btn_option admin"
+		    	    		        class="mdl-button mdl-js-button mdl-button--icon">
+		    	    		  <i class="material-icons">more_vert</i>
+		    	    		</button>
+
+		    	    		<ul class="mdl-menu mdl-menu--bottom-right mdl-js-menu mdl-js-ripple-effect"
+		    	    		    for="btn_option admin">
+		    	    		  <li class="mdl-menu__item">Some Action</li>
+		    	    		  <li class="mdl-menu__item">Another Action</li>
+		    	    		  <li disabled class="mdl-menu__item">Disabled Action</li>
+		    	    		  <li class="mdl-menu__item">Yet Another Action</li>
+		    	    		</ul>
+		    	    </div>
+		    </nav>
+		  </div>
 		<script>
 			$(document).ready(function(){
 				//$("#madm-reserva").hide();

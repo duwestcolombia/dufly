@@ -9,9 +9,9 @@ class Inicio extends CI_Controller {
   function index(){
   		$dato['titulo']="Tiquetes";
 
-  		$this->load->view('templates/header',$dato);
-      	$this->load->view('home_page');
-      	$this->load->view('templates/footer');
+  		$this->load->view('templates/header_inicio',$dato);
+      	$this->load->view('inicio_view');
+      	$this->load->view('templates/footer_inicio');
   }
     
 }

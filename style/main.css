@@ -1,14 +1,9 @@
-.dwc-margin-body{
-	margin-right: 5px;
-	margin-left: 5px;
-	margin-top: 5px;
-	margin-bottom: 5px;
-}
+
 .demo-card-square.mdl-card {
-  align-content: center;
-  width: 90%;
-  height: 80%;
-  margin-left: 5%;
+
+  	width: 100%;
+	margin-bottom: 10px;
+
 }
 
 .demo-card-square > .mdl-card__title {

@@ -1,5 +1,5 @@
 $(document).ready(function(){
-		$("#OpVuelo").hide();
+		/*$("#OpVuelo").hide();
 		$("#txt_nomtercero").hide();
 		//$('select').material_select();
 		$("#dataVuelo").hide();
@@ -11,7 +11,25 @@ $(document).ready(function(){
 
 		var opcion;
 		var tipoVuelo;
-		var contOpcion;
+		var contOpcion;*/
+		//$('#btn_registrar').attr("disabled", true);
+		$("#dataHotel").hide();
+		$('#infoTerceros').hide();
+
+		$("#datetimepicker_fnacimiento").datetimepicker({
+			language: 'es-ES',
+			// Hora de inicio
+			time_start: '05:00', 
+
+			// y Hora final de cada dia
+			time_end: '22:00',  
+			// intervalo de tiempo entre las hora, en este caso son 30 minutos
+			time_split: '30',
+			format: 'YYYY-MM-DD',  
+			tooltips:{
+				today:'Dia actual'
+			}
+		});
 	});
 
 	$(function(){
@@ -77,13 +95,12 @@ $(document).ready(function(){
 	});	
 
 	function validaUno(value){
-				
+
 		if (value=="vuelo") {
 			$("#OpVuelo").show();
 			$("#dataVuelo").show();
 			$("#dataHotel").hide();
-			$("#radioHotel").attr( "checked", false );
-			$("#radioVueloHotel").attr( "checked", false );
+			
 			
 			$("#txt_origen").attr("required",true);
 			$("#txt_destino").attr("required",true);
@@ -93,17 +110,14 @@ $(document).ready(function(){
 			$("#fingreso_hotel").attr("required",false);
 			$("#fsalida_hotel").attr("required",false);
 		
-			opcion=value;
 
-			document.getElementById("opcionReserva").value = opcion;
 
 		}
 		else if(value=="hotel"){
 			$("#OpVuelo").hide();
 			$("#dataVuelo").hide();
 			$("#dataHotel").show();
-			$("#radioVuelo").attr( "checked", false );
-			$("#radioVueloHotel").attr( "checked", false );
+			
 
 			$("#txt_origen").attr("required",false);
 			$("#txt_destino").attr("required",false);
@@ -116,18 +130,15 @@ $(document).ready(function(){
 			$("#fsalida_hotel").attr("required",true);
 			
 
-			opcion=value;
-			document.getElementById("opcionReserva").value = opcion;
-			document.getElementById("opcionVuelo").value = "";
+
 		}
 		else if (value=="vueloHotel") {
 			$("#OpVuelo").show();
 			$("#dataVuelo").show();
 			$("#dataHotel").show();
 			$("#dateReturn").hide();
-			$("#radioHotel").attr( "checked", false );
-			$("#radioVuelo").attr( "checked", false );
-			$('#btn_registrar').attr("disabled", true);
+			
+			$('#btn_registrar').attr("disabled", false);
 
 			$("#txt_origen").attr("required",true);
 			$("#txt_destino").attr("required",true);
@@ -137,9 +148,6 @@ $(document).ready(function(){
 			$("#fingreso_hotel").attr("required",true);
 			$("#fsalida_hotel").attr("required",true);
 
-
-			opcion=value;
-			document.getElementById("opcionReserva").value = opcion;
 		}
 
 	}
@@ -162,11 +170,11 @@ $(document).ready(function(){
 	}
 	function validaTercero(value){
 		if (value=="si") {
-			$("#txt_nomtercero").show();
+			$('#infoTerceros').show();
 		}
 		else
 		{
-			$("#txt_nomtercero").hide();
+			$('#infoTerceros').hide();
 		}
 	}
 
@@ -293,6 +301,7 @@ function picker(value){
 				today:'Dia actual'
 			}
 		});
+
 
 	});	
 }
