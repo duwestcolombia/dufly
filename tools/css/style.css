@@ -1,0 +1,56 @@
+.img-cover-body {
+  /* Location of the image */
+  background-image: url(../img/background-avion.jpg);
+  
+  /* Background image is centered vertically and horizontally at all times */
+  background-position: center center;
+  
+  /* Background image doesn't tile */
+  background-repeat: no-repeat;
+  
+  /* Background image is fixed in the viewport so that it doesn't move when 
+     the content's height is greater than the image's height */
+  background-attachment: fixed;
+  
+  /* This is what makes the background image rescale based
+     on the container's size */
+  background-size: cover;
+  
+  /* Set a background color that will be displayed
+     while the background image is loading */
+  background-color: #464646;
+}
+.de-content{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+/* Special */
+.sub-title {
+  margin: 50px auto;
+  font-size: 18px;
+  line-height: 23px;
+  text-transform: uppercase;
+}
+.container {
+  display: table;
+  padding-top: 80px;
+  width: 100%;
+}
+#content{
+	position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 640px;
+    height: 120px;
+    margin-left: -320px;
+    margin-top: -60px;
+    font-size: 24px;
+    
+ /*    opacity: 0.4;*/
+}
+#content > h1 {
+	color:  rgba(76,76,76,1);
+	font-size:40px;
+
+}
