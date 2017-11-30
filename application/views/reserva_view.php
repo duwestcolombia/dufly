@@ -2,7 +2,7 @@
 <main class="mdl-layout__content">
 
     <div class="page-content ">
-    	<form action="<?php echo base_url(); ?>index.php/reserva/insertar" method="POST">
+    	<form action="<?php echo base_url(); ?>index.php/reserva/insertar" method="POST" id="frm_reserva">
 		<div class="mdl-grid">
 			<div class="mdl-cell mdl-cell--8-col mdl-cell--6-col-tablet">
 				

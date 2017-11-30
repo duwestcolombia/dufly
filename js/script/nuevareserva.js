@@ -15,6 +15,7 @@ $(document).ready(function(){
 		//$('#btn_registrar').attr("disabled", true);
 		$("#dataHotel").hide();
 		$('#infoTerceros').hide();
+		$("#dateReturn").hide();
 
 		$("#datetimepicker_fnacimiento").datetimepicker({
 			language: 'es-ES',
@@ -30,6 +31,25 @@ $(document).ready(function(){
 				today:'Dia actual'
 			}
 		});
+
+		$(document).on('submit', function(event){
+			event.preventDefault();
+			console.log($('#frm_reserva').serialize());
+			/*
+			$.ajax({
+				url: $('#frm_reserva').attr('action'),
+				type: $('#frm_reserva').attr('method'),
+				data: $('#frm_reserva').serialize(),
+				beforeSend:function(){
+					console.log("estamos enviando los datos");
+					console.log($('#frm_reserva').serialize());
+				},
+				success:function(){
+
+				}
+			});*/
+		});
+
 	});
 
 	$(function(){
@@ -154,18 +174,17 @@ $(document).ready(function(){
 
 	function validaDos(value){
 		if (value=="ida") {
-			$("#radioIdaRegreso").attr( "checked", false );
+
 			$("#dateReturn").hide();
-			$('#btn_registrar').attr("disabled", false);
-			tipoVuelo=value;
-			document.getElementById("opcionVuelo").value = tipoVuelo;
+
+			
 		}
 		else{
-			$("#radioIda").attr( "checked", false );
-			$('#btn_registrar').attr("disabled", false);
+
+
 			$("#dateReturn").show();
-			tipoVuelo=value;
-			document.getElementById("opcionVuelo").value = tipoVuelo;
+			
+			
 		}
 	}
 	function validaTercero(value){
