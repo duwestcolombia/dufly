@@ -34,9 +34,11 @@ $container['model'] = function($c){
     return (object)[
         'test'     => new App\Model\TestModel($c->db),
         'ciudad' => new App\Model\CiudadModel($c->db),
+        'pais' => new App\Model\PaisModel($c->db),
         'auth' => new App\Model\AuthModel($c->db),
         'pedido' => new App\Model\PedidoModel($c->db),
         'producto' => new App\Model\ProductoModel($c->db),
         'reporte' => new App\Model\ReporteModel($c->db),
+        'tercero' => new App\Model\TerceroModel($c->db),
     ];
 };
