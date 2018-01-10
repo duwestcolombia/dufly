@@ -16,6 +16,15 @@ $(document).ready(function(){
 		$("#dataHotel").hide();
 		$('#infoTerceros').hide();
 		$("#dateReturn").hide();
+		$("#btn_rtercero").hide();
+		
+		$('#txt_nomtercero').attr("disabled", true);
+		$('#fnacimiento').attr("disabled", true);
+		$('#btn_fnacimiento').attr("disabled", true);
+
+		$('#txt_teltercero').attr("disabled", true);
+
+
 
 		$("#datetimepicker_fnacimiento").datetimepicker({
 			language: 'es-ES',
@@ -32,23 +41,27 @@ $(document).ready(function(){
 			}
 		});
 
-		$(document).on('submit', function(event){
-			event.preventDefault();
-			console.log($('#frm_reserva').serialize());
-			/*
+		/*$(document).on('submit', function(event){
+			//event.preventDefault();
+			//console.log($('#frm_reserva').serialize());
+			
 			$.ajax({
 				url: $('#frm_reserva').attr('action'),
 				type: $('#frm_reserva').attr('method'),
 				data: $('#frm_reserva').serialize(),
-				beforeSend:function(){
+				beforeSend:function(response){
 					console.log("estamos enviando los datos");
 					console.log($('#frm_reserva').serialize());
 				},
-				success:function(){
+				success:function(response){
 
+				},
+				error:function(response){
+					alert("Se produjo un error, revise los datos que esta enviando e intente nuevamente.");
+					return false;
 				}
-			});*/
-		});
+			});
+		});*/
 
 	});
 

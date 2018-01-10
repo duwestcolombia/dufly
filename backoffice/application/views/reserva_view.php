@@ -197,7 +197,7 @@
 							<!--<input type="date" class="form-control" name="fregreso[]" id="fregreso">-->
 							<div class='input-group date' id='datetimepicker_fnacimiento'>
 									  <input type='text' class="form-control" name="fnacimiento" id="fnacimiento"/>
-									  <span class="input-group-addon">
+									  <span class="input-group-addon" id="btn_fnacimiento">
 									      <span class="glyphicon glyphicon-calendar"></span>
 									  </span>
 							</div>	
@@ -212,11 +212,11 @@
 
 
 					  </div>
-					  <!--<div class="mdl-card__actions mdl-card--border">
-					    <a class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">
-					      View Updates
-					    </a>
-					  </div>-->
+					  <div class="mdl-card__actions mdl-card--border">
+					    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_ntercero">Nuevo</button>
+					    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_rtercero">Registrar</button>
+					    <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" id="btn_ctercero">Consultar</button>
+					  </div>
 					</div>
 				</div>
 

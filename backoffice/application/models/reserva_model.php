@@ -20,9 +20,9 @@ class Reserva_model extends CI_Model
 			return false;
 		}
 	}
-	function numMaxReserva(){
+	function numMaxSolicitud(){
 
-		$consulta = $this->db->query('CALL NUMMAXRESERVA()');
+		$consulta = $this->db->query('CALL numMaxSolicitud()');
 		if ($consulta->num_rows() > 0) {
 
 			//add this two line 
@@ -40,7 +40,11 @@ class Reserva_model extends CI_Model
 	}
 	function insertarReserva($dataReserva){
 
-		$this->db->insert("dufly_reservas",$dataReserva);
+		$this->db->insert("reservas",$dataReserva);
+	}
+	function insertSolicitud($dataSolicitud){
+		$this->db->insert("solicitudes",$dataSolicitud);
+
 	}
 
 	function insertarHotel($datosHotel){
