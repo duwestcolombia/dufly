@@ -24,8 +24,8 @@ class AuthModel
         
         if(is_object($empleado)){
             
-            $nombre = explode(' ', $empleado->NOMBRE_EMPLEADO)[0];
-            
+            //$nombre = explode(' ', $empleado->NOMBRE_EMPLEADO)[0];
+            $nombre = $empleado->NOMBRE_EMPLEADO;
             $token = Auth::SignIn([
                 'COD_EMPLEADO' => $empleado->COD_EMPLEADO,
                 'NOMBRE_EMPLEADO' => $nombre
