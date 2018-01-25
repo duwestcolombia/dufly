@@ -7,7 +7,7 @@ class SolicitudValidation {
     public static function validate($data, $update = false) {
         $response = new Response();
         
-        $key = 'VUELO_SOLICITUD';
+        /*$key = 'VUELO_SOLICITUD';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
         } else {
@@ -60,7 +60,7 @@ class SolicitudValidation {
             }
             
         }
-               
+         */      
 
         $response->setResponse(count($response->errors) === 0);
 

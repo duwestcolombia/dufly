@@ -10,6 +10,7 @@ var frontApp = angular.module(MODULE, [
     'authControllers',
     'pedidoControllers',
     'solicitudControllers',
+    'perfilControllers',
     'testControllers'
 ]);
 

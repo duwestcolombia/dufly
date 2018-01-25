@@ -3,8 +3,8 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Front-Office App</title>
-
+    <title>Dufly | Front-Office</title>
+	
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
@@ -12,21 +12,27 @@
     <link href="assets/css/ratchet.min.css" rel="stylesheet">
     <link href="assets/css/ratchet-theme-ios.min.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="assets/images/logo.png">
+    <link href="https://use.fontawesome.com/releases/v5.0.4/css/all.css" rel="stylesheet">
+
+
+
 </head>
 <body>
     <div id="loader"></div>
     <!-- Make sure all your bars are the first things in your <body> -->
     <header class="bar bar-nav">
-        <h1 class="title">DUFLY</h1>
+        <h1 class="title">DuFly</h1>
+         <!--<a class="icon icon-compose pull-right"></a>-->
     </header>
 
     <!-- Wrap all non-bar HTML in the .content div (this is actually what scrolls) -->
     <div class="content" ng-view></div>
     
     <!-- Icons in standard bar fixed to the bottom of the screen -->
-    <div class="bar bar-standard bar-footer">
+   <!-- <div class="bar bar-standard bar-footer">
       <p class="content-padded">Desarrollado por <a href="#" target="_blank">Duwest Colombia S.A.S.</a></p>
-    </div>
+    </div>-->
     
     <script src="assets/js/ratchet.min.js"></script>
     <script src="angular/angular.min.js"></script>

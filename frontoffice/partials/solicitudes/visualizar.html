@@ -1,0 +1,72 @@
+<div class="card solicitud-visualizar">
+	<ul class="table-view">
+		<li class="table-view-divider text-center">
+		    <h1>Solicitud #{{numSolicitud}}</h1>            
+		</li>
+		<li class="solicitud-cabecera">
+		    <dl>
+		      <dt>Vuelo:</dt>
+		      <dd>SI</dd>
+		      <dt>IDA Y REGRESO</dt>
+		      <dd>SI</dd>
+		      <dt>Hotel</dt>
+		      <dd>SI</dd>
+		      <dt>Solicitud para un tercero</dt>
+		      <dd>NO</dd>
+		    </dl>
+		</li>
+		<li class="table-view-divider text-center">
+		    <h1>Datos del tercero</h1>            
+		</li>
+		<li class="solicitud-cabecera">
+		    <dl>
+		      <dt>Esta solicitud no incluye datos de tercero.</dt>
+		    </dl>
+		</li>
+		<li class="table-view-divider">Informacion del vuelo <i class="fas fa-plane"></i></li>
+		<li class="table-view-cell">
+			<div class="solicitud-detalle">
+				<strong>Origen: </strong>Bogota - <strong>Destino: </strong>Pasto
+				<div class="descripcion">
+					<b>Fecha: </b>2018-01-20 06:00:00
+				</div>
+			</div>
+		</li>
+		<li class="table-view-cell">
+			<div class="solicitud-detalle">
+				<strong>Origen: </strong>Pasto - <strong>Destino: </strong>Bogota
+				<div class="descripcion">
+					<b>Fecha: </b>2018-01-20 20:00:00
+				</div>
+			</div>
+		</li>
+		<li class="table-view-divider">Informacion del Hotel <i class="fas fa-h-square"></i></li>
+		<li class="table-view-cell">
+			<div class="solicitud-detalle">
+				<strong>Ciudad: </strong>Pasto
+				<div class="descripcion">
+					<b>Fecha: </b>2018-01-20
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<nav class="bar bar-tab">
+	<a class="tab-item " href="#/principal">
+	  <span class="icon icon-home"></span>
+	  <span class="tab-label">Inicio</span>
+	</a>
+ 	<a class="tab-item" href="#/perfil/visualizar/{{usuario}}">
+		<span class="icon icon-person"></span>
+	    <span class="tab-label">Mi perfil</span>
+	</a>
+	<a class="tab-item" href="#/principal/registrar">
+		<span class="icon icon-compose"></span>
+		<span class="tab-label">Nueva solicitud</span>
+	</a>
+	<a class="tab-item" href="#/logout">
+	    <span class="icon icon-close"></span>
+	    <span class="tab-label">Desconectarse</span>
+	</a>
+
+</nav>

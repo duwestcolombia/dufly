@@ -37,6 +37,7 @@ class SolicitudModel
     {
         return $this->db->from($this->table)
                         ->where('COD_EMPLEADO', $cod_empleado)
+                        ->orderBy('ESTADO_SOLICITUD DESC')
                         ->fetchAll();
     }    
     public function obtener($cod_solicitud)
@@ -47,9 +48,57 @@ class SolicitudModel
     }
     public function registrar($data)
     {
+        $dateTime=date('Y/m/d h:i:s', time());
 
-      	$this->db->insertInto($this->table, $data)
-                 ->execute();
+        foreach ($data['Op'] as $opcion) {
+
+            $solicitud_id = $this->db->insertInto($this->table, [
+                'VUELO_SOLICITUD'=> $opcion['SVUELO'],
+                'VIDAREGRESO_SOLICITUD' => $opcion['SVIDA_REGRESO'],
+                'HOTEL_SOLICITUD' => $opcion['SHOTEL'],
+                'DOC_TERCERO' => '10853147',
+                'TIPDOC_TERCERO' => 'CC',
+                'OBSERVACION_SOLICITUD' => '',
+                'AUTORIZA_SOLICITUD' => '',
+                'REGPOR_SOLICITUD' => $opcion['COD_EMPLEADO'],
+                'FREG_SOLICITUD' => $dateTime,
+                'COD_EMPLEADO' => $data['COD_EMPLEADO'],
+                'ESTADO_SOLICITUD' => 'NUEVA'
+
+            ])->execute();
+        }
+
+        if (count($data['Reservas'])>0) {
+
+            foreach ($data['Reservas'] as $rVuelo){
+                $this->db->insertInto('reservas', [
+                    'VORIGEN_RESERVA' => $rVuelo['IDCIUDAD_ORIGEN'],
+                    'VDESTINO_RESERVA' => $rVuelo['IDCIUDAD_DESTINO'],
+                    'FIDA_RESERVA' => $rVuelo['FECHA_SALIDA'],
+                    'FREGRESO_RESERVA' => $rVuelo['FECHA_REGRESO'],
+                    'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
+                    'FREG_RESERVA' => $dateTime,
+                    'COD_SOLICITD' => $solicitud_id
+                ])->execute();
+            }
+        }
+
+        if (count($data['Hoteles'])>0) {
+            foreach ($data['Hoteles'] as $rHotel){
+                $this->db->insertInto('reservas_hoteles', [
+                    'CHOTEL_RESERVA' => $rHotel['ID_CIUDADH'],
+                    'FINHOTEL_RESERVA' => $rHotel['FINGRESO_HOTEL'],
+                    'FSALHOTEL_RESERVA' => $rHotel['FSAL_HOTEL'],
+                    'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
+                    'FREG_RESERVA' => $dateTime,
+                    'COD_SOLICITD' => $solicitud_id
+                ])->execute();
+            }
+        }
+        
+    
+      	//$this->db->insertInto($this->table, $data)
+          //       ->execute();
         
         return $this->response->SetResponse(true);
     }

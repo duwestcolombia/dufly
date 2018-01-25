@@ -34,6 +34,13 @@ class CiudadModel
         ];
     }
     
+    public function todos()
+    {
+        return $this->db->from($this->table)
+                        ->orderBy('NOMBRE_CIUDAD ASC')
+                        ->fetchAll();
+    }
+
     public function obtener($id_ciudad)
     {
         return $this->db->from($this->table)

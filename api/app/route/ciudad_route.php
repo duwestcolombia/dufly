@@ -18,6 +18,12 @@ $app->group('/ciudad/', function () {
                      json_encode($this->model->ciudad->obtener($args['id_ciudad']))
                    );
     });
+    $this->get('todos', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->ciudad->todos())
+                   );
+    });
     $this->post('registrar', function ($req, $res, $args) {
 
       $r = CiudadValidation::validate($req->getParsedBody());

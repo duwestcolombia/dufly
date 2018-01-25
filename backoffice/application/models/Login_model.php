@@ -10,9 +10,9 @@ class Login_model extends CI_Model
 	/*all functions here.*/
 	function getUsusario($usu,$pass){
 		
-		$this->db->where('email_usuario',$usu);
-		$this->db->where('pass_usuario',$pass);
-		$consul=$this->db->get('usuarios');
+		$this->db->where('EMAIL_EMPLEADO',$usu);
+		$this->db->where('PASS_EMPLEADO',$pass);
+		$consul=$this->db->get('empleados');
 
 		if ($consul) {
 			return $consul->row();

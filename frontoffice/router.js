@@ -10,25 +10,30 @@ frontApp.config(['$routeProvider',
         templateUrl: 'partials/empty.html',
         controller: 'AuthLogoutCtrl'
       }).
-      when('/pedidos', {
-        templateUrl: 'partials/pedidos/pedidos.html',
-        controller: 'PedidosListadoCtrl'
-      }).
-      when('/pedidos/registrar', {
-        templateUrl: 'partials/pedidos/registrar.html',
-        controller: 'PedidosRegistrarCtrl'
-      }).
-      when('/pedidos/visualizar/:id', {
-        templateUrl: 'partials/pedidos/visualizar.html',
-        controller: 'PedidosVisualizarCtrl'
-      }).
+
       when('/principal', {
         templateUrl: 'partials/solicitudes/principal.html',
         controller: 'solicitudListarCtrl'
       }).
+      when('/principal/registrar', {
+        templateUrl: 'partials/solicitudes/registrar.html',
+        controller: 'solicitudRegistrarCtrl'
+      }).
+      when('/principal/registrarReserva', {
+        templateUrl: 'partials/solicitudes/registrarReserva.html',
+        controller: 'solicitudRegistrarReservaCtrl'
+      }).
+      when('/principal/visualizar/:id',{
+        templateUrl: 'partials/solicitudes/visualizar.html',
+        controller: 'SolicitudVisualizarCtrl'
+      }).
       when('/test', {
         templateUrl: 'partials/test/test.html',
         controller: 'TestCtrl'
+      }).
+      when('/perfil/visualizar/:usuario',{
+          templateUrl: 'partials/perfil/visualizar.html',
+          controller: 'PerfilVisualizarCtrl'
       }).
       otherwise({
         redirectTo: '/'
