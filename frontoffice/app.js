@@ -8,7 +8,6 @@ var MODULE = 'front-app', // DEJAR CON EL MISMO NOMBRE
 var frontApp = angular.module(MODULE, [
     'ngRoute',
     'authControllers',
-    'pedidoControllers',
     'solicitudControllers',
     'perfilControllers',
     'testControllers'

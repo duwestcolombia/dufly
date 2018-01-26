@@ -40,12 +40,77 @@ class SolicitudModel
                         ->orderBy('ESTADO_SOLICITUD DESC')
                         ->fetchAll();
     }    
-    public function obtener($cod_solicitud)
+    public function obtener($COD_SOLICITUD)
     {
-        return $this->db->from($this->table)
-                        ->where('COD_SOLICITUD', $cod_solicitud)
+        /*
+            SELECT  solicitudes.COD_SOLICITUD, solicitudes.VUELO_SOLICITUD, solicitudes.VIDAREGRESO_SOLICITUD, solicitudes.HOTEL_SOLICITUD, solicitudes.ESTADO_SOLICITUD,
+            terceros.DOC_TERCERO, terceros.TIPDOC_TERCERO, terceros.NOM_TERCERO, terceros.FNACIMIENTO_TERCERO, terceros.TEL_TERCERO, empleados.NOMBRE_EMPLEADO          
+            FROM    ((solicitudes
+inner join terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO)
+inner join empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO)
+where solicitudes.COD_SOLICITUD = 19;
+
+-- vuelos 
+SELECT  CO.NOMBRE_CIUDAD "CIUD_ORIGEN", CD.NOMBRE_CIUDAD "CIUD_DESTINO", reservas.FIDA_RESERVA, reservas.FREGRESO_RESERVA
+FROM    (((reservas
+inner join ciudades as CO on reservas.VORIGEN_RESERVA = CO.ID_CIUDAD)
+inner join ciudades as CD on reservas.VDESTINO_RESERVA = CD.ID_CIUDAD)
+inner join solicitudes on reservas.COD_SOLICITUD = solicitudes.COD_SOLICITUD)
+where solicitudes.COD_SOLICITUD = 19;
+
+--hoteles
+SELECT  CH.NOMBRE_CIUDAD "CIUD_HOTEL", reservas_hoteles.FINHOTEL_RESERVA, reservas_hoteles.FSALHOTEL_RESERVA
+FROM    ((reservas_hoteles
+inner join ciudades as CH on reservas_hoteles.CHOTEL_RESERVA = CH.ID_CIUDAD)
+inner join solicitudes on reservas_hoteles.COD_SOLICITUD = solicitudes.COD_SOLICITUD)
+where solicitudes.COD_SOLICITUD = 19;
+        */
+      $row =  $this->db->from($this->table)
+                        ->select('
+                                solicitudes.COD_SOLICITUD, 
+                                solicitudes.VUELO_SOLICITUD, 
+                                solicitudes.VIDAREGRESO_SOLICITUD, 
+                                solicitudes.HOTEL_SOLICITUD, 
+                                solicitudes.ESTADO_SOLICITUD,
+                                terceros.DOC_TERCERO, 
+                                terceros.TIPDOC_TERCERO, 
+                                terceros.NOM_TERCERO, 
+                                terceros.FNACIMIENTO_TERCERO, 
+                                terceros.TEL_TERCERO, 
+                                empleados.NOMBRE_EMPLEADO
+                            ')
+                        ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
+                        ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
+                        ->where('COD_SOLICITUD', $COD_SOLICITUD)
                         ->fetch();
+        $row->{'Vuelos'} = $this->db->from('reservas')
+                                    ->select('
+                                            CO.NOMBRE_CIUDAD "CIUD_ORIGEN", 
+                                            CD.NOMBRE_CIUDAD "CIUD_DESTINO",
+                                            reservas.FIDA_RESERVA, 
+                                            reservas.FREGRESO_RESERVA
+                                        ')
+                                    ->innerJoin('ciudades as CO on reservas.VORIGEN_RESERVA = CO.ID_CIUDAD')
+                                    ->innerJoin('ciudades as CD on reservas.VDESTINO_RESERVA = CD.ID_CIUDAD')
+                                    ->innerJoin('solicitudes on reservas.COD_SOLICITUD = solicitudes.COD_SOLICITUD')
+                                    ->where('solicitudes.COD_SOLICITUD', $COD_SOLICITUD)
+                                    ->fetchAll();
+        $row->{'Hoteles'} = $this->db->from('reservas_hoteles')
+                                        ->select('
+                                                CH.NOMBRE_CIUDAD "CIUD_HOTEL", 
+                                                reservas_hoteles.FINHOTEL_RESERVA,
+                                                reservas_hoteles.FSALHOTEL_RESERVA
+                                            ')
+                                        ->innerJoin('ciudades as CH on reservas_hoteles.CHOTEL_RESERVA = CH.ID_CIUDAD')
+                                        ->innerJoin('solicitudes on reservas_hoteles.COD_SOLICITUD = solicitudes.COD_SOLICITUD')
+                                        ->where('solicitudes.COD_SOLICITUD', $COD_SOLICITUD)
+                                        ->fetchAll();
+
+        return $row;
+
+       
     }
+ 
     public function registrar($data)
     {
         $dateTime=date('Y/m/d h:i:s', time());
@@ -78,7 +143,7 @@ class SolicitudModel
                     'FREGRESO_RESERVA' => $rVuelo['FECHA_REGRESO'],
                     'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
                     'FREG_RESERVA' => $dateTime,
-                    'COD_SOLICITD' => $solicitud_id
+                    'COD_SOLICITUD' => $solicitud_id
                 ])->execute();
             }
         }
@@ -91,7 +156,7 @@ class SolicitudModel
                     'FSALHOTEL_RESERVA' => $rHotel['FSAL_HOTEL'],
                     'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
                     'FREG_RESERVA' => $dateTime,
-                    'COD_SOLICITD' => $solicitud_id
+                    'COD_SOLICITUD' => $solicitud_id
                 ])->execute();
             }
         }

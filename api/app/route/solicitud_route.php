@@ -17,10 +17,10 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->listarPorEmpleado($args['cod_empleado']))
                    );
     });    
-    $this->get('obtener/{cod_solicitud}', function ($req, $res, $args) {
+    $this->get('obtener/{COD_SOLICITUD}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->solicitud->obtener($args['cod_solicitud']))
+                     json_encode($this->model->solicitud->obtener($args['COD_SOLICITUD']))
                    );
     });
     $this->post('registrar', function ($req, $res, $args) {

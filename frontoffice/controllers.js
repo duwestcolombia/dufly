@@ -1,5 +1,4 @@
 var authControllers   = angular.module('authControllers', [])
-    pedidoControllers = angular.module('pedidoControllers', [])
     solicitudControllers = angular.module('solicitudControllers', [])
     perfilControllers = angular.module('perfilControllers', [])
     testControllers   = angular.module('testControllers', []);
@@ -46,7 +45,7 @@ authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', '
       }
   }]);
 
-
+// Logout
 authControllers.controller('AuthLogoutCtrl', ['$scope', 'restApi', '$location', 'auth',
   function ($scope, $http, $location, auth) {
       auth.logout();
@@ -85,7 +84,7 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
 
   }]);
 
-
+//Registrar las solicitudes
 solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', '$location', 'auth',
   function ($scope, restApi, $location, auth) {
         auth.redirectIfNotExists();
@@ -289,77 +288,6 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
   }]);
 
 
-solicitudControllers.controller('solicitudRegistrarReservaCtrl',['$scope', 'restApi', '$location', 'auth',
-  function ($scope, restApi, $location, auth) {
-        //funcion con los datos necesarios para insertar el pedido
-       
-  }]);
-
-pedidoControllers.controller('PedidosVisualizarCtrl', ['$scope', 'restApi', '$location', '$routeParams',
-  function ($scope, restApi, $location, $routeParams) {
-      
-      inicializar();
-
-      function inicializar(){
-        estados();
-      }
-
-      function estados(){
-            restApi.call({
-            method: 'get',
-            url: 'pedido/estados',
-            response: function(r){
-               $scope.estados = r;
-               obtener();
-
-            },
-            error: function(r){
-
-            },
-            validationError: function(r){
-              console.log(r);
-            }
-        });
-      }
-      function obtener(){
-         restApi.call({
-            method: 'get',
-            url: 'pedido/obtener/' + $routeParams.id,
-            response: function(r){
-               $scope.model = r;
-               $scope.Estado = r.Estado_id;
-
-            },
-            error: function(r){
-
-            },
-            validationError: function(r){
-                console.log(r);
-            }
-        });
-      }
-      $scope.actualizaEstado = function(){
-        restApi.call({
-            method: 'put',
-            url: 'pedido/actualizaEstado/'+$scope.model.id,
-            data: {
-              Estado_id: $scope.Estado
-            },
-            response: function(r){
-                if (r.response) {
-                  $location.path('pedidos')
-                }
-            },
-            error: function(r){
-                
-            },
-            validationError: function(r){
-                console.log(r);
-            }
-        });
-      }
-
-  }]);
 
 // Test controller
 testControllers.controller('TestCtrl', ['$scope', 'restApi', 'auth',
@@ -389,7 +317,7 @@ testControllers.controller('TestCtrl', ['$scope', 'restApi', 'auth',
               url: 'test/auth',
               response: function(r){
                   auth.setToken(r);
-                  console.log(auth.getUserData());
+                  //console.log(auth.getUserData());
                   validaAunteticacion();
               },
               error: function(r){
@@ -418,6 +346,7 @@ testControllers.controller('TestCtrl', ['$scope', 'restApi', 'auth',
       }
   }]);
 
+//visualizar las solicitudes detalladas
 solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi', 'auth','$routeParams',
   function($scope,restApi,auth,$routeParams){
     //comprobamos si el usuario esta autenticado y tiene un token valido, de lo contrario se dirige a login
@@ -428,9 +357,31 @@ solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi',
     $scope.usuario= user.COD_EMPLEADO;
     $scope.numSolicitud = $routeParams.id;
 
+    obtener();
+
+    function obtener(){
+       restApi.call({
+          method: 'get',
+          url: 'solicitud/obtener/' + $routeParams.id,
+          response: function(r){
+             $scope.rSolicitud = r;
+             //console.log(r);
+            // $scope.Estado = r.Estado_id;
+
+          },
+          error: function(r){
+
+          },
+          validationError: function(r){
+              console.log(r);
+          }
+      });
+    }
 
 
 }]);
+
+//visualizar el perfil del usuario
 perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth', '$routeParams',
   function($scope,restApi,auth,$routeParams){
       auth.redirectIfNotExists();
