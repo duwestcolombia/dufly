@@ -12,10 +12,10 @@ $app->group('/empleado/', function () {
                    );
     });
     
-    $this->get('obtener/{id}', function ($req, $res, $args) {
+    $this->get('obtener/{COD_EMPLEADO}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->empleado->obtener($args['id']))
+                     json_encode($this->model->empleado->obtener($args['COD_EMPLEADO']))
                    );
     });
     
@@ -35,7 +35,7 @@ $app->group('/empleado/', function () {
                    );
     });
     
-    $this->put('actualizar/{id}', function ($req, $res, $args) {
+    $this->put('actualizar/{COD_EMPLEADO}', function ($req, $res, $args) {
         $r = EmpleadoValidation::validate($req->getParsedBody(), true);
         
         if(!$r->response){
@@ -46,7 +46,7 @@ $app->group('/empleado/', function () {
         
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
-                     json_encode($this->model->empleado->actualizar($req->getParsedBody(), $args['id']))
+                     json_encode($this->model->empleado->actualizar($req->getParsedBody(), $args['COD_EMPLEADO']))
                    );   
     });
     

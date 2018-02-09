@@ -94,7 +94,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         $scope.usuario= user.COD_EMPLEADO;
         //Cargo el select con las ciudades        
 
-        cargarCiudades();     
+        cargarCiudades();
+        cargaTerceros();     
 
         function cargarCiudades(){
               restApi.call({
@@ -102,6 +103,24 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
               url: 'ciudad/todos',
               response: function(r){
                  $scope.Ciudades = r;
+
+              },
+              error: function(r){
+
+              },
+              validationError: function(r){
+                console.log(r);
+              }
+          });
+        }
+
+        function cargaTerceros(){
+              restApi.call({
+              method: 'get',
+              url: 'tercero/obtenerTodos',
+              response: function(r){
+                 $scope.Terceros = r;
+                 
 
               },
               error: function(r){
@@ -252,17 +271,61 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           return nuevaFecha;
         }
 
+        //var dataTerceros = [0];
+
+        $scope.searchPassager = function(){            
+          if ($scope.TipoDoc === 'undefined' || $scope.txt_NumDoc === 'undefined') return;
+
+          
+          $scope.Terceros.forEach(function(x){
+
+            if (x.TIPDOC_TERCERO == $scope.TipoDoc && x.DOC_TERCERO == $scope.txt_NumDoc) {
+              
+              $scope.txt_ntercero = x.NOM_TERCERO;
+              $scope.txt_TelTercero = x.TEL_TERCERO;
+              $scope.txt_FnacimientoTercero = x.FNACIMIENTO_TERCERO;
+              return false;
+            }
+            else
+            {
+              $scope.txt_ntercero = '';
+              $scope.txt_TelTercero = '';
+              $scope.txt_FnacimientoTercero = '';
+              return false;
+            }
+            
+          })
+
+        }
+
         $scope.registrarSolicitud = function(){
+          
+          var TipoDocumento, NumeroDocumento;
+
+          if ($scope.TipoDoc === undefined && $scope.txt_NumDoc === undefined) {
+            TipoDocumento = 'CC';
+            NumeroDocumento = '1';
+          }
+          else
+          {
+            TipoDocumento = $scope.TipoDoc;
+            NumeroDocumento = $scope.txt_NumDoc;
+          }
 
           var opciones = {
             SVUELO: $scope.activeV,
             SVIDA_REGRESO: $scope.activeID,
             SHOTEL: $scope.activeH,
             STERCERO: $scope.activeT,
-            COD_EMPLEADO: user.COD_EMPLEADO
+            COD_EMPLEADO: user.COD_EMPLEADO,
+            TIPDOC_TERCERO : TipoDocumento,
+            DOC_TERCERO: NumeroDocumento 
           };
 
           $scope.Solicitud.Op[0] = opciones;
+
+          //Validamos si envio un hotel o un vuelo, si estos array estan vacios no hacemos nada
+          //if ($scope.Solicitud.Reservas.length == 0  || $scope.Solicitud.Hoteles.length == 0) return;
 
           restApi.call({
             method: 'post',
@@ -276,6 +339,38 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             },
             error: function(r){
               console.log(r.errors);
+              /*Guardar en el localstorange si no hay conexion o si se presento un problema*/
+              /*if (window.localStorage) {
+                
+                var guardado = localStorage.getItem('data'); 
+
+                $scope.DataError = {
+                  data:[]
+                }
+
+                if (guardado) {
+                  console.log('objetoobtenido', JSON.parse(guardado));
+                  localStorage.removeItem('data');
+                  $scope.DataError.data.push($scope.Solicitud);
+                  localStorage.setItem('data',JSON.stringify($scope.DataError));
+                }
+                else
+                {
+
+                  $scope.DataError.data.push($scope.Solicitud);
+                  localStorage.setItem('data',JSON.stringify($scope.DataError));
+                }
+                
+
+              }
+              else
+              {
+                console.log(false);
+              }*/
+              /*http://anexsoft.com/p/140/html-5-diferencias-y-ejemplos-entre-local-storage-y-session-storage
+              http://www.maestrosdelweb.com/tutorial-local-session-storage/
+              https://www.htmlcinco.com/guardar-un-objeto-o-array-en-localstorage/
+              */
             },
             validationError: function(r){
 
@@ -365,9 +460,7 @@ solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi',
           url: 'solicitud/obtener/' + $routeParams.id,
           response: function(r){
              $scope.rSolicitud = r;
-             //console.log(r);
-            // $scope.Estado = r.Estado_id;
-
+             
           },
           error: function(r){
 
@@ -377,8 +470,6 @@ solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi',
           }
       });
     }
-
-
 }]);
 
 //visualizar el perfil del usuario
@@ -389,5 +480,86 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
       var user = auth.getUserData();
 
       $scope.usuario= user.COD_EMPLEADO;
+
+      verPerfil();
+
+      function verPerfil(){
+         restApi.call({
+            method: 'get',
+            url: 'empleado/obtener/' + $scope.usuario,
+            response: function(r){
+               $scope.txt_nombre = r.NOMBRE_EMPLEADO;
+               $scope.txt_fnacimiento =r.FNACIMIENTO_EMPLEADO;
+               $scope.txt_tel =r.TEL_EMPLEADO;
+               $scope.txt_email =r.EMAIL_EMPLEADO;
+            },
+            error: function(r){
+              console.log(r);
+            },
+            validationError: function(r){
+                console.log(r);
+            }
+        });
+      }
+     
+
+     $scope.actualizaPerfil = function(){
+        
+        /*if ($scope.txt_pass === 'unedfined' || $scope.txt_confipass === 'undefined') {
+            var data = {
+              nom_empleado:$scope.txt_nombre,
+              fnac_empleado:$scope.txt_fnacimiento,
+              tel_empleado:$scope.txt_tel,
+              email_empleado:$scope.txt_email
+            };
+            actualizar(data);
+        }*/
+        
+        if (validaPass($scope.txt_pass,$scope.txt_confipass))
+        {
+          var data = {
+            NOMBRE_EMPLEADO:$scope.txt_nombre,
+            FNACIMIENTO_EMPLEADO:$scope.txt_fnacimiento,
+            TEL_EMPLEADO:$scope.txt_tel,
+            EMAIL_EMPLEADO:$scope.txt_email,
+            PASS_EMPLEADO:$scope.txt_pass
+
+          };
+          actualizar(data);
+        } 
+        else{
+          console.log("contraseñas invalidas");
+        } 
+
+        
+     }
+
+     function actualizar(datos){
+      console.log(datos);
+       restApi.call({
+          method: 'put',
+          url: 'empleado/actualizar/'+$scope.usuario,
+          data:datos,
+          response: function(r){
+             console.log(r);
+          },
+          error: function(r){
+            console.log(r);
+          },
+          validationError: function(r){
+              console.log(r);
+          }
+      });
+     }
+
+     function validaPass(pass, confipass){
+        if (pass == confipass) {
+          return true;
+        }
+        else
+        {
+          return false;
+        }
+     }
 
   }]);

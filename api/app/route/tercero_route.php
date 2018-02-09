@@ -18,6 +18,12 @@ $app->group('/tercero/', function () {
                      json_encode($this->model->tercero->obtener($args['doc_tercero']))
                    );
     });
+    $this->get('obtenerTodos', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->tercero->obtenerTodos())
+                   );
+    });
     $this->get('coincidir/{nom_tercero}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(

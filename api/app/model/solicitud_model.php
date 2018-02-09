@@ -72,12 +72,15 @@ where solicitudes.COD_SOLICITUD = 19;
                                 solicitudes.VIDAREGRESO_SOLICITUD, 
                                 solicitudes.HOTEL_SOLICITUD, 
                                 solicitudes.ESTADO_SOLICITUD,
+                                solicitudes.REQTERCERO_SOLICITUD,
                                 terceros.DOC_TERCERO, 
                                 terceros.TIPDOC_TERCERO, 
                                 terceros.NOM_TERCERO, 
                                 terceros.FNACIMIENTO_TERCERO, 
                                 terceros.TEL_TERCERO, 
-                                empleados.NOMBRE_EMPLEADO
+                                empleados.NOMBRE_EMPLEADO,
+                                empleados.FNACIMIENTO_EMPLEADO,
+                                empleados.TEL_EMPLEADO
                             ')
                         ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
                         ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
@@ -121,8 +124,9 @@ where solicitudes.COD_SOLICITUD = 19;
                 'VUELO_SOLICITUD'=> $opcion['SVUELO'],
                 'VIDAREGRESO_SOLICITUD' => $opcion['SVIDA_REGRESO'],
                 'HOTEL_SOLICITUD' => $opcion['SHOTEL'],
-                'DOC_TERCERO' => '10853147',
-                'TIPDOC_TERCERO' => 'CC',
+                'REQTERCERO_SOLICITUD' => $opcion['STERCERO'],
+                'DOC_TERCERO' => $opcion['DOC_TERCERO'],
+                'TIPDOC_TERCERO' => $opcion['TIPDOC_TERCERO'],
                 'OBSERVACION_SOLICITUD' => '',
                 'AUTORIZA_SOLICITUD' => '',
                 'REGPOR_SOLICITUD' => $opcion['COD_EMPLEADO'],

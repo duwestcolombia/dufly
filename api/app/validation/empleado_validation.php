@@ -7,7 +7,7 @@ class EmpleadoValidation {
     public static function validate($data, $update = false) {
         $response = new Response();
         
-        $key = 'EsAdmin';
+        /*$key = 'EsAdmin';
         if(!isset($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
         } else {
@@ -16,9 +16,9 @@ class EmpleadoValidation {
             if($value != '1' && $value != '0') {
                 $response->errors[$key][] = 'Valor ingresado no válido';
             }
-        }
+        }*/
         
-        $key = 'Nombre';
+        $key = 'NOMBRE_EMPLEADO';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
         } else {
@@ -29,7 +29,7 @@ class EmpleadoValidation {
             }
         }
         
-        $key = 'Correo';
+        $key = 'EMAIL_EMPLEADO';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
         } else {
@@ -40,23 +40,23 @@ class EmpleadoValidation {
             }
         }
         
-        $key = 'Password';
+        $key = 'PASS_EMPLEADO';
         if( !$update ){
             if(empty($data[$key])){
                 $response->errors[$key][] = 'Este campo es obligatorio';
             } else {
                 $value = $data[$key];
 
-                if(strlen($value) < 4) {
-                    $response->errors[$key][] = 'Debe contener como mínimo 4 caracteres';
+                if(strlen($value) < 8) {
+                    $response->errors[$key][] = 'Debe contener como mínimo 8 caracteres';
                 }
             }            
         } else {
             if(!empty($data[$key])){
                 $value = $data[$key];
 
-                if(strlen($value) < 4) {
-                    $response->errors[$key][] = 'Debe contener como mínimo 4 caracteres';
+                if(strlen($value) < 8) {
+                    $response->errors[$key][] = 'Debe contener como mínimo 8 caracteres';
                 }
             }
         }

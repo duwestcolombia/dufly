@@ -26,10 +26,12 @@
 		      <dd><span class="badge badge-negative">{{rSolicitud.ESTADO_SOLICITUD}}</span></dd>
 		    </dl>
 		</li>
+		
 		<li class="table-view-divider text-center">
-		    <h1>Datos del tercero</h1>            
+		    <h1>Detalle de la solicitud</h1>            
 		</li>
-		<li class="solicitud-cabecera" ng-if="rSolicitud.DOC_TERCERO">
+		<li class="table-view-divider">Información del pasajero <i class="fas fa-male"></i></li>
+		<li class="table-view-cell" ng-if="rSolicitud.DOC_TERCERO != 1">
 		    <dl>
 		      <dt>Tipo de documento:</dt>
 				<dd>{{rSolicitud.TIPDOC_TERCERO}}</dd>
@@ -43,6 +45,18 @@
 				<dd> {{rSolicitud.FNACIMIENTO_TERCERO}} </dd>
 		    </dl>
 		</li>
+		<li class="table-view-cell" ng-if="rSolicitud.REQTERCERO_SOLICITUD == 0">
+		    <dl>
+			  <dt>Nombre completo:</dt>
+				<dd> {{rSolicitud.NOMBRE_EMPLEADO}} </dd>
+		      <dt>Número de telefono:</dt>
+				<dd> {{rSolicitud.TEL_EMPLEADO}} </dd>
+		      <dt>Fecha de nacimiento:</dt>
+				<dd> {{rSolicitud.FNACIMIENTO_EMPLEADO}} </dd>
+		    </dl>
+		</li>
+
+
 		<li class="table-view-divider">Informacion del vuelo <i class="fas fa-plane"></i></li>
 		<li class="table-view-cell" ng-repeat="rv in rSolicitud.Vuelos">
 			<div class="solicitud-detalle">

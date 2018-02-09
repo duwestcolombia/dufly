@@ -40,6 +40,11 @@ class TerceroModel
                         ->where('DOC_TERCERO', $doc_tercero)
                         ->fetch();
     }
+    public function obtenerTodos()
+    {
+        return $this->db->from($this->table)
+                        ->fetchAll();
+    }
 
     public function coincidir($nom_tercero)
     {

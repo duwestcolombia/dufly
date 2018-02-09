@@ -60,7 +60,7 @@
 		        <label>Fecha de salida</label>
 		        <input type="date" ng-model="FSalida">
 		    </div>
-		    <div class="input-row">
+		    <div class="input-row" ng-show="activeID">
 		        <label>Fecha de regreso</label>
 		        <input type="date" ng-model="Fregreso">
 		    </div>
@@ -137,28 +137,35 @@
 	<!-- INFORMATION ANOTHER PASSEGER --> 
 	<div class="card content-padded" ng-show="activeT">
 		<h2 class="content-padded"><i class="fas fa-male"></i> Informacion del tercero</h2>
+		<a href="#"><span class="icon icon-compose" title="Agrear un nuevo tercero"></span></a> 
+
 		<div class="input-group ">
 			<label class="content-padded">Tipo de documento</label>
-			<select class="pad-content" ng-model="TipoDoc">
+			<select class="pad-content" ng-model="TipoDoc" ng-change="searchPassager()">
 				<option value="0" selected="" disabled="">Seleccione un tipo de documento</option>    	
-				<option value="cc">Cédula de ciudadania</option>
-				<option value="ce">Cédula de extrangeria</option>
-				<option value="pas">Pasaporte</option>
+				<option value="CC">Cédula de ciudadania</option>
+				<option value="CE">Cédula de extrangeria</option>
+				<option value="PAS">Pasaporte</option>
 			</select>
 		    <div class="input-row">
 		        <label>Numero de documento</label>
-		        <input type="number" placeholder="10222222" ng-model="NumDoc">
+		        <input type="text" placeholder="Seleccione el tipo e ingrese el numero de documento" ng-model="txt_NumDoc" ng-keyup="searchPassager()" >
 		    </div>
 		    <div class="input-row">
 		        <label>Nombre Completo</label>
-		        <input type="text" placeholder="Nombre completo del tercero" ng-model="NomTercero" ng-keyup="consultaTercero()">
+		        <input type="text" ng_model="txt_ntercero"  disabled >
 		    </div>
 		    <div class="input-row">
-		        <label>Numero de documento</label>
-		        <input type="number" placeholder="10222222" ng-model="NumDoc">
+		        <label>Teléfono</label>
+		        <input type="text" ng-model="txt_TelTercero" disabled>
+		    </div>
+		    <div class="input-row">
+		        <label>Fecha Nacimiento</label>
+		        <input type="text" ng-model="txt_FnacimientoTercero" disabled>
 		    </div>
 		</div>
 	</div>
+	
 	<!-- END INFORMATION ANOTHER PASSEGER --> 
 		<!-- MENU ACTION --> 
 	<div class="content-padded">

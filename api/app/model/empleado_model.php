@@ -6,7 +6,7 @@ use App\Lib\Response;
 class EmpleadoModel
 {
     private $db;
-    private $table = 'empleado';
+    private $table = 'empleados';
     private $response;
     
     public function __CONSTRUCT($db)
@@ -18,9 +18,16 @@ class EmpleadoModel
     public function listar($l, $p)
     {
         $data = $this->db->from($this->table)
+                         ->select(
+                            ' COD_EMPLEADO,
+                              EMAIL_EMPLEADO,
+                              NOMBRE_EMPLEADO,
+                              FNACIMIENTO_EMPLEADO,
+                              TEL_EMPLEADO
+                            ')
                          ->limit($l)
                          ->offset($p)
-                         ->orderBy('id DESC')
+                         ->orderBy('COD_EMPLEADO DESC')
                          ->fetchAll();
         
         $total = $this->db->from($this->table)
@@ -34,9 +41,17 @@ class EmpleadoModel
         ];
     }
     
-    public function obtener($id)
+    public function obtener($COD_EMPLEADO)
     {
-        return $this->db->from($this->table, $id)
+        return $this->db->from($this->table)
+                        ->select(
+                            ' empleados.COD_EMPLEADO,
+                              empleados.EMAIL_EMPLEADO,
+                              empleados.NOMBRE_EMPLEADO,
+                              empleados.FNACIMIENTO_EMPLEADO,
+                              empleados.TEL_EMPLEADO
+                            ')
+                        ->where('COD_EMPLEADO', $COD_EMPLEADO)
                         ->fetch();
     }
     
@@ -50,13 +65,14 @@ class EmpleadoModel
         return $this->response->SetResponse(true);
     }
     
-    public function actualizar($data, $id)
+    public function actualizar($data, $COD_EMPLEADO)
     {
-        if(isset($data['Password'])){
-            $data['Password'] = md5($data['Password']);            
+        if(isset($data['PASS_EMPLEADO'])){
+            $data['PASS_EMPLEADO'] = md5($data['PASS_EMPLEADO']);            
         }
         
-        $this->db->update($this->table, $data, $id)
+        $this->db->update($this->table, $data)
+                 ->where('COD_EMPLEADO', $COD_EMPLEADO)
                  ->execute();
         
         return $this->response->SetResponse(true);

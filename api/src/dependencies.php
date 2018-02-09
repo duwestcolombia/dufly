@@ -39,5 +39,6 @@ $container['model'] = function($c){
         'tercero' => new App\Model\TerceroModel($c->db),
         'solicitud' => new App\Model\SolicitudModel($c->db),
         'reserva' => new App\Model\ReservaModel($c->db),
+        'empleado'=> new App\Model\EmpleadoModel($c->db)
     ];
 };

@@ -7,19 +7,19 @@
 			<form class="input-group">
 				<div class="input-row">
 				    <label>Nombre completo</label>
-				    <input type="text" placeholder="David Zambrano">
+				    <input type="text" ng-model="txt_nombre">
 				</div>
 				<div class="input-row">
 				    <label>Fecha de nacimiento</label>
-				    <input type="text" placeholder="1994-12-31">
+				    <input type="text" ng-model="txt_fnacimiento">
 				</div>
 				<div class="input-row">
 				    <label>Telefono Celular</label>
-				    <input type="text" placeholder="320495...">
+				    <input type="text" ng-model="txt_tel">
 				</div>
 				<div class="input-row">
 				    <label>Correo electronico corporativo</label>
-				    <input type="text" placeholder="david.zambrano@..">
+				    <input type="text" ng-model="txt_email">
 				</div>
 			</form>
 		</li>
@@ -28,17 +28,17 @@
 			<form class="input-group">
 				<div class="input-row">
 				    <label>Nueva contraseña</label>
-				    <input type="password" placeholder="*******">
+				    <input type="password" placeholder="*******" ng-model="txt_pass">
 				</div>
 				<div class="input-row">
 				    <label>Confirmar contraseña</label>
-				    <input type="password" placeholder="*******">
+				    <input type="password" placeholder="*******" ng-model="txt_confipass">
 				</div>
 			</form>
 		</li>
 		<li class="table-cell">
 			<div class="content-padded">
-			    <button class="btn btn-block btn-primary" type="button" ng-click="registraPedido()">Registrar</button>
+			    <button class="btn btn-block btn-primary" type="button" ng-click="actualizaPerfil()">Actualizar</button>
 			</div>
 		</li>
 	</ul>
