@@ -35,6 +35,10 @@ frontApp.config(['$routeProvider',
           templateUrl: 'partials/perfil/visualizar.html',
           controller: 'PerfilVisualizarCtrl'
       }).
+      when('/tercero/registrar',{
+          templateUrl: 'partials/terceros/registrar.html',
+          controller: 'TerceroRegistrarCtrl'
+      }).
       otherwise({
         redirectTo: '/'
       });

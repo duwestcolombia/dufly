@@ -1,6 +1,7 @@
 var authControllers   = angular.module('authControllers', [])
     solicitudControllers = angular.module('solicitudControllers', [])
     perfilControllers = angular.module('perfilControllers', [])
+    terceroControllers = angular.module('terceroControllers', [])
     testControllers   = angular.module('testControllers', []);
 
 // Auth Controller
@@ -87,12 +88,15 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
 //Registrar las solicitudes
 solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', '$location', 'auth',
   function ($scope, restApi, $location, auth) {
+        
         auth.redirectIfNotExists();
 
         var user = auth.getUserData();
 
         $scope.usuario= user.COD_EMPLEADO;
-        //Cargo el select con las ciudades        
+        //Cargo el select con las ciudades  
+
+
 
         cargarCiudades();
         cargaTerceros();     
@@ -124,7 +128,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
               },
               error: function(r){
-
+                console.log(r);
               },
               validationError: function(r){
                 console.log(r);
@@ -146,6 +150,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           Reservas:[],
           Hoteles:[]
         };
+
+
 
         //funcion para agregar los vuelos
         $scope.agregaVuelo = function(){
@@ -274,12 +280,12 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         //var dataTerceros = [0];
 
         $scope.searchPassager = function(){            
-          if ($scope.TipoDoc === 'undefined' || $scope.txt_NumDoc === 'undefined') return;
+          //if (typeof($scope.TipoDoc) === 'undefined' || typeof($scope.txt_NumDoc) === 'undefined') return;
+                console.log($scope.Terceros);
 
           
           $scope.Terceros.forEach(function(x){
-
-            if (x.TIPDOC_TERCERO == $scope.TipoDoc && x.DOC_TERCERO == $scope.txt_NumDoc) {
+            /*if (x.TIPDOC_TERCERO == $scope.TipoDoc && x.DOC_TERCERO == $scope.txt_NumDoc) {
               
               $scope.txt_ntercero = x.NOM_TERCERO;
               $scope.txt_TelTercero = x.TEL_TERCERO;
@@ -292,13 +298,36 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
               $scope.txt_TelTercero = '';
               $scope.txt_FnacimientoTercero = '';
               return false;
+            }*/
+            if(x.TIPDOC_TERCERO == $scope.TipoDoc){
+              if(x.DOC_TERCERO == $scope.txt_NumDoc){
+                  $scope.txt_ntercero = x.NOM_TERCERO;
+                  $scope.txt_TelTercero = x.TEL_TERCERO;
+                  $scope.txt_FnacimientoTercero = x.FNACIMIENTO_TERCERO;
+                  return false;
+              }else{
+                $scope.txt_ntercero = '';
+                $scope.txt_TelTercero = '';
+                $scope.txt_FnacimientoTercero = '';
+                return false;
+              }
+            }else{
+              $scope.txt_ntercero = '';
+              $scope.txt_TelTercero = '';
+              $scope.txt_FnacimientoTercero = '';
+              return false;
             }
             
           })
 
+          
+          //console.log($scope.Terceros.DOC_TERCERO === $scope.txt_NumDoc)
+
         }
 
         $scope.registrarSolicitud = function(){
+          //si no selecciono ninguna opcion para registrar no hacemos nada
+          if ($scope.activeV == false && $scope.activeH == false && $scope.activeT == false) return;
           
           var TipoDocumento, NumeroDocumento;
 
@@ -528,20 +557,21 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
           actualizar(data);
         } 
         else{
-          console.log("contraseñas invalidas");
+          
+          $scope.errorPass = "Las contraseñas no coinciden";
         } 
 
         
      }
 
      function actualizar(datos){
-      console.log(datos);
+      //console.log(datos);
        restApi.call({
           method: 'put',
           url: 'empleado/actualizar/'+$scope.usuario,
           data:datos,
           response: function(r){
-             console.log(r);
+             //console.log(r);
           },
           error: function(r){
             console.log(r);
@@ -562,4 +592,92 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
         }
      }
 
-  }]);
+}]);
+
+terceroControllers.controller('TerceroRegistrarCtrl',['$scope', 'restApi', 'auth', '$routeParams',
+  function($scope,restApi,auth,$routeParams){
+
+      //if (typeof($scope.TipoDoc) === 'undefined' || typeof($scope.txt_NumDoc) === 'undefined') return;
+      auth.redirectIfNotExists();
+
+      var user = auth.getUserData();
+
+      $scope.usuario= user.COD_EMPLEADO;
+
+      var datos = {};
+
+      function formatearFecha(fecha){
+        var fechaOk = new Date(fecha);
+        var nuevaFecha = fechaOk.getFullYear()+'/'+(fechaOk.getMonth()+1)+'/'+fechaOk.getDate();
+        
+        return nuevaFecha;
+      }
+
+      
+
+
+      $scope.registrarTercero = function(){
+         //var fnacimiento = formatearFecha2($scope.txt_FnacimientoTercero);
+         var fnacimiento;
+         if (typeof($scope.txt_FnacimientoTercero) === 'undefined') {
+            fnacimiento = '';
+         }
+         else
+         {
+            fnacimiento = formatearFecha($scope.txt_FnacimientoTercero);
+         }
+
+
+         datos = {
+           TIPDOC_TERCERO:$scope.DocTercero,
+           DOC_TERCERO:$scope.txt_NumDoc,
+           NOM_TERCERO:$scope.txt_ntercero,
+           TEL_TERCERO:$scope.txt_TelTercero,
+           FNACIMIENTO_TERCERO:fnacimiento,
+           REGPOR_TERCERO:user.COD_EMPLEADO,
+           FREG_TERCERO:''
+         };
+
+         restApi.call({
+            method: 'post',
+            url: 'tercero/registrar',
+            data:datos,
+            response: function(r){
+               $location.path('/principal/registrar');
+            },
+            error: function(r){
+              
+
+              var error = r.data.exception;
+              var codigoError;
+
+              error.forEach(function(x){
+                codigoError = x.code;
+              });
+              console.log("Error # "+codigoError+"En la base de datos");
+              
+              /*switch(codigoError){
+                
+                case 23000:
+                  //$scope.errordb = codigoError;
+                  $scope.msgError = codigoError;
+                  //"El tercero ya se encuentra registrado.";
+                  break;
+                
+              }*/
+            },
+            validationError: function(r){
+              
+               var dataValidate = {
+                  TIPDOC:r.TIPDOC_TERCERO,
+                  DOC:r.DOC_TERCERO,
+                  NOM:r.NOM_TERCERO
+                }
+
+               $scope.validation = dataValidate;
+
+            }
+        });
+      }
+
+}]);

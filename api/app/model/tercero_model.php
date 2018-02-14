@@ -55,6 +55,9 @@ class TerceroModel
     
     public function registrar($data)
     {
+        $dateTime=date('Y/m/d h:i:s', time());
+
+        $data['FREG_TERCERO'] = $dateTime;
 
       	$this->db->insertInto($this->table, $data)
                  ->execute();

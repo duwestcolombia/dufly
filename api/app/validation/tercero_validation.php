@@ -7,6 +7,27 @@ class TerceroValidation {
     public static function validate($data, $update = false) {
         $response = new Response();
         
+        $key = 'TIPDOC_TERCERO';
+        if(empty($data[$key])) {
+            $response->errors[$key][] = 'Este campo es obligatorio';
+        } else {
+            $value = $data[$key];
+            $longValue = strlen($value);
+
+            if($longValue <= 1) {               
+                $response->errors[$key][] = 'Este campo no puede contener menos de 2 digitos';
+            }
+            else if($longValue > 2){
+                $response->errors[$key][] = 'Este campo solo debe contener 2 digitos';
+            }
+            else
+            {
+                if(is_numeric($value)) {
+                    $response->errors[$key][] = 'Este campo no debe ser numerico';
+                }
+            }
+        }
+
         $key = 'DOC_TERCERO';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
@@ -16,27 +37,7 @@ class TerceroValidation {
             if(!is_numeric($value)) {
                 $response->errors[$key][] = 'Este campo debe ser numerico';
             }
-        }
-        $key = 'TIPDOC_TERCERO';
-        if(empty($data[$key])) {
-            $response->errors[$key][] = 'Este campo es obligatorio';
-        } else {
-            $value = $data[$key];
-            $longValue = strlen($value);
-
-            if($longValue <= 1) {            	
-                $response->errors[$key][] = 'Este campo no puede contener menos de 2 digitos';
-            }
-            else if($longValue > 2){
-            	$response->errors[$key][] = 'Este campo solo debe contener 2 digitos';
-            }
-            else
-            {
-            	if(is_numeric($value)) {
-            	    $response->errors[$key][] = 'Este campo no debe ser numerico';
-            	}
-            }
-        }
+        }        
         
         $key = 'NOM_TERCERO';
         if(empty($data[$key])) {
@@ -48,7 +49,7 @@ class TerceroValidation {
                 $response->errors[$key][] = 'Este campo debe contener como minimo 4 digitos';
             }
         }
-        $key = 'FNACIMIENTO_TERCERO';
+       /* $key = 'FNACIMIENTO_TERCERO';
         if(empty($data[$key])) {
             $response->errors[$key][] = 'Este campo es obligatorio';
         } else {
@@ -65,7 +66,7 @@ class TerceroValidation {
             		$response->errors[$key][] = 'La fecha no existe en el calendario o no tiene el formato Año-Mes-Dia';
             	}
             }
-        }
+        }*/
         
         
 
