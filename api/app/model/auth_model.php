@@ -28,7 +28,8 @@ class AuthModel
             $nombre = $empleado->NOMBRE_EMPLEADO;
             $token = Auth::SignIn([
                 'COD_EMPLEADO' => $empleado->COD_EMPLEADO,
-                'NOMBRE_EMPLEADO' => $nombre
+                'NOMBRE_EMPLEADO' => $nombre,
+                'ADMIN_EMPLEADO'=>$empleado->ADMIN_EMPLEADO
                 //'EsAdmin' => (bool)$empleado->EsAdmin
             ]);
             

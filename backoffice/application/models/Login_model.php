@@ -1,5 +1,5 @@
 <?php 
-
+ if (!defined('BASEPATH')) exit('No direct script access allowed');
 class Login_model extends CI_Model
 {
 	function __construct()
@@ -8,19 +8,16 @@ class Login_model extends CI_Model
 		$this->load->database();
 	}
 	/*all functions here.*/
-	function getUsusario($usu,$pass){
+	function autenticar($usu,$pass){
 		
-		$this->db->where('EMAIL_EMPLEADO',$usu);
-		$this->db->where('PASS_EMPLEADO',$pass);
-		$consul=$this->db->get('empleados');
-
-		if ($consul) {
-			return $consul->row();
-		}
-		else
-		{
-			return false;
-		}
+		return RestApi::call(
+			RestApiMethod::POST,
+			"auth/autenticar",
+			[
+				'Correo'=>$usu,
+				'Password'=>$pass
+			]
+		);
 	}
 }
 ?>

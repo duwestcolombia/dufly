@@ -11,52 +11,53 @@ class Login extends CI_Controller {
 
       $dato['titulo']="Login | Dufly";
       //$dato = array('consulta'=>$result);     
-      $this->load->view('templates/header_login',$dato);
-      $this->load->view('login_view');
-      $this->load->view('templates/footer_login');
+      $this->load->view('header',$dato);
+      $this->load->view('login/index');
+      $this->load->view('footer');
 
   		
-      if ($this->session->userdata('user_logueado')) {
+      /*if ($this->session->userdata('user_logueado')) {
         redirect('/index.php/principal','refresh');
   		
-      }
-
-   
+      }*/   
 
 
   }
   function validaingreso(){
-   
+    $error = '';
     $usu = $_POST['txt_usu'];
-    $pass = md5($_POST['txt_pass']);
+    $pass = $_POST['txt_pass'];
 
-    $usuEncontrado = $this->login_model->getUsusario($usu,$pass);
-    
-    if ($usuEncontrado) {
-      /*strtoupper = CONVIERTE TODO EL TEXTO A MAYUSCULAS*/
+    $r = $this->login_model->autenticar($usu,$pass);
 
-        $data = array(
-          'user_logueado' => TRUE,
-          'name_usuario' => $usuEncontrado->email_usuario,
-          'tipo_usuario' => $usuEncontrado->tipo_usuario,
+    if ($r->response) {
+      RestApi::setToken($r->result);
 
-        );
-        $this->session->set_userdata($data);
-        
-        redirect('/index.php/principal','refresh');
+      $user = RestApi::getUserData();
+      if ($user->ADMIN_EMPLEADO == 1) {
+        redirect('principal');
       }
       else
       {
-        echo '<script>alert("Lo sentimos, el usuario no se encuentra en nuestro sistema. Para mas información comuniquese con el administrador."); </script>';
-        $this->index();
+        RestApi::destroyToken();
+        $error = "Usted no tiene privilegios de administrador para ingresar en esta aplicación.";
       }
+      
+    }else{
+      $error = $r->message;
+    }
+    $data['error'] = $r->message;
+    $this->load->view('header',$data);
+    $this->load->view('login/index');
+    $this->load->view('footer');
    
    
     
   }
   function cerrarsesion(){
-    $this->session->sess_destroy();
-    redirect('/index.php/inicio','refresh');
+    RestApi::destroyToken();
+    redirect('');
+
   }
 
 }
