@@ -11,6 +11,12 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->listar($args['l'], $args['p']))
                    );
     });
+    $this->get('listarTodos', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->listarTodos())
+                   );
+    });
     $this->get('listarPorEmpleado/{cod_empleado}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
@@ -39,14 +45,14 @@ $app->group('/solicitud/', function () {
                    );
     });
     $this->put('actualizar/{cod_solicitud}', function ($req, $res, $args) {
-        $r = SolicitudValidation::validate($req->getParsedBody(), true);
+        /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
         
         if(!$r->response){
             return $res->withHeader('Content-type', 'application/json')
                        ->withStatus(422)
                        ->write(json_encode($r->errors));            
         }
-        
+        */
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
                      json_encode($this->model->solicitud->actualizar($req->getParsedBody(), $args['cod_solicitud']))

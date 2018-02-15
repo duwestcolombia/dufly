@@ -18,10 +18,65 @@ class SolicitudModel
     public function listar($l, $p)
     {
         $data = $this->db->from($this->table)
-                         ->limit($l)
-                         ->offset($p)
-                         ->orderBy('ESTADO_SOLICITUD ASC')
-                         ->fetchAll();
+                        ->select('
+                                solicitudes.COD_SOLICITUD, 
+                                solicitudes.VUELO_SOLICITUD, 
+                                solicitudes.VIDAREGRESO_SOLICITUD, 
+                                solicitudes.HOTEL_SOLICITUD, 
+                                solicitudes.ESTADO_SOLICITUD,
+                                solicitudes.REQTERCERO_SOLICITUD,
+                                terceros.DOC_TERCERO, 
+                                terceros.TIPDOC_TERCERO, 
+                                terceros.NOM_TERCERO, 
+                                terceros.FNACIMIENTO_TERCERO, 
+                                terceros.TEL_TERCERO, 
+                                empleados.NOMBRE_EMPLEADO,
+                                empleados.FNACIMIENTO_EMPLEADO,
+                                empleados.TEL_EMPLEADO
+                            ')
+                            ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
+                            ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
+                            ->orderBy('FREG_SOLICITUD DESC')
+                            ->limit($l)
+                            ->offset($p)
+                            ->fetchAll();
+
+        
+        $total = $this->db->from($this->table)
+                          ->select('COUNT(*) Total')
+                          ->fetch()
+                          ->Total;
+        
+        return [
+            'data'  => $data,
+            'total' => $total
+        ];
+    }
+    public function listarTodos()
+    {
+        $data = $this->db->from($this->table)
+                        ->select('
+                                solicitudes.COD_SOLICITUD, 
+                                solicitudes.VUELO_SOLICITUD, 
+                                solicitudes.VIDAREGRESO_SOLICITUD, 
+                                solicitudes.HOTEL_SOLICITUD, 
+                                solicitudes.ESTADO_SOLICITUD,
+                                solicitudes.REQTERCERO_SOLICITUD,
+                                terceros.DOC_TERCERO, 
+                                terceros.TIPDOC_TERCERO, 
+                                terceros.NOM_TERCERO, 
+                                terceros.FNACIMIENTO_TERCERO, 
+                                terceros.TEL_TERCERO, 
+                                empleados.NOMBRE_EMPLEADO,
+                                empleados.FNACIMIENTO_EMPLEADO,
+                                empleados.TEL_EMPLEADO
+                            ')
+                            ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
+                            ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
+                            ->orderBy('FREG_SOLICITUD DESC')
+
+                            ->fetchAll();
+
         
         $total = $this->db->from($this->table)
                           ->select('COUNT(*) Total')
@@ -174,7 +229,8 @@ where solicitudes.COD_SOLICITUD = 19;
     public function actualizar($data, $cod_solicitud)
     {
             
-        $this->db->update($this->table, $data, $cod_solicitud)
+        $this->db->update($this->table, $data)
+                    ->where('COD_SOLICITUD',$cod_solicitud)
                     ->execute();
             
         return $this->response->SetResponse(true);

@@ -8,12 +8,20 @@ class Principal_Model extends CI_Model{
             "solicitud/listar/$l/$p"
         );
     }
-    public function obtener($id){
+    public function listarTodos(){
+        //Llamamos a la restApi
+        return RestApi::call(
+            //le mandamos una peticion get a la ruta empleado listar
+            RestApiMethod::GET,
+            "solicitud/listarTodos"
+        );
+    }
+    public function obtener($cod_solicitud){
         //Llamamos a la restApi
         return RestApi::call(
         	//le mandamos una peticion get a la ruta empleado listar
             RestApiMethod::GET,
-            "empleado/obtener/$id"
+            "solicitud/obtener/$cod_solicitud"
         );
     }
     public function registrar($data){
@@ -25,12 +33,12 @@ class Principal_Model extends CI_Model{
             $data
         );
     }
-    public function actualizar($data,$id){
+    public function actualizar($data,$cod_solicitud){
         //Llamamos a la restApi
         return RestApi::call(
         	//le mandamos una peticion get a la ruta empleado listar
             RestApiMethod::PUT,
-            "empleado/actualizar/$id",
+            "solicitud/actualizar/$cod_solicitud",
             $data
         );
     }
