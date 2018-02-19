@@ -86,7 +86,7 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
   }]);
 
 //Registrar las solicitudes
-solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', '$location', 'auth',
+solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', '$location', 'auth', 
   function ($scope, restApi, $location, auth) {
         
         auth.redirectIfNotExists();
@@ -280,45 +280,31 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         //var dataTerceros = [0];
 
         $scope.searchPassager = function(){            
-          //if (typeof($scope.TipoDoc) === 'undefined' || typeof($scope.txt_NumDoc) === 'undefined') return;
-                console.log($scope.Terceros);
 
-          
-          $scope.Terceros.forEach(function(x){
-            /*if (x.TIPDOC_TERCERO == $scope.TipoDoc && x.DOC_TERCERO == $scope.txt_NumDoc) {
-              
+          /*Filtramos el arreglo inicial por el numero de documento y le pasamos
+          El resultado a un nuevo arreglo*/
+          var arrayFiltrado = $scope.Terceros.filter(function(num){
+            return num.DOC_TERCERO === $scope.txt_NumDoc;
+          });
+          /*Recorremos el nuevo arreglo con un foreach, siempre y cuenado este contenga datos.
+          Si el arreglo no tiene datos, limpiamos los input, de lo contrario les asignamos el valor
+          correspondiente.*/
+
+          if (arrayFiltrado.length > 0) {
+            arrayFiltrado.forEach(function(x){
+              $scope.TipoDoc = x.TIPDOC_TERCERO;
               $scope.txt_ntercero = x.NOM_TERCERO;
               $scope.txt_TelTercero = x.TEL_TERCERO;
               $scope.txt_FnacimientoTercero = x.FNACIMIENTO_TERCERO;
-              return false;
-            }
-            else
-            {
-              $scope.txt_ntercero = '';
-              $scope.txt_TelTercero = '';
-              $scope.txt_FnacimientoTercero = '';
-              return false;
-            }*/
-            if(x.TIPDOC_TERCERO == $scope.TipoDoc){
-              if(x.DOC_TERCERO == $scope.txt_NumDoc){
-                  $scope.txt_ntercero = x.NOM_TERCERO;
-                  $scope.txt_TelTercero = x.TEL_TERCERO;
-                  $scope.txt_FnacimientoTercero = x.FNACIMIENTO_TERCERO;
-                  return false;
-              }else{
-                $scope.txt_ntercero = '';
-                $scope.txt_TelTercero = '';
-                $scope.txt_FnacimientoTercero = '';
-                return false;
-              }
-            }else{
-              $scope.txt_ntercero = '';
-              $scope.txt_TelTercero = '';
-              $scope.txt_FnacimientoTercero = '';
-              return false;
-            }
-            
-          })
+            });
+          }
+          else
+          {
+            $scope.TipoDoc = '';
+            $scope.txt_ntercero = '';
+            $scope.txt_TelTercero = '';
+            $scope.txt_FnacimientoTercero = '';
+          }
 
           
           //console.log($scope.Terceros.DOC_TERCERO === $scope.txt_NumDoc)
@@ -328,6 +314,12 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         $scope.registrarSolicitud = function(){
           //si no selecciono ninguna opcion para registrar no hacemos nada
           if ($scope.activeV == false && $scope.activeH == false && $scope.activeT == false) return;
+          if ($scope.txt_objetivo === undefined) {
+            
+            $scope.error_message = "<strong>¡Error!</strong> Debe escribir un objetivo para esta solicitud, este campo es obligatorio.";
+
+            return;
+          }
           
           var TipoDocumento, NumeroDocumento;
 
@@ -348,7 +340,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             STERCERO: $scope.activeT,
             COD_EMPLEADO: user.COD_EMPLEADO,
             TIPDOC_TERCERO : TipoDocumento,
-            DOC_TERCERO: NumeroDocumento 
+            DOC_TERCERO: NumeroDocumento,
+            OBJETIVO_SOLICITUD:$scope.txt_objetivo 
           };
 
           $scope.Solicitud.Op[0] = opciones;
@@ -594,8 +587,8 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
 
 }]);
 
-terceroControllers.controller('TerceroRegistrarCtrl',['$scope', 'restApi', 'auth', '$routeParams',
-  function($scope,restApi,auth,$routeParams){
+terceroControllers.controller('TerceroRegistrarCtrl',['$scope', 'restApi', 'auth', '$routeParams', '$location',
+  function($scope,restApi,auth,$routeParams, $location){
 
       //if (typeof($scope.TipoDoc) === 'undefined' || typeof($scope.txt_NumDoc) === 'undefined') return;
       auth.redirectIfNotExists();

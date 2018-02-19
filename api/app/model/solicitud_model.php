@@ -128,6 +128,7 @@ where solicitudes.COD_SOLICITUD = 19;
                                 solicitudes.HOTEL_SOLICITUD, 
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
+                                solicitudes.OBJETIVO_SOLICITUD,
                                 terceros.DOC_TERCERO, 
                                 terceros.TIPDOC_TERCERO, 
                                 terceros.NOM_TERCERO, 
@@ -187,7 +188,8 @@ where solicitudes.COD_SOLICITUD = 19;
                 'REGPOR_SOLICITUD' => $opcion['COD_EMPLEADO'],
                 'FREG_SOLICITUD' => $dateTime,
                 'COD_EMPLEADO' => $data['COD_EMPLEADO'],
-                'ESTADO_SOLICITUD' => 'NUEVA'
+                'ESTADO_SOLICITUD' => 'NUEVA',
+                'OBJETIVO_SOLICITUD' => $opcion['OBJETIVO_SOLICITUD']
 
             ])->execute();
         }

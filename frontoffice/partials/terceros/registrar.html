@@ -4,7 +4,7 @@
 			<h1>Registrar un nuevo tercero</h1>
 		</li>
 		<div class="input-group ">
-			<label class="content-padded">Tipo de documento</label>
+			<label class="content-padded">Tipo de documento <strong style="color: red;">*</strong></label>
 			<select class="pad-content" ng-model="DocTercero" >
 				<option value="0" selected="" disabled="">Seleccione un tipo de documento</option>    	
 				<option value="CC">Cédula de ciudadania</option>
@@ -12,11 +12,11 @@
 				<option value="PAS">Pasaporte</option>
 			</select>
 		    <div class="input-row">
-		        <label>Numero de documento</label>
+		        <label>Numero de documento <strong style="color: red;">*</strong></label>
 		        <input type="text" placeholder="12456..." ng-model="txt_NumDoc" >
 		    </div>
 		    <div class="input-row">
-		        <label>Nombre Completo</label>
+		        <label>Nombre Completo <strong style="color: red;">*</strong></label>
 		        <input type="text" ng_model="txt_ntercero" placeholder="El nombre del tercero ...">
 		    </div>
 		    <div class="input-row">
@@ -41,13 +41,13 @@
 	  <ul class="table-view" >
 	  	
 	  	<label for="" ng-if="validation.TIPDOC"><b>Tipo de Documento</b></label>
-	    <li class="table-view-cell" ng-repeat="vtdoc in validation.TIPDOC">{{vtdoc}}</li>
+	    <li class="table-view-cell alert-warning" ng-repeat="vtdoc in validation.TIPDOC">{{vtdoc}}</li>
 		
 		<label for="" ng-if="validation.DOC"><b>Numero de documento</b></label> 
-		<li class="table-view-cell" ng-repeat="vdoc in validation.DOC">{{vdoc}}</li>
+		<li class="table-view-cell alert-warning" ng-repeat="vdoc in validation.DOC">{{vdoc}}</li>
 
 		<label for=""><b>Nombre del tercero</b></label>
-		<li class="table-view-cell" ng-repeat="vnom in validation.NOM">{{vnom}}</li>
+		<li class="table-view-cell alert-warning" ng-repeat="vnom in validation.NOM">{{vnom}}</li>
 
 
 	  </ul>

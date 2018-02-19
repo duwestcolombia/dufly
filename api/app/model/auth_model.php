@@ -40,4 +40,14 @@ class AuthModel
             return $this->response->SetResponse(false, "Credenciales no válidas");
         }
     }
+    public function validar($token){
+        //return $token['token'];
+        //return $token['token'];
+        $newtoken = Auth::Check($token['token']);
+
+        //return $newtoken;
+        $this->response->result = $newtoken;
+        
+        return $this->response->SetResponse(true);
+    }
 }

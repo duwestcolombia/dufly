@@ -19,5 +19,13 @@ class Login_model extends CI_Model
 			]
 		);
 	}
+	function validar($data)
+	{
+		return RestApi::call(
+			RestApiMethod::POST,
+			"auth/validaToken",
+			$data
+		);
+	}
 }
 ?>

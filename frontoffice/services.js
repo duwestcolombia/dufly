@@ -2,6 +2,7 @@ frontApp.factory('auth', ['$location', function ($location) {
     var auth = {
         setToken: function (token) {
             localStorage[API.token_name] = token;
+            localStorage.setItem('data_sess', JSON.stringify(token));
         },
         getToken: function () {
             return localStorage[API.token_name];
@@ -24,6 +25,7 @@ frontApp.factory('auth', ['$location', function ($location) {
         logout: function () {
             localStorage[API.token_name] = '';
             localStorage.removeItem('DUFLY-TOKEN');
+            localStorage.removeItem('data_sess');
             $location.path('/');
         },
         hasToken: function () {
@@ -39,14 +41,14 @@ frontApp.factory('auth', ['$location', function ($location) {
     return auth;
 }]);
 
-frontApp.service('loader',['$location', function ($location) {
+frontApp.service('loader',['$location','auth', function ($location,auth) {
     this.show = function (show) {
         document.querySelector("#loader").style.display = show ? 'block' : 'none';
     };
     //verificamos al iniciar que si exista un token creado,
     //si se encuentra uno creado, lo dirigimos a la pagina principal
     var token = localStorage.getItem('DUFLY-TOKEN');
-    if (token != "") {
+    if (token != "" && token == auth.getToken()) {
         $location.path('/principal');
     }
 }]);

@@ -13,4 +13,11 @@ $app->group('/auth/', function () {
                      json_encode($this->model->auth->autenticar($parametros['Correo'], $parametros['Password']))
                    );
     });
+    $this->post('validaToken', function ($req, $res, $args) {
+        
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->auth->validar($req->getParsedBody()))
+                   );
+    });
 });

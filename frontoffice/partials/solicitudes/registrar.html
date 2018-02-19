@@ -1,5 +1,6 @@
 <div class="content-padded">
 	<!-- MENU DATA VUELO CONTENT --> 
+
 	<ul class="table-view">
 	  <li class="table-view-cell"  >
 		    <i class="fas fa-plane"></i>
@@ -41,7 +42,17 @@
 		      <div class="toggle-handle"></div>
 		    </div>
 	  </li>
+	  <div class="input-group">
+	  	<div class="input-row">
+	  	    <label> <i class="fas fa-bullseye"></i> OBJETIVO DE LA SOLICITUD <strong style="color: red;">*</strong></label>
+	  	    <input type="text" ng-model="txt_objetivo" placeholder="Escriba que objetivo tiene esta solicitud" maxlength="100">
+	  	</div>
+	  </div>
+
+
 	</ul>
+
+
 	<!-- END MENU DATA VUELO CONTENT --> 
 
 	<!-- INFORMATION OF FLYING -->
@@ -137,19 +148,20 @@
 	<!-- INFORMATION ANOTHER PASSEGER --> 
 	<div class="card content-padded" ng-show="activeT">
 		<h2 class="content-padded"><i class="fas fa-male"></i> Informacion del tercero</h2>
-		<a href="#/tercero/registrar"><span class="icon icon-compose" title="Agrear un nuevo tercero"></span></a> 
+		<a href="#/tercero/registrar" class="content-padded">
+			<span class="icon icon-compose" title="Agrear un nuevo tercero"></span>
+			<span class="">Registra un tercero</span>
+		</a> 
 
 		<div class="input-group ">
-			<label class="content-padded">Tipo de documento</label>
-			<select class="pad-content" ng-model="TipoDoc" ng-change="searchPassager()">
-				<option value="0" selected="" disabled="">Seleccione un tipo de documento</option>    	
-				<option value="CC">Cédula de ciudadania</option>
-				<option value="CE">Cédula de extrangeria</option>
-				<option value="PAS">Pasaporte</option>
-			</select>
+			
 		    <div class="input-row">
 		        <label>Numero de documento</label>
-		        <input type="text" placeholder="Seleccione el tipo e ingrese el numero de documento" ng-model="txt_NumDoc" ng-keyup="searchPassager()" >
+		        <input type="text" placeholder="Ingrese el numero de documento para buscar" ng-model="txt_NumDoc" ng-keyup="searchPassager()" >
+		    </div>
+		    <div class="input-row">
+		    	<label >Tipo de documento</label>
+		    	<input type="text" ng-model="TipoDoc" disabled >
 		    </div>
 		    <div class="input-row">
 		        <label>Nombre Completo</label>
@@ -166,7 +178,13 @@
 		</div>
 	</div>
 	
-	<!-- END INFORMATION ANOTHER PASSEGER --> 
+	<!-- END INFORMATION ANOTHER PASSEGER -->
+
+	<div class="card " ng-if="error_message" >
+	  <ul class="table-view ">
+	    <li class="table-view-cell alert-warning" >{{error_message}}</li>
+	  </ul>
+	</div> 
 		<!-- MENU ACTION --> 
 	<div class="content-padded">
 	    <button class="btn btn-block btn-primary" type="button" ng-click="registrarSolicitud()">Registrar</button>
