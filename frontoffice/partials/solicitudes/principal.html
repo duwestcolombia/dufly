@@ -1,0 +1,48 @@
+<div class="user-dashboard">
+    <img src="assets/images/default-user.png" class="avatar" />
+    Bienvenido <b>{{NomUsuario}}</b>, desde aquí usted puede realizar sus solicitudes de vuelo y hoteles.
+    <div class="clear"></div>
+</div>
+
+<div class="card">
+    <a class="btn btn-block btn-primary remove-border-radius" href="#/principal/registrar">Nueva solicitud</a>
+    <ul class="table-view">
+        <li class="table-view-cell" ng-repeat="r in resultado">
+
+        	    <a class="navigate-right" href="#/principal/visualizar/{{ r.COD_SOLICITUD }}">
+        	    	<span ng-if="r.ESTADO_SOLICITUD == 'NUEVA'" class="pedido-estado pedido-estado-nuevo pull-left"></span>	
+        	    	<span ng-if="r.ESTADO_SOLICITUD == 'RECHAZADA'" class="pedido-estado pedido-estado-anulado pull-left"></span>	
+        	    	<span ng-if="r.ESTADO_SOLICITUD == 'AUTORIZADA'" class="pedido-estado pedido-estado-finalizado pull-left"></span>	
+        	      	<b>Solicitud #{{r.COD_SOLICITUD}}</b>
+        	      	<span class="badge">{{r.ESTADO_SOLICITUD}}</span>
+        	    </a>
+
+        </li>
+        
+    </ul>
+</div>
+
+<!-- Logout -->
+
+<nav class="bar bar-tab">
+	<a class="tab-item active" href="#">
+	  <span class="icon icon-home"></span>
+	  <span class="tab-label">Inicio</span>
+	</a>
+ 	<a class="tab-item" href="#/perfil/visualizar/{{usuario}}">
+		<span class="icon icon-person"></span>
+	    <span class="tab-label">Mi perfil</span>
+	</a>
+	<a class="tab-item" href="#/principal/registrar">
+		<span class="icon icon-compose"></span>
+		<span class="tab-label">Nueva solicitud</span>
+	</a>
+	<a class="tab-item" href="#/logout">
+	    <span class="icon icon-close"></span>
+	    <span class="tab-label">Desconectarse</span>
+	</a>
+
+</nav>
+<!--<div class="bar bar-standard bar-footer-secondary">
+  <a href="#/logout" class="btn btn-block btn-negative">Desconectarse</a>
+</div>-->

@@ -1,0 +1,38 @@
+
+.demo-card-square.mdl-card {
+
+  	width: 100%;
+	margin-bottom: 10px;
+
+}
+
+.demo-card-square > .mdl-card__title {
+	/*color: #fff;*/
+	color: #fff;
+	/*Verde Utilizado llamdo Teal*/
+	/*background-color: #008080;
+	/*Rojo Utilizado*/
+	background-color: #00796B;
+}
+
+.dwc-primary-color{
+	background-color: #B2DFDB;
+}
+
+/*COLORES PARA BOTONES MATERIAL DESING LITE*/
+.indigo{
+	color:#4b0082;
+}
+
+/*
+
+.dark-primary-color    { background: #00796B; } //Color Teal - Verde
+.default-primary-color { background: #009688; } //Color Teal - Verde claro
+.light-primary-color   { background: #B2DFDB; } //Color Teal - Verde mas claro
+.text-primary-color    { color: #FFFFFF; } 		
+.accent-color          { background: #FF5252; } //Color rojo del acento
+.primary-text-color    { color: #212121; } // Color negro
+.secondary-text-color  { color: #757575; } // Color Gris
+.divider-color         { border-color: #BDBDBD; }
+
+*/

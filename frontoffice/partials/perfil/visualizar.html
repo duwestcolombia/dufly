@@ -1,0 +1,66 @@
+<div class="card perfil-visualizar">
+	<ul class="table-view">
+		<li class="table-view-divider text-center">
+			<h1>Actualiza la informacion de tu usuario</h1>
+		</li>
+		<li class="table-cell ">
+			<form class="input-group">
+				<div class="input-row">
+				    <label>Nombre completo</label>
+				    <input type="text" ng-model="txt_nombre">
+				</div>
+				<div class="input-row">
+				    <label>Fecha de nacimiento</label>
+				    <input type="text" ng-model="txt_fnacimiento">
+				</div>
+				<div class="input-row">
+				    <label>Telefono Celular</label>
+				    <input type="text" ng-model="txt_tel">
+				</div>
+				<div class="input-row">
+				    <label>Correo electronico corporativo</label>
+				    <input type="text" ng-model="txt_email">
+				</div>
+			</form>
+		</li>
+		<li class="table-view-divider">Actualizar contraseña <i class="fas fa-key"></i></li>
+		<h5 	style="color:red;">{{errorPass}}</h5>
+		<li class="table-cell">
+			<form class="input-group">
+				<div class="input-row">
+				    <label>Nueva contraseña</label>
+				    <input type="password" placeholder="*******" ng-model="txt_pass">
+				</div>
+				<div class="input-row">
+				    <label>Confirmar contraseña</label>
+				    <input type="password" placeholder="*******" ng-model="txt_confipass">
+				</div>
+			</form>
+		</li>
+		<li class="table-cell">
+			<div class="content-padded">
+			    <button class="btn btn-block btn-primary" type="button" ng-click="actualizaPerfil()">Actualizar</button>
+			</div>
+		</li>
+	</ul>
+</div>
+
+<nav class="bar bar-tab">
+	<a class="tab-item " href="#/principal">
+	  <span class="icon icon-home"></span>
+	  <span class="tab-label">Inicio</span>
+	</a>
+ 	<a class="tab-item active" href="#/perfil/visualizar/{{usuario}}">
+		<span class="icon icon-person"></span>
+	    <span class="tab-label">Mi perfil</span>
+	</a>
+	<a class="tab-item" href="#/principal/registrar">
+		<span class="icon icon-compose"></span>
+		<span class="tab-label">Nueva solicitud</span>
+	</a>
+	<a class="tab-item" href="#/logout">
+	    <span class="icon icon-close"></span>
+	    <span class="tab-label">Desconectarse</span>
+	</a>
+
+</nav>
