@@ -21,7 +21,7 @@
 					<?php echo form_close(); ?>
 			  	</div>
 			</div>
-			<a href="#">Soy administrador, Ingresa por aqui.</a>
+
 
 		</div>
 
