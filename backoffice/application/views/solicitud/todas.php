@@ -27,11 +27,15 @@
 </div>
 <div class="container">
 	<h1 class="page-header">
-		Solicitudes Recientes
+		Todas las solicitudes
 	</h1>
 	<hr>
-	<ol class="breadcrumb">
-	  <li class="breadcrumb-item active" aria-current="page">Solicitudes</li>
+  <ol class="breadcrumb">
+		<li class="breadcrumb-item" aria-current="page">
+			<a href="<?php echo site_url('principal'); ?> ">Solicitudes</a>
+		</li>
+	  	<li class="breadcrumb-item active" aria-current="page">	Todas
+	  	</li>
 	</ol>
 
 
@@ -77,13 +81,13 @@
 				<td><?php echo $r->OBJETIVO_SOLICITUD ?></td>
 				<td>
 					<a href="<?php echo site_url('principal/visualizar/'. $r->COD_SOLICITUD); ?>" class="btn btn-light btn-sm" title="Ver mas"><i class="fas fa-eye"></i></a>
-					<!--
-					<?php //if ($r->ESTADO_SOLICITUD == 'RECHAZADA' || $r->ESTADO_SOLICITUD == 'NUEVA'): ?>
+          <!--
+          <?php //if ($r->ESTADO_SOLICITUD == 'RECHAZADA' || $r->ESTADO_SOLICITUD == 'NUEVA'): ?>
 						<a href="" class="btn btn-light btn-sm disabled" title="Enviar"><i class="fas fa-share-square"></i></a>
 					<?php //else: ?>
 						<a href="" class="btn btn-light btn-sm" title="Enviar"><i class="fas fa-share-square"></i></a>
 					<?php //endif ?>
-				-->
+        -->
 				</td>
 			</tr>
 			<?php endforeach ?>

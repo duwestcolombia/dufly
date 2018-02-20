@@ -16,6 +16,14 @@ class Principal_Model extends CI_Model{
             "solicitud/listarTodos"
         );
     }
+    public function listarNuevas(){
+        //Llamamos a la restApi
+        return RestApi::call(
+            //le mandamos una peticion get a la ruta empleado listar
+            RestApiMethod::GET,
+            "solicitud/listarNuevas"
+        );
+    }
     public function obtener($cod_solicitud){
         //Llamamos a la restApi
         return RestApi::call(
@@ -50,5 +58,5 @@ class Principal_Model extends CI_Model{
             "empleado/eliminar/$id"
         );
     }
-    
+
 }
