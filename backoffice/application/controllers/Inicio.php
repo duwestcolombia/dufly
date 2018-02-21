@@ -13,6 +13,6 @@ class Inicio extends CI_Controller {
       	$this->load->view('inicio_view');
       	$this->load->view('templates/footer_inicio');
   }
-    
+
 }
 ?>

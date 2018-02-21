@@ -3,7 +3,11 @@
             <h1 class="cover-heading">Dufly</h1>
             <p class="lead">Reserva tu vuelo desde cualquier lugar del mundo.</p>
             <p class="lead">
-              <a href="<?php echo base_url(); ?>index.php/login" class="btn btn-lg btn-primary">Iniciar sesion</a>
+                <a href="http://localhost/dufly/frontoffice/" class="btn btn-lg btn-primary">Solicitar vuelo/hotel</a>
+
+            </p>
+            <p class="lead">
+              <a href="<?php echo base_url(); ?>index.php/login" >Administrar solicitudes</a>
             </p>
           </main>
 
