@@ -17,39 +17,51 @@
 
 	<div class="row">
 		<div class="col-md-4">
-			<?php echo form_open('principal/guardar'); ?>	
+			<?php echo form_open('principal/guardar'); ?>
 			<div class="card" >
-			 
+
 			  <div class="card-body">
 			  	<h5 class="card-title">Pasajero</h5>
-			  	<?php if ($data->DOC_TERCERO > 1): ?> 		
+			  	<?php if ($data->DOC_TERCERO > 1): ?>
 			  		<p class="card-text font-weight-light"><?php echo $data->NOM_TERCERO ?></p>
 			  	<?php else: ?>
 			  		<p class="card-text font-weight-light"><?php echo $data->NOMBRE_EMPLEADO ?></p>
 			  	<?php endif ?>
-			  	
+
 			  	<?php if ($data->DOC_TERCERO > 1): ?>
-			  		<h5 class="card-title">Num. documento</h5> 		
+			  		<h5 class="card-title">Num. documento</h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->TIPDOC_TERCERO .":". $data->DOC_TERCERO ?></p>
-			  		<h5 class="card-title">Telefono </h5> 		
+			  		<h5 class="card-title">Telefono </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->TEL_TERCERO ?></p>
-			  		<h5 class="card-title">Fecha de nacimiento </h5> 
+			  		<h5 class="card-title">Fecha de nacimiento </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->FNACIMIENTO_TERCERO ?></p>
 			  	<?php else: ?>
-			  		<h5 class="card-title">Telefono </h5> 		
+			  		<h5 class="card-title">Telefono </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->TEL_EMPLEADO ?></p>
-			  		<h5 class="card-title">Fecha de nacimiento </h5> 
+			  		<h5 class="card-title">Fecha de nacimiento </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->FNACIMIENTO_EMPLEADO ?></p>
 			  	<?php endif ?>
 			  		<h5 class="card-title">Estado</h5>
-			  		<p class="card-text font-weight-light"><span class="badge badge-primary"><?php echo $data->ESTADO_SOLICITUD ?></span></p>
-			    
+						<?php switch ($data->ESTADO_SOLICITUD) {
+							case 'RECHAZADA':
+								echo '<p class="card-text font-weight-light"><span class="badge badge-danger"> '.$data->ESTADO_SOLICITUD.' </span></p>';
+								break;
+							case 'AUTORIZADA':
+								echo '<p class="card-text font-weight-light"><span class="badge badge-success"> '.$data->ESTADO_SOLICITUD.' </span></p>';
+								break;
+
+							default:
+								echo '<p class="card-text font-weight-light"><span class="badge badge-primary"> '.$data->ESTADO_SOLICITUD.' </span></p>';
+								break;
+						} ?>
+
+
 			    	<h5 class="card-title"> Registrar Observación</h5>
 			    	<input type="hidden" name="txt_codsolicitud" value="<?php echo $data->COD_SOLICITUD ?>">
 			    	<textarea name="txt_observacion" cols="30" rows="3" class="form-control" maxlength="300"><?php echo $data->OBSERVACION_SOLICITUD ?></textarea>
 
 			    	<hr>
-			    	
+
 			  </div>
 			  <div class="card-footer">
 				<!-- <div class="btn-group" role="group" >-->
@@ -69,7 +81,7 @@
 			<?php echo form_close(); ?>
 		</div>
 		<div class="col-md-8">
-			<div class="card" style="margin-bottom: 8px;">				
+			<div class="card" style="margin-bottom: 8px;">
 				<div class="card-header">
 					Vuelos <i class="fas fa-plane"></i>
 				</div>
@@ -91,8 +103,8 @@
 
 							</li>
 						<?php endforeach ?>
-					    
-					    
+
+
 					</ul>
 				</div>
 			</div>
@@ -114,14 +126,14 @@
 								<span class="float-right">
 									<?php echo '<b>Fecha Salida</b>: '.$dh->FSALHOTEL_RESERVA ?>
 								</span>
-								
-							</li>	
+
+							</li>
 						<?php endforeach ?>
-					    
+
 
 					</ul>
 				</div>
-				
+
 			</div>
 
 		</div>

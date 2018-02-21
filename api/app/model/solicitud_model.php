@@ -8,28 +8,28 @@ class SolicitudModel
     private $db;
     private $table = 'solicitudes';
     private $response;
-    
+
     public function __CONSTRUCT($db)
     {
         $this->db = $db;
         $this->response = new Response();
     }
-    
+
     public function listar($l, $p)
     {
         $data = $this->db->from($this->table)
                         ->select('
-                                solicitudes.COD_SOLICITUD, 
-                                solicitudes.VUELO_SOLICITUD, 
-                                solicitudes.VIDAREGRESO_SOLICITUD, 
-                                solicitudes.HOTEL_SOLICITUD, 
+                                solicitudes.COD_SOLICITUD,
+                                solicitudes.VUELO_SOLICITUD,
+                                solicitudes.VIDAREGRESO_SOLICITUD,
+                                solicitudes.HOTEL_SOLICITUD,
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
-                                terceros.DOC_TERCERO, 
-                                terceros.TIPDOC_TERCERO, 
-                                terceros.NOM_TERCERO, 
-                                terceros.FNACIMIENTO_TERCERO, 
-                                terceros.TEL_TERCERO, 
+                                terceros.DOC_TERCERO,
+                                terceros.TIPDOC_TERCERO,
+                                terceros.NOM_TERCERO,
+                                terceros.FNACIMIENTO_TERCERO,
+                                terceros.TEL_TERCERO,
                                 empleados.NOMBRE_EMPLEADO,
                                 empleados.FNACIMIENTO_EMPLEADO,
                                 empleados.TEL_EMPLEADO
@@ -41,12 +41,12 @@ class SolicitudModel
                             ->offset($p)
                             ->fetchAll();
 
-        
+
         $total = $this->db->from($this->table)
                           ->select('COUNT(*) Total')
                           ->fetch()
                           ->Total;
-        
+
         return [
             'data'  => $data,
             'total' => $total
@@ -56,17 +56,17 @@ class SolicitudModel
     {
         $data = $this->db->from($this->table)
                         ->select('
-                                solicitudes.COD_SOLICITUD, 
-                                solicitudes.VUELO_SOLICITUD, 
-                                solicitudes.VIDAREGRESO_SOLICITUD, 
-                                solicitudes.HOTEL_SOLICITUD, 
+                                solicitudes.COD_SOLICITUD,
+                                solicitudes.VUELO_SOLICITUD,
+                                solicitudes.VIDAREGRESO_SOLICITUD,
+                                solicitudes.HOTEL_SOLICITUD,
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
-                                terceros.DOC_TERCERO, 
-                                terceros.TIPDOC_TERCERO, 
-                                terceros.NOM_TERCERO, 
-                                terceros.FNACIMIENTO_TERCERO, 
-                                terceros.TEL_TERCERO, 
+                                terceros.DOC_TERCERO,
+                                terceros.TIPDOC_TERCERO,
+                                terceros.NOM_TERCERO,
+                                terceros.FNACIMIENTO_TERCERO,
+                                terceros.TEL_TERCERO,
                                 empleados.NOMBRE_EMPLEADO,
                                 empleados.FNACIMIENTO_EMPLEADO,
                                 empleados.TEL_EMPLEADO
@@ -77,12 +77,48 @@ class SolicitudModel
 
                             ->fetchAll();
 
-        
+
         $total = $this->db->from($this->table)
                           ->select('COUNT(*) Total')
                           ->fetch()
                           ->Total;
-        
+
+        return [
+            'data'  => $data,
+            'total' => $total
+        ];
+    }
+    public function listarNuevas()
+    {
+        $data = $this->db->from($this->table)
+                        ->select('
+                                solicitudes.COD_SOLICITUD,
+                                solicitudes.VUELO_SOLICITUD,
+                                solicitudes.VIDAREGRESO_SOLICITUD,
+                                solicitudes.HOTEL_SOLICITUD,
+                                solicitudes.ESTADO_SOLICITUD,
+                                solicitudes.REQTERCERO_SOLICITUD,
+                                terceros.DOC_TERCERO,
+                                terceros.TIPDOC_TERCERO,
+                                terceros.NOM_TERCERO,
+                                terceros.FNACIMIENTO_TERCERO,
+                                terceros.TEL_TERCERO,
+                                empleados.NOMBRE_EMPLEADO,
+                                empleados.FNACIMIENTO_EMPLEADO,
+                                empleados.TEL_EMPLEADO
+                            ')
+                            ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
+                            ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
+                            ->where('solicitudes.ESTADO_SOLICITUD', 'NUEVA')
+                            ->orderBy('FREG_SOLICITUD DESC')
+                            ->fetchAll();
+
+
+        $total = $this->db->from($this->table)
+                          ->select('COUNT(*) Total')
+                          ->fetch()
+                          ->Total;
+
         return [
             'data'  => $data,
             'total' => $total
@@ -94,18 +130,18 @@ class SolicitudModel
                         ->where('COD_EMPLEADO', $cod_empleado)
                         ->orderBy('ESTADO_SOLICITUD DESC')
                         ->fetchAll();
-    }    
+    }
     public function obtener($COD_SOLICITUD)
     {
         /*
             SELECT  solicitudes.COD_SOLICITUD, solicitudes.VUELO_SOLICITUD, solicitudes.VIDAREGRESO_SOLICITUD, solicitudes.HOTEL_SOLICITUD, solicitudes.ESTADO_SOLICITUD,
-            terceros.DOC_TERCERO, terceros.TIPDOC_TERCERO, terceros.NOM_TERCERO, terceros.FNACIMIENTO_TERCERO, terceros.TEL_TERCERO, empleados.NOMBRE_EMPLEADO          
+            terceros.DOC_TERCERO, terceros.TIPDOC_TERCERO, terceros.NOM_TERCERO, terceros.FNACIMIENTO_TERCERO, terceros.TEL_TERCERO, empleados.NOMBRE_EMPLEADO
             FROM    ((solicitudes
 inner join terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO)
 inner join empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO)
 where solicitudes.COD_SOLICITUD = 19;
 
--- vuelos 
+-- vuelos
 SELECT  CO.NOMBRE_CIUDAD "CIUD_ORIGEN", CD.NOMBRE_CIUDAD "CIUD_DESTINO", reservas.FIDA_RESERVA, reservas.FREGRESO_RESERVA
 FROM    (((reservas
 inner join ciudades as CO on reservas.VORIGEN_RESERVA = CO.ID_CIUDAD)
@@ -122,18 +158,18 @@ where solicitudes.COD_SOLICITUD = 19;
         */
       $row =  $this->db->from($this->table)
                         ->select('
-                                solicitudes.COD_SOLICITUD, 
-                                solicitudes.VUELO_SOLICITUD, 
-                                solicitudes.VIDAREGRESO_SOLICITUD, 
-                                solicitudes.HOTEL_SOLICITUD, 
+                                solicitudes.COD_SOLICITUD,
+                                solicitudes.VUELO_SOLICITUD,
+                                solicitudes.VIDAREGRESO_SOLICITUD,
+                                solicitudes.HOTEL_SOLICITUD,
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
                                 solicitudes.OBJETIVO_SOLICITUD,
-                                terceros.DOC_TERCERO, 
-                                terceros.TIPDOC_TERCERO, 
-                                terceros.NOM_TERCERO, 
-                                terceros.FNACIMIENTO_TERCERO, 
-                                terceros.TEL_TERCERO, 
+                                terceros.DOC_TERCERO,
+                                terceros.TIPDOC_TERCERO,
+                                terceros.NOM_TERCERO,
+                                terceros.FNACIMIENTO_TERCERO,
+                                terceros.TEL_TERCERO,
                                 empleados.NOMBRE_EMPLEADO,
                                 empleados.FNACIMIENTO_EMPLEADO,
                                 empleados.TEL_EMPLEADO
@@ -144,9 +180,9 @@ where solicitudes.COD_SOLICITUD = 19;
                         ->fetch();
         $row->{'Vuelos'} = $this->db->from('reservas')
                                     ->select('
-                                            CO.NOMBRE_CIUDAD "CIUD_ORIGEN", 
+                                            CO.NOMBRE_CIUDAD "CIUD_ORIGEN",
                                             CD.NOMBRE_CIUDAD "CIUD_DESTINO",
-                                            reservas.FIDA_RESERVA, 
+                                            reservas.FIDA_RESERVA,
                                             reservas.FREGRESO_RESERVA
                                         ')
                                     ->innerJoin('ciudades as CO on reservas.VORIGEN_RESERVA = CO.ID_CIUDAD')
@@ -156,7 +192,7 @@ where solicitudes.COD_SOLICITUD = 19;
                                     ->fetchAll();
         $row->{'Hoteles'} = $this->db->from('reservas_hoteles')
                                         ->select('
-                                                CH.NOMBRE_CIUDAD "CIUD_HOTEL", 
+                                                CH.NOMBRE_CIUDAD "CIUD_HOTEL",
                                                 reservas_hoteles.FINHOTEL_RESERVA,
                                                 reservas_hoteles.FSALHOTEL_RESERVA
                                             ')
@@ -167,9 +203,9 @@ where solicitudes.COD_SOLICITUD = 19;
 
         return $row;
 
-       
+
     }
- 
+
     public function registrar($data)
     {
         $dateTime=date('Y/m/d h:i:s', time());
@@ -221,20 +257,20 @@ where solicitudes.COD_SOLICITUD = 19;
                 ])->execute();
             }
         }
-        
-    
+
+
       	//$this->db->insertInto($this->table, $data)
           //       ->execute();
-        
+
         return $this->response->SetResponse(true);
     }
     public function actualizar($data, $cod_solicitud)
     {
-            
+
         $this->db->update($this->table, $data)
                     ->where('COD_SOLICITUD',$cod_solicitud)
                     ->execute();
-            
+
         return $this->response->SetResponse(true);
     }
     public function eliminar($cod_solicitud)
@@ -242,8 +278,8 @@ where solicitudes.COD_SOLICITUD = 19;
         $this->db->deleteFrom($this->table)
                  ->where('COD_SOLICITUD', $cod_solicitud)
                  ->execute();
-        
+
         return $this->response->SetResponse(true);
-    } 
-    
+    }
+
 }

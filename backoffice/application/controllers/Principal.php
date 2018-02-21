@@ -7,6 +7,7 @@ class Principal extends CI_Controller {
   function __construct(){
       parent::__construct();
       $this->user=['user'=>RestApi::getUserData()];
+
       try {
         if ($this->user['user'] === null) {
           redirect('');
@@ -14,14 +15,37 @@ class Principal extends CI_Controller {
       } catch (Exception $e) {
         var_dump($e);
       }
-      
+
      $this->load->model('principal_model');
 
   }
   function index($p = 0){
-  		
-    
+
+
   		$this->load->view('header',$this->user);
+      //Definimos variables para traer data y mantener logica de paginacion
+      $limite = 10;
+      $data = [];
+      $total  = 0;
+
+      try {
+
+        $result = $this->principal_model->listarNuevas();
+        $total = $result->total;
+        $data = $result->data;
+        //var_dump($data);
+      } catch (Exception $e) {
+        var_dump($e);
+      }
+
+      $datos['result']=$data;
+
+      $this->load->view('solicitud/index',$datos);
+      $this->load->view('footer');
+  }
+  function todas(){
+
+    $this->load->view('header',$this->user);
       //Definimos variables para traer data y mantener logica de paginacion
       $limite = 10;
       $data = [];
@@ -37,20 +61,11 @@ class Principal extends CI_Controller {
         var_dump($e);
       }
 
-      //inicializarla paginacion
-      /*$this->pagination->initialize(
-        paginacion_config(
-          site_url("principal/index"),
-          $total,
-          $limite
-        )
-      );*/
       $datos['result']=$data;
 
-      $this->load->view('solicitud/index',$datos);
+      $this->load->view('solicitud/todas',$datos);
       $this->load->view('footer');
   }
-
   function visualizar($cod_solicitud = 0){
     $res = null;
     if ($cod_solicitud>0) {
@@ -77,20 +92,20 @@ class Principal extends CI_Controller {
       if ($cod_solicitud>0) {
        $this->principal_model->actualizar($data, $cod_solicitud);# code...
       }
-      
-      
+
+
     } catch (Exception $e) {
-      
+
       if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
-          
+
           $errors = RestApi::getEntityValidationFieldsError();
-          
+
 
       }
 
 
     }
-    if (count($errors)=== 0)redirect('principal');           
+    if (count($errors)=== 0)redirect('principal');
     else
     {
         var_dump($errors);
@@ -114,20 +129,20 @@ class Principal extends CI_Controller {
       if ($cod_solicitud>0) {
        $this->principal_model->actualizar($data, $cod_solicitud);
       }
-      
-      
+
+
     } catch (Exception $e) {
-      
+
       if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
-          
+
           $errors = RestApi::getEntityValidationFieldsError();
-          
+
 
       }
 
 
     }
-    if (count($errors)=== 0)redirect('principal');           
+    if (count($errors)=== 0)redirect('principal');
     else
     {
         var_dump($errors);
@@ -145,7 +160,7 @@ class Principal extends CI_Controller {
     $data = [
       'OBSERVACION_SOLICITUD'=>$this->input->post('txt_observacion')
     ];
-    
+
     try {
 
       $this->principal_model->actualizar($data, $cod_solicitud);
@@ -153,14 +168,14 @@ class Principal extends CI_Controller {
     } catch (Exception $e) {
 
       if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
-          
+
           $errors = RestApi::getEntityValidationFieldsError();
-          
+
 
       }
 
     }
-    if (count($errors)=== 0)redirect('principal');           
+    if (count($errors)=== 0)redirect('principal');
     else
     {
         var_dump($errors);

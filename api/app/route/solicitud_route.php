@@ -17,12 +17,18 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->listarTodos())
                    );
     });
+    $this->get('listarNuevas', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->listarNuevas())
+                   );
+    });
     $this->get('listarPorEmpleado/{cod_empleado}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
                      json_encode($this->model->solicitud->listarPorEmpleado($args['cod_empleado']))
                    );
-    });    
+    });
     $this->get('obtener/{COD_SOLICITUD}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
@@ -32,11 +38,11 @@ $app->group('/solicitud/', function () {
     $this->post('registrar', function ($req, $res, $args) {
 
       $r = SolicitudValidation::validate($req->getParsedBody());
-      
+
       if(!$r->response){
           return $res->withHeader('Content-type', 'application/json')
                      ->withStatus(422)
-                     ->write(json_encode($r->errors));            
+                     ->write(json_encode($r->errors));
       }
 
        return $res->withHeader('Content-type', 'application/json')
@@ -46,22 +52,22 @@ $app->group('/solicitud/', function () {
     });
     $this->put('actualizar/{cod_solicitud}', function ($req, $res, $args) {
         /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
-        
+
         if(!$r->response){
             return $res->withHeader('Content-type', 'application/json')
                        ->withStatus(422)
-                       ->write(json_encode($r->errors));            
+                       ->write(json_encode($r->errors));
         }
         */
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
                      json_encode($this->model->solicitud->actualizar($req->getParsedBody(), $args['cod_solicitud']))
-                   );   
+                   );
     });
      $this->delete('eliminar/{cod_solicitud}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
                      json_encode($this->model->solicitud->eliminar($args['cod_solicitud']))
-                   );   
+                   );
     });
 })->add(new AuthMiddleware($app));
