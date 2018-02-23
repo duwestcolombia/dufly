@@ -56,6 +56,13 @@ $app->group('/solicitud/', function () {
                       json_encode($this->model->solicitud->registrar($req->getParsedBody()))
                    );
     });
+  /*  $this->post('enviarCorreo', function ($req, $res, $args) {
+
+       return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                      json_encode($this->model->solicitud->enviarCorreo($req->getParsedBody()))
+                   );
+    });*/
     $this->put('actualizar/{cod_solicitud}', function ($req, $res, $args) {
         /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
 

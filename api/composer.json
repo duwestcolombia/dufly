@@ -17,6 +17,7 @@
         "slim/php-view": "^2.0",
         "monolog/monolog": "^1.17",
         "lichtner/fluentpdo": "^1.0",
-        "firebase/php-jwt": "^3.0"
+        "firebase/php-jwt": "^3.0",
+        "phpmailer/phpmailer": "^6.0"
     }
 }

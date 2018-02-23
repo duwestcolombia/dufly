@@ -39,7 +39,7 @@ class AuthModel
 
             return $this->response->SetResponse(true);
         }else{
-            return $this->response->SetResponse(false, "Credenciales no válidas");
+            return $this->response->SetResponse(false, "Credenciales no válidas, intente nuevamente o reporte su problema con el area de sistemas");
         }
     }
     public function validar($token){

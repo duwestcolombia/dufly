@@ -26,7 +26,7 @@ authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', '
             },
             response: function(r){
                 if (r.response) {
-                  auth.setToken(r.result);                  
+                  auth.setToken(r.result);
                   $location.path('/principal');
                 }else{
 
@@ -42,7 +42,7 @@ authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', '
         });
 
         }
-      
+
       }
   }]);
 
@@ -58,7 +58,7 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
       auth.redirectIfNotExists();
 
       var user = auth.getUserData();
-      
+
       $scope.NomUsuario = user.NOMBRE_EMPLEADO;
 
       cargarSolicitudes();
@@ -86,20 +86,22 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
   }]);
 
 //Registrar las solicitudes
-solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', '$location', 'auth', 
+solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', '$location', 'auth',
   function ($scope, restApi, $location, auth) {
-        
+
         auth.redirectIfNotExists();
 
         var user = auth.getUserData();
 
+
         $scope.usuario= user.COD_EMPLEADO;
-        //Cargo el select con las ciudades  
+        //Cargo el select con las ciudades
 
 
 
         cargarCiudades();
-        cargaTerceros();     
+        cargaTerceros();
+        infoUsuario();
 
         function cargarCiudades(){
               restApi.call({
@@ -124,7 +126,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
               url: 'tercero/obtenerTodos',
               response: function(r){
                  $scope.Terceros = r;
-                 
+
 
               },
               error: function(r){
@@ -135,9 +137,27 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
               }
           });
         }
+
+        function infoUsuario(){
+           restApi.call({
+              method: 'get',
+              url: 'empleado/obtener/' + $scope.usuario,
+              response: function(r){
+
+                 $scope.mailEmp =  r.EMAIL_EMPLEADO;
+                 $scope.nomEmp = r.NOMBRE_EMPLEADO;
+              },
+              error: function(r){
+                console.log(r);
+              },
+              validationError: function(r){
+                  console.log(r);
+              }
+          });
+        }
         //Se arma el arreglo para registrar la data
 
-        // inicializo todos los togles en falso 
+        // inicializo todos los togles en falso
         $scope.activeV = false;
         $scope.activeID = false;
         $scope.activeH = false;
@@ -156,28 +176,28 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         //funcion para agregar los vuelos
         $scope.agregaVuelo = function(){
           //Validar si marcaron una ciudad de origen, una de destino y las fechas para el vuelo
-          if (typeof($scope.CiuOrigen) === 'undefined' || typeof($scope.CiuDestino) === 'undefined' || 
+          if (typeof($scope.CiuOrigen) === 'undefined' || typeof($scope.CiuDestino) === 'undefined' ||
               typeof($scope.FSalida) === 'undefined') return;
-          
+
           if ($scope.CiuOrigen == $scope.CiuDestino) return;
 
           //Conseguimos toda la data de las ciudades seleccionadas y las separamos en dos arreglos
           var sciudadOrigen = $scope.Ciudades.filter(function(x){
             return x.ID_CIUDAD == $scope.CiuOrigen;
-            
+
           })[0];
           var sciudadDestino = $scope.Ciudades.filter(function(x){
 
             return x.ID_CIUDAD == $scope.CiuDestino;
-            
+
           })[0];
-          
+
           //DECLARO LAS VARIABLES PARA LA FECHA DE IDA Y REGRESO
           var fida, fvuelta;
           //formateo el valor de la fecha recibida para la ida
           fida = formatearFecha($scope.FSalida);
 
-          //evaluo si la fecha de regreso no esta definida, si no 
+          //evaluo si la fecha de regreso no esta definida, si no
           //se define se deja en blanco de lo contrario se formatea
           //la fecha de regreso y se le asigan a la variable
           if (typeof($scope.Fregreso) === 'undefined') {
@@ -186,7 +206,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           else
           {
             fvuelta = formatearFecha($scope.Fregreso);
-          }          
+          }
 
           var reserva = {
             IDCIUDAD_ORIGEN: $scope.CiuOrigen,
@@ -195,7 +215,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             CIUDAD_DESTINO: sciudadDestino.NOMBRE_CIUDAD,
             FECHA_SALIDA: fida,
             FECHA_REGRESO:fvuelta
-    
+
           };
 
           var validaVueloExistente = -1;
@@ -207,7 +227,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             }
           })
 
-          if (validaVueloExistente === -1) 
+          if (validaVueloExistente === -1)
           {
 
             $scope.Solicitud.Reservas.push(reserva);
@@ -221,9 +241,9 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
         $scope.agregarHotel = function(){
           if (typeof($scope.CiuHospedaje) === 'undefined' || typeof($scope.FingresoHotel) === 'undefined' || typeof($scope.FSalidaHotel) === 'undefined') return;
-          
+
           var ciudadesHospedaje = $scope.Ciudades.filter(function(x){
-            
+
             return x.ID_CIUDAD == $scope.CiuHospedaje;
 
           })[0];
@@ -264,7 +284,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
         }
         $scope.retirarHotel = function(i){
- 
+
           $scope.Solicitud.Hoteles.splice(i, 1);
 
         }
@@ -273,13 +293,13 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         function formatearFecha(fecha){
           var fechaOk = new Date(fecha);
           var nuevaFecha = fechaOk.getFullYear()+'/'+(fechaOk.getMonth()+1)+'/'+fechaOk.getDate();
-          
+
           return nuevaFecha;
         }
 
         //var dataTerceros = [0];
 
-        $scope.searchPassager = function(){            
+        $scope.searchPassager = function(){
 
           /*Filtramos el arreglo inicial por el numero de documento y le pasamos
           El resultado a un nuevo arreglo*/
@@ -306,7 +326,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             $scope.txt_FnacimientoTercero = '';
           }
 
-          
+
           //console.log($scope.Terceros.DOC_TERCERO === $scope.txt_NumDoc)
 
         }
@@ -315,12 +335,12 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           //si no selecciono ninguna opcion para registrar no hacemos nada
           if ($scope.activeV == false && $scope.activeH == false && $scope.activeT == false) return;
           if ($scope.txt_objetivo === undefined) {
-            
+
             $scope.error_message = "<strong>¡Error!</strong> Debe escribir un objetivo para esta solicitud, este campo es obligatorio.";
 
             return;
           }
-          
+
           var TipoDocumento, NumeroDocumento;
 
           if ($scope.TipoDoc === undefined && $scope.txt_NumDoc === undefined) {
@@ -341,7 +361,9 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             COD_EMPLEADO: user.COD_EMPLEADO,
             TIPDOC_TERCERO : TipoDocumento,
             DOC_TERCERO: NumeroDocumento,
-            OBJETIVO_SOLICITUD:$scope.txt_objetivo 
+            OBJETIVO_SOLICITUD:$scope.txt_objetivo,
+            MAIL_EMPLEADO:$scope.mailEmp,
+            NOM_EMPLEADO:$scope.nomEmp
           };
 
           $scope.Solicitud.Op[0] = opciones;
@@ -363,8 +385,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
               console.log(r.errors);
               /*Guardar en el localstorange si no hay conexion o si se presento un problema*/
               /*if (window.localStorage) {
-                
-                var guardado = localStorage.getItem('data'); 
+
+                var guardado = localStorage.getItem('data');
 
                 $scope.DataError = {
                   data:[]
@@ -382,7 +404,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
                   $scope.DataError.data.push($scope.Solicitud);
                   localStorage.setItem('data',JSON.stringify($scope.DataError));
                 }
-                
+
 
               }
               else
@@ -409,9 +431,9 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 // Test controller
 testControllers.controller('TestCtrl', ['$scope', 'restApi', 'auth',
   function ($scope, restApi, auth) {
-      
+
       validaEntidad();
-      
+
       function validaEntidad(){
           restApi.call({
               method: 'post',
@@ -420,14 +442,14 @@ testControllers.controller('TestCtrl', ['$scope', 'restApi', 'auth',
 
               },
               error: function(r){
-                  
+
               },
               validationError: function(r){
                   console.log(r);
               }
           });
       }
-      
+
       function autentica(){
           restApi.call({
               method: 'get',
@@ -445,7 +467,7 @@ testControllers.controller('TestCtrl', ['$scope', 'restApi', 'auth',
               }
           });
       }
-      
+
       function validaAunteticacion(){
           restApi.call({
               method: 'get',
@@ -482,7 +504,7 @@ solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi',
           url: 'solicitud/obtener/' + $routeParams.id,
           response: function(r){
              $scope.rSolicitud = r;
-             
+
           },
           error: function(r){
 
@@ -523,10 +545,10 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
             }
         });
       }
-     
+
 
      $scope.actualizaPerfil = function(){
-        
+
         /*if ($scope.txt_pass === 'unedfined' || $scope.txt_confipass === 'undefined') {
             var data = {
               nom_empleado:$scope.txt_nombre,
@@ -536,7 +558,7 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
             };
             actualizar(data);
         }*/
-        
+
         if (validaPass($scope.txt_pass,$scope.txt_confipass))
         {
           var data = {
@@ -548,13 +570,13 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
 
           };
           actualizar(data);
-        } 
+        }
         else{
-          
-          $scope.errorPass = "Las contraseñas no coinciden";
-        } 
 
-        
+          $scope.errorPass = "Las contraseñas no coinciden";
+        }
+
+
      }
 
      function actualizar(datos){
@@ -602,11 +624,11 @@ terceroControllers.controller('TerceroRegistrarCtrl',['$scope', 'restApi', 'auth
       function formatearFecha(fecha){
         var fechaOk = new Date(fecha);
         var nuevaFecha = fechaOk.getFullYear()+'/'+(fechaOk.getMonth()+1)+'/'+fechaOk.getDate();
-        
+
         return nuevaFecha;
       }
 
-      
+
 
 
       $scope.registrarTercero = function(){
@@ -639,7 +661,7 @@ terceroControllers.controller('TerceroRegistrarCtrl',['$scope', 'restApi', 'auth
                $location.path('/principal/registrar');
             },
             error: function(r){
-              
+
 
               var error = r.data.exception;
               var codigoError;
@@ -648,19 +670,19 @@ terceroControllers.controller('TerceroRegistrarCtrl',['$scope', 'restApi', 'auth
                 codigoError = x.code;
               });
               console.log("Error # "+codigoError+"En la base de datos");
-              
+
               /*switch(codigoError){
-                
+
                 case 23000:
                   //$scope.errordb = codigoError;
                   $scope.msgError = codigoError;
                   //"El tercero ya se encuentra registrado.";
                   break;
-                
+
               }*/
             },
             validationError: function(r){
-              
+
                var dataValidate = {
                   TIPDOC:r.TIPDOC_TERCERO,
                   DOC:r.DOC_TERCERO,

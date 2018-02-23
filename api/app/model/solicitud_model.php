@@ -1,7 +1,8 @@
 <?php
 namespace App\Model;
 
-use App\Lib\Response;
+use App\Lib\Response,
+    App\Lib\Mail;
 
 class SolicitudModel
 {
@@ -13,6 +14,7 @@ class SolicitudModel
     {
         $this->db = $db;
         $this->response = new Response();
+        $this->mail = new Mail();
     }
 
     public function listar($l, $p)
@@ -179,29 +181,6 @@ class SolicitudModel
     }
     public function obtener($COD_SOLICITUD)
     {
-        /*
-            SELECT  solicitudes.COD_SOLICITUD, solicitudes.VUELO_SOLICITUD, solicitudes.VIDAREGRESO_SOLICITUD, solicitudes.HOTEL_SOLICITUD, solicitudes.ESTADO_SOLICITUD,
-            terceros.DOC_TERCERO, terceros.TIPDOC_TERCERO, terceros.NOM_TERCERO, terceros.FNACIMIENTO_TERCERO, terceros.TEL_TERCERO, empleados.NOMBRE_EMPLEADO
-            FROM    ((solicitudes
-inner join terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO)
-inner join empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO)
-where solicitudes.COD_SOLICITUD = 19;
-
--- vuelos
-SELECT  CO.NOMBRE_CIUDAD "CIUD_ORIGEN", CD.NOMBRE_CIUDAD "CIUD_DESTINO", reservas.FIDA_RESERVA, reservas.FREGRESO_RESERVA
-FROM    (((reservas
-inner join ciudades as CO on reservas.VORIGEN_RESERVA = CO.ID_CIUDAD)
-inner join ciudades as CD on reservas.VDESTINO_RESERVA = CD.ID_CIUDAD)
-inner join solicitudes on reservas.COD_SOLICITUD = solicitudes.COD_SOLICITUD)
-where solicitudes.COD_SOLICITUD = 19;
-
---hoteles
-SELECT  CH.NOMBRE_CIUDAD "CIUD_HOTEL", reservas_hoteles.FINHOTEL_RESERVA, reservas_hoteles.FSALHOTEL_RESERVA
-FROM    ((reservas_hoteles
-inner join ciudades as CH on reservas_hoteles.CHOTEL_RESERVA = CH.ID_CIUDAD)
-inner join solicitudes on reservas_hoteles.COD_SOLICITUD = solicitudes.COD_SOLICITUD)
-where solicitudes.COD_SOLICITUD = 19;
-        */
       $row =  $this->db->from($this->table)
                         ->select('
                                 solicitudes.COD_SOLICITUD,
@@ -258,62 +237,105 @@ where solicitudes.COD_SOLICITUD = 19;
     public function registrar($data)
     {
         $dateTime=date('Y/m/d h:i:s', time());
+        $mailEMp = '';
+        $objSol = '';
+        $nomEmp = '';
+        try {
+            foreach ($data['Op'] as $opcion) {
+              $mailEMp = $opcion['MAIL_EMPLEADO'];
+              $objSol = $opcion['OBJETIVO_SOLICITUD'];
+              $nomEmp = $opcion['NOM_EMPLEADO'];
+          $solicitud_id = $this->db->insertInto($this->table, [
+                  'VUELO_SOLICITUD'=> $opcion['SVUELO'],
+                  'VIDAREGRESO_SOLICITUD' => $opcion['SVIDA_REGRESO'],
+                  'HOTEL_SOLICITUD' => $opcion['SHOTEL'],
+                  'REQTERCERO_SOLICITUD' => $opcion['STERCERO'],
+                  'DOC_TERCERO' => $opcion['DOC_TERCERO'],
+                  'TIPDOC_TERCERO' => $opcion['TIPDOC_TERCERO'],
+                  'OBSERVACION_SOLICITUD' => '',
+                  'AUTORIZA_SOLICITUD' => '',
+                  'LIBERA_SOLICITUD'=>'',
+                  'REGPOR_SOLICITUD' => $opcion['COD_EMPLEADO'],
+                  'FREG_SOLICITUD' => $dateTime,
+                  'COD_EMPLEADO' => $data['COD_EMPLEADO'],
+                  'ESTADO_SOLICITUD' => 'NUEVA',
+                  'OBJETIVO_SOLICITUD' => $opcion['OBJETIVO_SOLICITUD']
 
-        foreach ($data['Op'] as $opcion) {
+              ])->execute();
+          }
 
-            $solicitud_id = $this->db->insertInto($this->table, [
-                'VUELO_SOLICITUD'=> $opcion['SVUELO'],
-                'VIDAREGRESO_SOLICITUD' => $opcion['SVIDA_REGRESO'],
-                'HOTEL_SOLICITUD' => $opcion['SHOTEL'],
-                'REQTERCERO_SOLICITUD' => $opcion['STERCERO'],
-                'DOC_TERCERO' => $opcion['DOC_TERCERO'],
-                'TIPDOC_TERCERO' => $opcion['TIPDOC_TERCERO'],
-                'OBSERVACION_SOLICITUD' => '',
-                'AUTORIZA_SOLICITUD' => '',
-                'LIBERA_SOLICITUD'=>'',
-                'REGPOR_SOLICITUD' => $opcion['COD_EMPLEADO'],
-                'FREG_SOLICITUD' => $dateTime,
-                'COD_EMPLEADO' => $data['COD_EMPLEADO'],
-                'ESTADO_SOLICITUD' => 'NUEVA',
-                'OBJETIVO_SOLICITUD' => $opcion['OBJETIVO_SOLICITUD']
+          if (count($data['Reservas'])>0) {
 
-            ])->execute();
+              foreach ($data['Reservas'] as $rVuelo){
+                  $this->db->insertInto('reservas', [
+                      'VORIGEN_RESERVA' => $rVuelo['IDCIUDAD_ORIGEN'],
+                      'VDESTINO_RESERVA' => $rVuelo['IDCIUDAD_DESTINO'],
+                      'FIDA_RESERVA' => $rVuelo['FECHA_SALIDA'],
+                      'FREGRESO_RESERVA' => $rVuelo['FECHA_REGRESO'],
+                      'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
+                      'FREG_RESERVA' => $dateTime,
+                      'COD_SOLICITUD' => $solicitud_id
+                  ])->execute();
+              }
+          }
+
+          if (count($data['Hoteles'])>0) {
+              foreach ($data['Hoteles'] as $rHotel){
+                  $this->db->insertInto('reservas_hoteles', [
+                      'CHOTEL_RESERVA' => $rHotel['ID_CIUDADH'],
+                      'FINHOTEL_RESERVA' => $rHotel['FINGRESO_HOTEL'],
+                      'FSALHOTEL_RESERVA' => $rHotel['FSAL_HOTEL'],
+                      'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
+                      'FREG_RESERVA' => $dateTime,
+                      'COD_SOLICITUD' => $solicitud_id
+                  ])->execute();
+              }
+          }
+
+          /*DATA MAIL*/
+            $datos = [
+              'to'=>$mailEMp,
+              'bcc'=>'',
+              'subject'=>'Dufly - Registro Solicitud #: '.$solicitud_id.' de vuelos y/o hoteles',
+              'message'=>'
+                <strong>Solicitud #</strong>: '.$solicitud_id.' de vuelo y/o hotel,  ya puedes consultar toda la informacion en la aplicacion web <a target="_blank" href="http://dufly.duwestcolombia.com">Dufly - DuwestColombia</a>
+                <br>
+                <hr>
+                <h3>Informacion de la solicitud</h3>
+                <br>
+                <strong>Solicitante:</strong> '.$nomEmp.'
+                <br>
+                <strong>Objetivo de la solicitud:</strong> '.$objSol.'
+                  '
+            ];
+
+          /*EN DATA MAIL*/
+
+          $responseMail = $this->enviarCorreo($datos);
+
+          if ($responseMail) {
+
+            return $this->response->SetResponse(true, $responseMail);
+          }
+          else {
+            return $this->response->SetResponse(false, "No se envio el correo, la solicitud de almaceno de todas formas.");
+          }
+
+
+
+        } catch (Exception $e) {
+
+          return $this->response->SetResponse(false, "Se presento un error al registrar su solicitud. ".$e);
         }
 
-        if (count($data['Reservas'])>0) {
-
-            foreach ($data['Reservas'] as $rVuelo){
-                $this->db->insertInto('reservas', [
-                    'VORIGEN_RESERVA' => $rVuelo['IDCIUDAD_ORIGEN'],
-                    'VDESTINO_RESERVA' => $rVuelo['IDCIUDAD_DESTINO'],
-                    'FIDA_RESERVA' => $rVuelo['FECHA_SALIDA'],
-                    'FREGRESO_RESERVA' => $rVuelo['FECHA_REGRESO'],
-                    'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
-                    'FREG_RESERVA' => $dateTime,
-                    'COD_SOLICITUD' => $solicitud_id
-                ])->execute();
-            }
-        }
-
-        if (count($data['Hoteles'])>0) {
-            foreach ($data['Hoteles'] as $rHotel){
-                $this->db->insertInto('reservas_hoteles', [
-                    'CHOTEL_RESERVA' => $rHotel['ID_CIUDADH'],
-                    'FINHOTEL_RESERVA' => $rHotel['FINGRESO_HOTEL'],
-                    'FSALHOTEL_RESERVA' => $rHotel['FSAL_HOTEL'],
-                    'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
-                    'FREG_RESERVA' => $dateTime,
-                    'COD_SOLICITUD' => $solicitud_id
-                ])->execute();
-            }
-        }
-
-
-      	//$this->db->insertInto($this->table, $data)
-          //       ->execute();
-
-        return $this->response->SetResponse(true);
     }
+
+    public function enviarCorreo($datos)
+    {
+      //sendMail($to,$cc,$subject,$message)
+      return $this->mail->sendMail($datos['to'],$datos['bcc'],$datos['subject'] ,$datos['message']);
+    }
+
     public function actualizar($data, $cod_solicitud)
     {
 
