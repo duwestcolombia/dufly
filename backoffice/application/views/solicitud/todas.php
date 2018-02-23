@@ -1,6 +1,6 @@
 <script>
 	window.onload = function() {
-	    $('#example').DataTable({
+	    var table = $('#example').DataTable({
 	    	language: {
 	    	        processing:     "Procesamiento en curso...",
 	    	        search:         "Buscar en la tabla:",
@@ -17,8 +17,33 @@
 	    	            next:       "Siguiente",
 	    	            last:       "Ultimo"
 	    	        }
-	    	    }
+	    	    },
+						buttons: [
+							{
+								extend:'colvis',
+								text:'Columnas a mostrar'
+							},
+							{
+								extend:'copy',
+								text:'<i class="fas fa-copy"></i> Copiar'
+							},
+							{
+								extend:'excel',
+								text:'<i class="fas fa-file-excel"></i> Excel'
+							},
+							{
+								extend:'pdf',
+								text:'<i class="fas fa-file-pdf"></i> PDF'
+							},
+							{
+								extend:'print',
+								text:'<i class="fas fa-print"></i> Imprimir'
+							}
+
+						]
 	    });
+			table.buttons().container()
+        .appendTo( '#example_wrapper  .col-md-6:eq(0)' );
 	}
 </script>
 
@@ -53,7 +78,7 @@
 				<th>Autoriza o Rechaza</th>
 				<th>Liberado por</th>
 				<th>Observación</th>
-				<th></th>
+				<th>Acción</th>
 			</tr>
 		</thead>
 		<tbody>

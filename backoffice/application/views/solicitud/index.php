@@ -18,12 +18,8 @@
 	    	            last:       "Ultimo"
 	    	        }
 	    	    }
-				/*scrollY:        "800px",
-        scrollX:        true,
-        scrollCollapse: true,
-        paging:         false,
-        fixedColumns:   true*/
 	    });
+			
 	}
 </script>
 
