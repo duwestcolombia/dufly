@@ -20,13 +20,13 @@ $container['logger'] = function ($c) {
 // Database
 $container['db'] = function($c){
     $connectionString = $c->get('settings')['connectionString'];
-    
+
     $pdo = new PDO($connectionString['dns'], $connectionString['user'], $connectionString['pass']);
 
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_OBJ);
 
-    return new FluentPDO($pdo); 
+    return new FluentPDO($pdo);
 };
 
 // Models
@@ -38,7 +38,6 @@ $container['model'] = function($c){
         'auth' => new App\Model\AuthModel($c->db),
         'tercero' => new App\Model\TerceroModel($c->db),
         'solicitud' => new App\Model\SolicitudModel($c->db),
-        'reserva' => new App\Model\ReservaModel($c->db),
         'empleado'=> new App\Model\EmpleadoModel($c->db)
     ];
 };

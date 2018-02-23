@@ -9,6 +9,8 @@
 	<!--<link rel="stylesheet" href="<?php //echo base_url('assets/css/bootstrap.min.css');?>">-->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
+	<!--<link rel="stylesheet" href="https://cdn.datatables.net/fixedcolumns/3.2.4/css/fixedColumns.bootstrap4.min.css">-->
+
 	<script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
 
 	<!-- DATATABLES -->
@@ -23,7 +25,7 @@
 
 <?php if (isset($user)): ?>
 
-
+<div class="fixed-top">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
 	  	<a href="" class="navbar-brand">
@@ -39,23 +41,23 @@
 					<li class="nav-item  ">
 						<a href="<?php echo site_url('principal/index') ?> " class="nav-link">Solicitudes recientes</a>
 					</li>
-					<li class="nav-item">
-						<a href="<?php echo site_url('principal/todas') ?> " class="nav-link">Todas las solicitudes</a>
+					<?php if ($user->ROOT_EMPLEADO == '1' || $user->COD_DEPARTAMENTO == '2'): ?>
+						<li class="nav-item">
+							<a href="<?php echo site_url('principal/todas') ?> " class="nav-link">Todas las solicitudes</a>
+						</li>
+					<?php endif; ?>
+					<?php if ($user->ROOT_EMPLEADO == '1'): ?>
+						<li class="nav-item dropdown">
+						  <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						   Administrar
+						  </a>
+
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						    <a class="dropdown-item" href="#"> Paises</a>
+								<a class="dropdown-item" href="#"> Ciudades</a>
+								<a class="dropdown-item" href="#"> Empleados</a>
+					  	</div>
 					</li>
-					<?php if ($user->ADMIN_EMPLEADO = '1'): ?>
-					<li class="nav-item dropdown">
-				  <a class="nav-link dropdown-toggle" href="" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-				   Administrar
-				  </a>
-
-						<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-					    <a class="dropdown-item" href="#"> Paises</a>
-							<a class="dropdown-item" href="#"> Ciudades</a>
-							<a class="dropdown-item" href="#"> Empleados</a>
-				  	</div>
-
-
-				</li>
 				<?php endif; ?>
 		    </ul>
 
@@ -74,4 +76,5 @@
 
 	  </div>
 	</nav>
+</div>
 <?php endif ?>

@@ -6,7 +6,7 @@
 	    	        search:         "Buscar en la tabla:",
 	    	        lengthMenu:    "Mostrar _MENU_ elementos",
 	    	        info:           "Mostrando  _START_ a _END_ de _TOTAL_ elementos encontrados",
-	    	        infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+	    	        infoFiltered:   "(filtrado entre _MAX_ elementos totales)",
 	    	        infoPostFix:    "",
 	    	        loadingRecords: "Cargando datos...",
 	    	        zeroRecords:    "No se encontro ningun dato para mostrar.",
@@ -49,8 +49,10 @@
 				<th>Fecha</th>
 				<th>Solicitante</th>
 				<th>Tercero</th>
-				<th>Observación</th>
 				<th>Objetivo Solicitud</th>
+				<th>Autoriza o Rechaza</th>
+				<th>Liberado por</th>
+				<th>Observación</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -62,6 +64,9 @@
 					break;
 				case 'AUTORIZADA':
 					echo '<tr class="table-success">';
+					break;
+				case 'PENDIENTE':
+					echo '<tr class="table-warning">';
 					break;
 				case 'RECHAZADA':
 					echo '<tr class="table-danger">';
@@ -77,8 +82,10 @@
 				<td><?php echo $r->FREG_SOLICITUD ?></td>
 				<td><?php echo $r->NOMBRE_EMPLEADO ?></td>
 				<td><?php echo $r->NOM_TERCERO ?></td>
-				<td><?php echo $r->OBSERVACION_SOLICITUD ?></td>
 				<td><?php echo $r->OBJETIVO_SOLICITUD ?></td>
+				<td><?php echo $r->AUTORIZA_SOLICITUD ?></td>
+				<td><?php echo $r->LIBERA_SOLICITUD ?></td>
+				<td><?php echo $r->OBSERVACION_SOLICITUD ?></td>
 				<td>
 					<a href="<?php echo site_url('principal/visualizar/'. $r->COD_SOLICITUD); ?>" class="btn btn-light btn-sm" title="Ver mas"><i class="fas fa-eye"></i></a>
           <!--

@@ -18,6 +18,11 @@
 	    	            last:       "Ultimo"
 	    	        }
 	    	    }
+				/*scrollY:        "800px",
+        scrollX:        true,
+        scrollCollapse: true,
+        paging:         false,
+        fixedColumns:   true*/
 	    });
 	}
 </script>
@@ -36,28 +41,34 @@
 
 
 	<div class="table-responsive">
-	<table data-order='[[ 0, "desc" ]]' class="table table-striped table-bordered table-hover" id="example" cellspacing="0" width="100%">
+	<table data-order='[[ 1, "desc" ]]' class="table table-striped table-bordered table-hover " id="example" cellspacing="0" width="100%">
 
 		<thead>
 			<tr>
 				<th>Solicitud #</th>
 				<th>Estado</th>
-				<th>Fecha</th>
+				<th>Fecha solicitud</th>
 				<th>Solicitante</th>
 				<th>Tercero</th>
-				<th>Observación</th>
 				<th>Objetivo Solicitud</th>
+				<th>Autorizado por</th>
+				<th>Liberado por</th>
+				<th>Observación</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody>
 			<?php foreach ($result as $r): ?>
-			<?php switch ($r->ESTADO_SOLICITUD) {
+				<?php if ($r->ESTADO_SOLICITUD == 'PENDIENTE' || $r->ESTADO_SOLICITUD == 'NUEVA'): ?>
+					<?php switch ($r->ESTADO_SOLICITUD) {
 				case 'NUEVA':
 					echo '<tr class="table-primary">';
 					break;
 				case 'AUTORIZADA':
 					echo '<tr class="table-success">';
+					break;
+				case 'PENDIENTE':
+					echo '<tr class="table-warning">';
 					break;
 				case 'RECHAZADA':
 					echo '<tr class="table-danger">';
@@ -73,8 +84,10 @@
 				<td><?php echo $r->FREG_SOLICITUD ?></td>
 				<td><?php echo $r->NOMBRE_EMPLEADO ?></td>
 				<td><?php echo $r->NOM_TERCERO ?></td>
-				<td><?php echo $r->OBSERVACION_SOLICITUD ?></td>
 				<td><?php echo $r->OBJETIVO_SOLICITUD ?></td>
+				<td><?php echo $r->AUTORIZA_SOLICITUD ?></td>
+				<td><?php echo $r->LIBERA_SOLICITUD ?></td>
+				<td><?php echo $r->OBSERVACION_SOLICITUD ?></td>
 				<td>
 					<a href="<?php echo site_url('principal/visualizar/'. $r->COD_SOLICITUD); ?>" class="btn btn-light btn-sm" title="Ver mas"><i class="fas fa-eye"></i></a>
 					<!--
@@ -86,6 +99,9 @@
 				-->
 				</td>
 			</tr>
+				<?php endif; ?>
+
+
 			<?php endforeach ?>
 		</tbody>
 	</table>

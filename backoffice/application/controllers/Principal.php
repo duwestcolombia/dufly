@@ -21,7 +21,6 @@ class Principal extends CI_Controller {
   }
   function index($p = 0){
 
-
   		$this->load->view('header',$this->user);
       //Definimos variables para traer data y mantener logica de paginacion
       $limite = 10;
@@ -29,10 +28,24 @@ class Principal extends CI_Controller {
       $total  = 0;
 
       try {
+        foreach ($this->user as $usu) {
+          $cod_empleado = $usu->COD_EMPLEADO;
+          $depto = $usu->COD_DEPARTAMENTO;
+        }
 
-        $result = $this->principal_model->listarNuevas();
-        $total = $result->total;
-        $data = $result->data;
+        if ($depto == '2' || $depto == '3') {
+            $result = $this->principal_model->listarTodos();
+            $total = $result->total;
+            $data = $result->data;
+        }
+        else {
+            $result = $this->principal_model->listarPorJefe($cod_empleado);
+            $total = $result->total;
+            $data = $result->data;
+        }
+
+
+
         //var_dump($data);
       } catch (Exception $e) {
         var_dump($e);
@@ -45,26 +58,36 @@ class Principal extends CI_Controller {
   }
   function todas(){
 
-    $this->load->view('header',$this->user);
-      //Definimos variables para traer data y mantener logica de paginacion
-      $limite = 10;
-      $data = [];
-      $total  = 0;
+    foreach ($this->user as $usu) {
+      $depto = $usu->COD_DEPARTAMENTO;
+    }
 
-      try {
+    if ($depto == '2' || $depto == '3') {
+        $this->load->view('header',$this->user);
+        //Definimos variables para traer data y mantener logica de paginacion
+        $limite = 10;
+        $data = [];
+        $total  = 0;
 
-        $result = $this->principal_model->listarTodos();
-        $total = $result->total;
-        $data = $result->data;
-        //var_dump($data);
-      } catch (Exception $e) {
-        var_dump($e);
-      }
+        try {
 
-      $datos['result']=$data;
+          $result = $this->principal_model->listarTodos();
+          $total = $result->total;
+          $data = $result->data;
+          //var_dump($data);
+        } catch (Exception $e) {
+          var_dump($e);
+        }
 
-      $this->load->view('solicitud/todas',$datos);
-      $this->load->view('footer');
+        $datos['result']=$data;
+
+        $this->load->view('solicitud/todas',$datos);
+        $this->load->view('footer');
+    }else{
+      redirect('principal/');
+    }
+
+
   }
   function visualizar($cod_solicitud = 0){
     $res = null;
@@ -72,6 +95,7 @@ class Principal extends CI_Controller {
       $res = $this->principal_model->obtener($cod_solicitud);
 
     }
+
     $this->load->view('header',$this->user);
     $this->load->view('solicitud/visualizar',['data'=>$res]);
     $this->load->view('footer');
@@ -82,15 +106,19 @@ class Principal extends CI_Controller {
     $errors = [];
 
     //$cod_solicitud = $this->input->post('txt_codsolicitud');
+    foreach ($this->user as $usu) {
+          $nom_empleado = $usu->NOMBRE_EMPLEADO;
+        }
 
     $data = [
-      'ESTADO_SOLICITUD'=>'AUTORIZADA'
+      'AUTORIZA_SOLICITUD'=> $nom_empleado,
+      'ESTADO_SOLICITUD'=>'PENDIENTE'
     ];
 
     try {
 
       if ($cod_solicitud>0) {
-       $this->principal_model->actualizar($data, $cod_solicitud);# code...
+       $this->principal_model->actualizar($data, $cod_solicitud);
       }
 
 
@@ -118,10 +146,57 @@ class Principal extends CI_Controller {
   function rechazar($cod_solicitud = 0){
     $errors = [];
 
+    foreach ($this->user as $usu) {
+          $nom_empleado = $usu->NOMBRE_EMPLEADO;
+        }
+
+
     //$cod_solicitud = $this->input->post('txt_codsolicitud');
 
     $data = [
+      'AUTORIZA_SOLICITUD'=> $nom_empleado,
       'ESTADO_SOLICITUD'=>'RECHAZADA'
+    ];
+
+    try {
+
+      if ($cod_solicitud>0) {
+       $this->principal_model->actualizar($data, $cod_solicitud);
+      }
+
+
+    } catch (Exception $e) {
+
+      if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
+
+          $errors = RestApi::getEntityValidationFieldsError();
+
+
+      }
+
+
+    }
+    if (count($errors)=== 0)redirect('principal');
+    else
+    {
+        var_dump($errors);
+        /*$this->load->view('header', $this->user);
+        $this->load->view('empleado/validation', ['errors' => $errors]);
+        $this->load->view('footer');*/
+    }
+
+  }
+  function liberar($cod_solicitud = 0){
+    $errors = [];
+
+    foreach ($this->user as $usu) {
+          $nom_empleado = $usu->NOMBRE_EMPLEADO;
+        }
+
+
+    $data = [
+      'LIBERA_SOLICITUD'=> $nom_empleado,
+      'ESTADO_SOLICITUD'=>'AUTORIZADA'
     ];
 
     try {
@@ -170,6 +245,7 @@ class Principal extends CI_Controller {
       if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
 
           $errors = RestApi::getEntityValidationFieldsError();
+          var_dump($errors);
 
 
       }

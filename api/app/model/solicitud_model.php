@@ -25,6 +25,8 @@ class SolicitudModel
                                 solicitudes.HOTEL_SOLICITUD,
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
+                                solicitudes.AUTORIZA_SOLICITUD,
+                                solicitudes.LIBERA_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -62,6 +64,8 @@ class SolicitudModel
                                 solicitudes.HOTEL_SOLICITUD,
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
+                                solicitudes.AUTORIZA_SOLICITUD,
+                                solicitudes.LIBERA_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -98,6 +102,47 @@ class SolicitudModel
                                 solicitudes.HOTEL_SOLICITUD,
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
+                                solicitudes.AUTORIZA_SOLICITUD,
+                                solicitudes.LIBERA_SOLICITUD,
+                                terceros.DOC_TERCERO,
+                                terceros.TIPDOC_TERCERO,
+                                terceros.NOM_TERCERO,
+                                terceros.FNACIMIENTO_TERCERO,
+                                terceros.TEL_TERCERO,
+                                empleados.NOMBRE_EMPLEADO,
+                                empleados.FNACIMIENTO_EMPLEADO,
+                                empleados.TEL_EMPLEADO
+                            ')
+                            ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
+                            ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
+                            ->where('solicitudes.ESTADO_SOLICITUD',  'NUEVA')
+
+                            ->orderBy('FREG_SOLICITUD DESC')
+                            ->fetchAll();
+
+
+        $total = $this->db->from($this->table)
+                          ->select('COUNT(*) Total')
+                          ->fetch()
+                          ->Total;
+
+        return [
+            'data'  => $data,
+            'total' => $total
+        ];
+    }
+    public function listarPorJefe($cod_empleado)
+    {
+        $data = $this->db->from($this->table)
+                        ->select('
+                                solicitudes.COD_SOLICITUD,
+                                solicitudes.VUELO_SOLICITUD,
+                                solicitudes.VIDAREGRESO_SOLICITUD,
+                                solicitudes.HOTEL_SOLICITUD,
+                                solicitudes.ESTADO_SOLICITUD,
+                                solicitudes.REQTERCERO_SOLICITUD,
+                                solicitudes.AUTORIZA_SOLICITUD,
+                                solicitudes.LIBERA_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -110,6 +155,7 @@ class SolicitudModel
                             ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
                             ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
                             ->where('solicitudes.ESTADO_SOLICITUD', 'NUEVA')
+                            ->where('empleados.JEFE_EMPLEADO', $cod_empleado)
                             ->orderBy('FREG_SOLICITUD DESC')
                             ->fetchAll();
 
@@ -165,6 +211,8 @@ where solicitudes.COD_SOLICITUD = 19;
                                 solicitudes.ESTADO_SOLICITUD,
                                 solicitudes.REQTERCERO_SOLICITUD,
                                 solicitudes.OBJETIVO_SOLICITUD,
+                                solicitudes.AUTORIZA_SOLICITUD,
+                                solicitudes.LIBERA_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -172,7 +220,8 @@ where solicitudes.COD_SOLICITUD = 19;
                                 terceros.TEL_TERCERO,
                                 empleados.NOMBRE_EMPLEADO,
                                 empleados.FNACIMIENTO_EMPLEADO,
-                                empleados.TEL_EMPLEADO
+                                empleados.TEL_EMPLEADO,
+                                empleados.COD_DEPARTAMENTO
                             ')
                         ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
                         ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
@@ -221,6 +270,7 @@ where solicitudes.COD_SOLICITUD = 19;
                 'TIPDOC_TERCERO' => $opcion['TIPDOC_TERCERO'],
                 'OBSERVACION_SOLICITUD' => '',
                 'AUTORIZA_SOLICITUD' => '',
+                'LIBERA_SOLICITUD'=>'',
                 'REGPOR_SOLICITUD' => $opcion['COD_EMPLEADO'],
                 'FREG_SOLICITUD' => $dateTime,
                 'COD_EMPLEADO' => $data['COD_EMPLEADO'],

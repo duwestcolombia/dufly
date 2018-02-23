@@ -15,6 +15,8 @@
 	  	</li>
 	</ol>
 
+
+
 	<div class="row">
 		<div class="col-md-4">
 			<?php echo form_open('principal/guardar'); ?>
@@ -46,6 +48,9 @@
 							case 'RECHAZADA':
 								echo '<p class="card-text font-weight-light"><span class="badge badge-danger"> '.$data->ESTADO_SOLICITUD.' </span></p>';
 								break;
+								case 'PENDIENTE':
+									echo '<p class="card-text font-weight-light"><span class="badge badge-warning"> '.$data->ESTADO_SOLICITUD.' </span></p>';
+									break;
 							case 'AUTORIZADA':
 								echo '<p class="card-text font-weight-light"><span class="badge badge-success"> '.$data->ESTADO_SOLICITUD.' </span></p>';
 								break;
@@ -55,30 +60,29 @@
 								break;
 						} ?>
 
+						<?php if ($data->AUTORIZA_SOLICITUD != ''): ?>
+							<h5 class="card-title">Autorizado por </h5>
+							<p class="card-text font-weight-light"><?php echo $data->AUTORIZA_SOLICITUD ?></p>
 
-			    	<h5 class="card-title"> Registrar Observación</h5>
-			    	<input type="hidden" name="txt_codsolicitud" value="<?php echo $data->COD_SOLICITUD ?>">
-			    	<textarea name="txt_observacion" cols="30" rows="3" class="form-control" maxlength="300"><?php echo $data->OBSERVACION_SOLICITUD ?></textarea>
+						<?php endif; ?>
+						<?php if ($data->LIBERA_SOLICITUD != null): ?>
+							<h5 class="card-title">Liberado por </h5>
+							<p class="card-text font-weight-light"><?php echo $data->LIBERA_SOLICITUD ?></p>
+						<?php endif; ?>
+						<?php if ($user->COD_DEPARTAMENTO == '2' || $user->COD_DEPARTAMENTO == '3'): ?>
+							<h5 class="card-title"> Registrar Observación</h5>
 
-			    	<hr>
+							<input type="hidden" name="txt_codsolicitud" value="<?php echo $data->COD_SOLICITUD ?>">
+				    	<textarea name="txt_observacion" cols="30" rows="3" class="form-control" maxlength="300"><?php echo $data->OBSERVACION_SOLICITUD ?></textarea>
+						<?php endif; ?>
+
 
 			  </div>
 			  <div class="card-footer">
-				<!-- <div class="btn-group" role="group" >-->
-					<button class="btn btn-sm btn-primary" type="submit">Guardar</button>
-					<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA'): ?>
-						<a href="<?php echo site_url('principal/autorizar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-success disabled">Autorizar</a>
-					<?php else: ?>
-						<a href="<?php echo site_url('principal/autorizar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-success">Autorizar</a>
-					<?php endif ?>
 
-
-				  	<a href="<?php echo site_url('principal/rechazar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-danger">Rechazar</a>
-				  	<a href="<?php echo site_url('principal'); ?>" class="btn btn-sm btn-secondary">Regresar</a>
-				<!--</div>-->
 			  </div>
 			</div>
-			<?php echo form_close(); ?>
+
 		</div>
 		<div class="col-md-8">
 			<div class="card" style="margin-bottom: 8px;">
@@ -138,5 +142,33 @@
 
 		</div>
 	</div>
+
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+						<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA' || $data->ESTADO_SOLICITUD == 'AUTORIZADA' || $data->COD_EMPLEADO == $user->COD_EMPLEADO): ?>
+
+						<?php else: ?>
+						<a href="<?php echo site_url('principal/autorizar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> Autorizar</a>
+					<?php endif ?>
+
+						<?php if ($user->COD_DEPARTAMENTO == '2' || $user->COD_DEPARTAMENTO == '3'): ?>
+								<?php if ($data->AUTORIZA_SOLICITUD != ''	): ?>
+										<button class="btn btn-sm btn-primary" type="submit"><i class="fas fa-save"></i> Actualizar solicitud</button>
+										<a href="<?php echo site_url('principal/liberar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-warning"><i class="fas fa-paper-plane"></i> Liberar y Enviar</a>
+								<?php endif; ?>
+
+						<?php endif; ?>
+
+
+						<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA' || $data->ESTADO_SOLICITUD == 'AUTORIZADA'): ?>
+
+						<?php else: ?>
+								<a href="<?php echo site_url('principal/rechazar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-danger"><i class="fas fa-times-circle"></i> Rechazar</a>
+						<?php endif; ?>
+
+				  	<a href="<?php echo site_url('principal'); ?>" class="btn btn-sm btn-secondary"><i class="fas fa-angle-double-left"></i> Regresar</a>
+		</li>
+	</ol>
+	<?php echo form_close(); ?>
 
 </div>

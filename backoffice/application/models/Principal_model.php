@@ -24,6 +24,14 @@ class Principal_Model extends CI_Model{
             "solicitud/listarNuevas"
         );
     }
+    public function listarPorJefe($cod_empleado){
+        //Llamamos a la restApi
+        return RestApi::call(
+            //le mandamos una peticion get a la ruta empleado listar
+            RestApiMethod::GET,
+            "solicitud/listarPorJefe/$cod_empleado"
+        );
+    }
     public function obtener($cod_solicitud){
         //Llamamos a la restApi
         return RestApi::call(

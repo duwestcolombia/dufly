@@ -23,6 +23,12 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->listarNuevas())
                    );
     });
+    $this->get('listarPorJefe/{cod_empleado}', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->listarPorJefe($args['cod_empleado']))
+                   );
+    });
     $this->get('listarPorEmpleado/{cod_empleado}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
