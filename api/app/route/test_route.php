@@ -44,6 +44,12 @@ $app->group('/test/', function () {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(json_encode($this->model->test->enviarCorreo($req->getParsedBody())));
     });
+    $this->get('obtenerDeptoCompras', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->actualizar())
+                   );
+    });
 
     $this->get('auth', function ($req, $res, $args) {
         $token = Auth::SignIn([

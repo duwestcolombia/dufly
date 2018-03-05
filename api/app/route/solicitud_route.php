@@ -17,12 +17,7 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->listarTodos())
                    );
     });
-    $this->get('listarNuevas', function ($req, $res, $args) {
-        return $res->withHeader('Content-type', 'application/json')
-                   ->write(
-                     json_encode($this->model->solicitud->listarNuevas())
-                   );
-    });
+
     $this->get('listarPorJefe/{cod_empleado}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(
@@ -41,6 +36,12 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->obtener($args['COD_SOLICITUD']))
                    );
     });
+        $this->get('obtenerDeptoCompras', function ($req, $res, $args) {
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->obtenerDeptoCompras())
+                   );
+    });
     $this->post('registrar', function ($req, $res, $args) {
 
       $r = SolicitudValidation::validate($req->getParsedBody());
@@ -56,13 +57,13 @@ $app->group('/solicitud/', function () {
                       json_encode($this->model->solicitud->registrar($req->getParsedBody()))
                    );
     });
-  /*  $this->post('enviarCorreo', function ($req, $res, $args) {
+   $this->post('enviarCorreo', function ($req, $res, $args) {
 
        return $res->withHeader('Content-type', 'application/json')
                    ->write(
                       json_encode($this->model->solicitud->enviarCorreo($req->getParsedBody()))
                    );
-    });*/
+    });
     $this->put('actualizar/{cod_solicitud}', function ($req, $res, $args) {
         /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
 

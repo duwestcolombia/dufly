@@ -18,6 +18,7 @@ class Principal extends CI_Controller {
 
      $this->load->model('principal_model');
 
+
   }
   function index($p = 0){
 
@@ -93,11 +94,15 @@ class Principal extends CI_Controller {
     $res = null;
     if ($cod_solicitud>0) {
       $res = $this->principal_model->obtener($cod_solicitud);
+      $resdos = $this->principal_model->obtenerDeptoCompras($cod_solicitud);
+
 
     }
 
+
     $this->load->view('header',$this->user);
     $this->load->view('solicitud/visualizar',['data'=>$res]);
+
     $this->load->view('footer');
 
 
@@ -105,10 +110,9 @@ class Principal extends CI_Controller {
   function autorizar($cod_solicitud = 0){
     $errors = [];
 
-    //$cod_solicitud = $this->input->post('txt_codsolicitud');
-    foreach ($this->user as $usu) {
+      foreach ($this->user as $usu) {
           $nom_empleado = $usu->NOMBRE_EMPLEADO;
-        }
+      }
 
     $data = [
       'AUTORIZA_SOLICITUD'=> $nom_empleado,
@@ -118,7 +122,9 @@ class Principal extends CI_Controller {
     try {
 
       if ($cod_solicitud>0) {
-       $this->principal_model->actualizar($data, $cod_solicitud);
+
+       var_dump($this->principal_model->actualizar($data, $cod_solicitud));
+
       }
 
 
@@ -190,11 +196,13 @@ class Principal extends CI_Controller {
     $errors = [];
 
     foreach ($this->user as $usu) {
+          $cod_emp = $usu->COD_EMPLEADO;
           $nom_empleado = $usu->NOMBRE_EMPLEADO;
         }
 
 
-    $data = [
+
+    /*$data = [
       'LIBERA_SOLICITUD'=> $nom_empleado,
       'ESTADO_SOLICITUD'=>'AUTORIZADA'
     ];
@@ -202,7 +210,9 @@ class Principal extends CI_Controller {
     try {
 
       if ($cod_solicitud>0) {
+
        $this->principal_model->actualizar($data, $cod_solicitud);
+
       }
 
 
@@ -224,7 +234,7 @@ class Principal extends CI_Controller {
         /*$this->load->view('header', $this->user);
         $this->load->view('empleado/validation', ['errors' => $errors]);
         $this->load->view('footer');*/
-    }
+    //}
 
   }
   function guardar(){

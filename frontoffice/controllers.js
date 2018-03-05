@@ -102,6 +102,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         cargarCiudades();
         cargaTerceros();
         infoUsuario();
+        infoJefe();
 
         function cargarCiudades(){
               restApi.call({
@@ -146,6 +147,23 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
                  $scope.mailEmp =  r.EMAIL_EMPLEADO;
                  $scope.nomEmp = r.NOMBRE_EMPLEADO;
+              },
+              error: function(r){
+                console.log(r);
+              },
+              validationError: function(r){
+                  console.log(r);
+              }
+          });
+        }
+
+        function infoJefe(){
+          restApi.call({
+              method: 'get',
+              url: 'empleado/obtenerJefe/' + $scope.usuario,
+              response: function(r){
+
+                 $scope.mailJefe = r.EMAIL_JEFE;
               },
               error: function(r){
                 console.log(r);
@@ -363,7 +381,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             DOC_TERCERO: NumeroDocumento,
             OBJETIVO_SOLICITUD:$scope.txt_objetivo,
             MAIL_EMPLEADO:$scope.mailEmp,
-            NOM_EMPLEADO:$scope.nomEmp
+            NOM_EMPLEADO:$scope.nomEmp,
+            MAIL_JEFE:$scope.mailJefe
           };
 
           $scope.Solicitud.Op[0] = opciones;

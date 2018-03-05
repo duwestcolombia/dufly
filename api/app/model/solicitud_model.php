@@ -20,7 +20,7 @@ class SolicitudModel
     public function listar($l, $p)
     {
         $data = $this->db->from($this->table)
-                        ->select('
+                        ->select(null)->select('
                                 solicitudes.COD_SOLICITUD,
                                 solicitudes.VUELO_SOLICITUD,
                                 solicitudes.VIDAREGRESO_SOLICITUD,
@@ -29,6 +29,9 @@ class SolicitudModel
                                 solicitudes.REQTERCERO_SOLICITUD,
                                 solicitudes.AUTORIZA_SOLICITUD,
                                 solicitudes.LIBERA_SOLICITUD,
+                                solicitudes.FREG_SOLICITUD,
+                                solicitudes.OBSERVACION_SOLICITUD,
+                                solicitudes.OBJETIVO_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -59,7 +62,7 @@ class SolicitudModel
     public function listarTodos()
     {
         $data = $this->db->from($this->table)
-                        ->select('
+                        ->select(null)->select('
                                 solicitudes.COD_SOLICITUD,
                                 solicitudes.VUELO_SOLICITUD,
                                 solicitudes.VIDAREGRESO_SOLICITUD,
@@ -68,6 +71,9 @@ class SolicitudModel
                                 solicitudes.REQTERCERO_SOLICITUD,
                                 solicitudes.AUTORIZA_SOLICITUD,
                                 solicitudes.LIBERA_SOLICITUD,
+                                solicitudes.FREG_SOLICITUD,
+                                solicitudes.OBSERVACION_SOLICITUD,
+                                solicitudes.OBJETIVO_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -94,49 +100,11 @@ class SolicitudModel
             'total' => $total
         ];
     }
-    public function listarNuevas()
-    {
-        $data = $this->db->from($this->table)
-                        ->select('
-                                solicitudes.COD_SOLICITUD,
-                                solicitudes.VUELO_SOLICITUD,
-                                solicitudes.VIDAREGRESO_SOLICITUD,
-                                solicitudes.HOTEL_SOLICITUD,
-                                solicitudes.ESTADO_SOLICITUD,
-                                solicitudes.REQTERCERO_SOLICITUD,
-                                solicitudes.AUTORIZA_SOLICITUD,
-                                solicitudes.LIBERA_SOLICITUD,
-                                terceros.DOC_TERCERO,
-                                terceros.TIPDOC_TERCERO,
-                                terceros.NOM_TERCERO,
-                                terceros.FNACIMIENTO_TERCERO,
-                                terceros.TEL_TERCERO,
-                                empleados.NOMBRE_EMPLEADO,
-                                empleados.FNACIMIENTO_EMPLEADO,
-                                empleados.TEL_EMPLEADO
-                            ')
-                            ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
-                            ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
-                            ->where('solicitudes.ESTADO_SOLICITUD',  'NUEVA')
 
-                            ->orderBy('FREG_SOLICITUD DESC')
-                            ->fetchAll();
-
-
-        $total = $this->db->from($this->table)
-                          ->select('COUNT(*) Total')
-                          ->fetch()
-                          ->Total;
-
-        return [
-            'data'  => $data,
-            'total' => $total
-        ];
-    }
     public function listarPorJefe($cod_empleado)
     {
         $data = $this->db->from($this->table)
-                        ->select('
+                        ->select(null)->select('
                                 solicitudes.COD_SOLICITUD,
                                 solicitudes.VUELO_SOLICITUD,
                                 solicitudes.VIDAREGRESO_SOLICITUD,
@@ -145,6 +113,9 @@ class SolicitudModel
                                 solicitudes.REQTERCERO_SOLICITUD,
                                 solicitudes.AUTORIZA_SOLICITUD,
                                 solicitudes.LIBERA_SOLICITUD,
+                                solicitudes.FREG_SOLICITUD,
+                                solicitudes.OBSERVACION_SOLICITUD,
+                                solicitudes.OBJETIVO_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -182,7 +153,7 @@ class SolicitudModel
     public function obtener($COD_SOLICITUD)
     {
       $row =  $this->db->from($this->table)
-                        ->select('
+                        ->select(null)->select('
                                 solicitudes.COD_SOLICITUD,
                                 solicitudes.VUELO_SOLICITUD,
                                 solicitudes.VIDAREGRESO_SOLICITUD,
@@ -192,6 +163,10 @@ class SolicitudModel
                                 solicitudes.OBJETIVO_SOLICITUD,
                                 solicitudes.AUTORIZA_SOLICITUD,
                                 solicitudes.LIBERA_SOLICITUD,
+                                solicitudes.FREG_SOLICITUD,
+                                solicitudes.OBSERVACION_SOLICITUD,
+                                solicitudes.COD_EMPLEADO,
+                                solicitudes.OBJETIVO_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -200,14 +175,17 @@ class SolicitudModel
                                 empleados.NOMBRE_EMPLEADO,
                                 empleados.FNACIMIENTO_EMPLEADO,
                                 empleados.TEL_EMPLEADO,
-                                empleados.COD_DEPARTAMENTO
+                                empleados.COD_DEPARTAMENTO,
+                                jefe.NOMBRE_EMPLEADO "NOM_JEFE",
+                                jefe.EMAIL_EMPLEADO "EMAIL_JEFE"
                             ')
                         ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
                         ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
+                        ->innerJoin('empleados jefe on jefe.COD_EMPLEADO = empleados.JEFE_EMPLEADO')
                         ->where('COD_SOLICITUD', $COD_SOLICITUD)
                         ->fetch();
         $row->{'Vuelos'} = $this->db->from('reservas')
-                                    ->select('
+                                    ->select(null)->select('
                                             CO.NOMBRE_CIUDAD "CIUD_ORIGEN",
                                             CD.NOMBRE_CIUDAD "CIUD_DESTINO",
                                             reservas.FIDA_RESERVA,
@@ -219,7 +197,7 @@ class SolicitudModel
                                     ->where('solicitudes.COD_SOLICITUD', $COD_SOLICITUD)
                                     ->fetchAll();
         $row->{'Hoteles'} = $this->db->from('reservas_hoteles')
-                                        ->select('
+                                        ->select(null)->select('
                                                 CH.NOMBRE_CIUDAD "CIUD_HOTEL",
                                                 reservas_hoteles.FINHOTEL_RESERVA,
                                                 reservas_hoteles.FSALHOTEL_RESERVA
@@ -234,6 +212,18 @@ class SolicitudModel
 
     }
 
+    public function obtenerDeptoCompras()
+    {
+      /*el doble select se usa para regresar solo los valores indicados*/
+      return $this->db->from('empleados')
+                      ->select(null)->select('
+                        empleados.EMAIL_EMPLEADO,
+                        empleados.NOMBRE_EMPLEADO
+                      ')
+                        ->where('COD_DEPARTAMENTO', '2')
+                        ->fetchAll();
+    }
+
     public function registrar($data)
     {
         $dateTime=date('Y/m/d h:i:s', time());
@@ -242,9 +232,12 @@ class SolicitudModel
         $nomEmp = '';
         try {
             foreach ($data['Op'] as $opcion) {
+              /*Declara variables para enviar correo*/
               $mailEMp = $opcion['MAIL_EMPLEADO'];
               $objSol = $opcion['OBJETIVO_SOLICITUD'];
               $nomEmp = $opcion['NOM_EMPLEADO'];
+              $mailJefe = $opcion['MAIL_JEFE'];
+            /*Inicia el registro de la informacion en la base de datos*/
           $solicitud_id = $this->db->insertInto($this->table, [
                   'VUELO_SOLICITUD'=> $opcion['SVUELO'],
                   'VIDAREGRESO_SOLICITUD' => $opcion['SVIDA_REGRESO'],
@@ -295,7 +288,8 @@ class SolicitudModel
           /*DATA MAIL*/
             $datos = [
               'to'=>$mailEMp,
-              'bcc'=>'',
+              'cc'=>'',
+              'bcc'=>$mailJefe,
               'subject'=>'Dufly - Registro Solicitud #: '.$solicitud_id.' de vuelos y/o hoteles',
               'message'=>'
                 <strong>Solicitud #</strong>: '.$solicitud_id.' de vuelo y/o hotel,  ya puedes consultar toda la informacion en la aplicacion web <a target="_blank" href="http://dufly.duwestcolombia.com">Dufly - DuwestColombia</a>
@@ -318,7 +312,7 @@ class SolicitudModel
             return $this->response->SetResponse(true, $responseMail);
           }
           else {
-            return $this->response->SetResponse(false, "No se envio el correo, la solicitud de almaceno de todas formas.");
+            return $this->response->SetResponse(false, "No se envio el correo, la solicitud se almaceno de todas formas.");
           }
 
 
@@ -333,17 +327,49 @@ class SolicitudModel
     public function enviarCorreo($datos)
     {
       //sendMail($to,$cc,$subject,$message)
-      return $this->mail->sendMail($datos['to'],$datos['bcc'],$datos['subject'] ,$datos['message']);
+      return $this->mail->sendMail($datos['to'],$datos['cc'],$datos['bcc'],$datos['subject'] ,$datos['message']);
     }
 
     public function actualizar($data, $cod_solicitud)
     {
 
-        $this->db->update($this->table, $data)
-                    ->where('COD_SOLICITUD',$cod_solicitud)
-                    ->execute();
+        /*DATA MAIL*/
+            $datos = [
+              'to'=>'',
+              'cc'=>'',
+              'bcc'=>'',
+              'subject'=>'Dufly - Solicitud Autorizada #: '.$cod_solicitud.' de vuelos y/o hoteles',
+              'message'=>'
+                <strong>Solicitud #</strong>: '.$cod_solicitud.' de vuelo y/o hotel se encuentra autorizada y lista para ser liberada.
+                <br>
+                <hr>
+              '
+            ];
 
-        return $this->response->SetResponse(true);
+          /*EN DATA MAIL*/
+          $this->db->update($this->table, $data)
+                      ->where('COD_SOLICITUD',$cod_solicitud)
+                      ->execute();
+
+        $mailCompras = $this->obtenerDeptoCompras();
+
+        $responseMail = '';
+
+        foreach ($mailCompras as $mc) {
+          $datos['to'] = $mc->EMAIL_EMPLEADO;
+          $responseMail = $this->enviarCorreo($datos);
+        }
+
+        if ($responseMail) {
+
+            return $this->response->SetResponse(true, $responseMail);
+          }
+          else {
+            return $this->response->SetResponse(false, "No se envio el correo, la solicitud se almaceno de todas formas.");
+          }
+
+
+        //return $this->response->SetResponse(true);
     }
     public function eliminar($cod_solicitud)
     {

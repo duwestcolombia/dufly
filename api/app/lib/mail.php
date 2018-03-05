@@ -6,7 +6,7 @@ use PHPMailer\PHPMailer\PHPMailer,
 
 class Mail
 {
-    public function sendMail($to,$cc, $subject,$message){
+    public function sendMail($to,$cc,$bcc, $subject,$message){
       $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
       try {
           //Server settings
@@ -22,9 +22,11 @@ class Mail
           //Recipients
           $mail->setFrom('dufly@duwestcolombia.com', 'Dufly');
           $mail->addAddress($to);     // Add a recipient
-
           if ($cc != '') {
-            $mail->addBCC($cc);
+            $mail->addCC($cc);
+          }
+          if ($bcc != '') {
+            $mail->addBCC($bcc);
           }
 
           //$mail->addAddress('ellen@example.com');               // Name is optional

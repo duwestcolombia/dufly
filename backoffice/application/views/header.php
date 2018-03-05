@@ -25,7 +25,8 @@
 
 <?php if (isset($user)): ?>
 
-<div class="fixed-top">
+<div class="">
+	<!--<div class="fixed-top">-->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 
 	  	<a href="" class="navbar-brand">
@@ -68,7 +69,8 @@
 				   <i class="fas fa-user-circle"></i> <?php echo $user->NOMBRE_EMPLEADO ?>
 				  </a>
 				  <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-				    <a class="dropdown-item" href="<?php echo site_url('login/cerrarsesion'); ?>"> <i class="fas fa-sign-out-alt"></i>Desconectarme</a>
+						<a class="dropdown-item" href="<?php echo site_url('empleado'); ?>"><i class="fas fa-user"></i> Mi perfil</a>
+						<a class="dropdown-item" href="<?php echo site_url('login/cerrarsesion'); ?>"> <i class="fas fa-sign-out-alt"></i> Desconectarme</a>
 
 				  </div>
 				</li>

@@ -1,5 +1,5 @@
 <?php
-class Principal_Model extends CI_Model{
+class Empleado_Model extends CI_Model{
     public function listar($l = 10, $p = 0){
         //Llamamos a la restApi
         return RestApi::call(
@@ -16,36 +16,21 @@ class Principal_Model extends CI_Model{
             "solicitud/listarTodos"
         );
     }
-    public function listarNuevas(){
-        //Llamamos a la restApi
-        return RestApi::call(
-            //le mandamos una peticion get a la ruta empleado listar
-            RestApiMethod::GET,
-            "solicitud/listarNuevas"
-        );
-    }
-    public function listarPorJefe($cod_empleado){
-        //Llamamos a la restApi
-        return RestApi::call(
-            //le mandamos una peticion get a la ruta empleado listar
-            RestApiMethod::GET,
-            "solicitud/listarPorJefe/$cod_empleado"
-        );
-    }
-    public function obtener($cod_solicitud){
+
+    public function obtener($COD_EMPLEADO){
         //Llamamos a la restApi
         return RestApi::call(
         	//le mandamos una peticion get a la ruta empleado listar
             RestApiMethod::GET,
-            "solicitud/obtener/$cod_solicitud"
+            "empleado/obtener/$COD_EMPLEADO"
         );
     }
-    public function obtenerDeptoCompras(){
+    public function obtenerJefe($COD_EMPLEADO){
         //Llamamos a la restApi
         return RestApi::call(
         	//le mandamos una peticion get a la ruta empleado listar
             RestApiMethod::GET,
-            "solicitud/obtenerDeptoCompras"
+            "empleado/obtenerJefe/$COD_EMPLEADO"
         );
     }
     public function registrar($data){
