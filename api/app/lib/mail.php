@@ -10,7 +10,10 @@ class Mail
       $mail = new PHPMailer(true);                              // Passing `true` enables exceptions
       try {
           //Server settings
-          //$mail->SMTPDebug = 2;                                 // Enable verbose debug output
+          //$mail->SMTPDebug = 0;
+          //$mail->Debugoutput = 'html';
+          // Activo condificacción utf-8
+          $mail->CharSet = 'UTF-8';                                 // Enable verbose debug output
           $mail->isSMTP();                                      // Set mailer to use SMTP
           $mail->Host = 'mail.duwestcolombia.com';  // Specify main and backup SMTP servers
           $mail->SMTPAuth = true;                               // Enable SMTP authentication
@@ -37,17 +40,22 @@ class Mail
           //Attachments
           /*$mail->addAttachment('/var/tmp/file.tar.gz');         // Add attachments
           $mail->addAttachment('/tmp/image.jpg', 'new.jpg'); */   // Optional name
-
+          //$message2 = file_get_contents('app/lib/plantilla_mail.html');
+          //$body = str_replace('<div id="body"></div>',$message2,'<div id="body"></div>');
           //Content
           $mail->isHTML(true);                                  // Set email format to HTML
           $mail->Subject = $subject;
           $mail->Body    = $message;
-          //$mail->AltBody = 'This is the body in plain text for non-HTML mail clients';
+
+          $mail->AltBody = $message;//This is the body in plain text for non-HTML mail clients';
 
           $mail->send();
+          // Clear all addresses and attachments for next loop
+          $mail->clearAddresses();
           return true;
       } catch (Exception $e) {
-          return $mail->ErrorInfo;
+          return "Error al enviar el correo ".$mail->ErrorInfo;
       }
+
     }
 }

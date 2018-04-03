@@ -1,4 +1,4 @@
-$(document).ready(function(){	
+$(document).ready(function(){
 
 verificaToken();
 
@@ -10,7 +10,7 @@ verificaToken();
 function verificaToken(){
 	var tokenRecup = JSON.parse(localStorage.getItem('data_sess'));
 	console.log(tokenRecup);
-	
+
 	/*if (tokenRecup == "" || tokenRecup == null) {
 		return false;
 	}
@@ -23,7 +23,7 @@ function verificaToken(){
 		      dataType: 'json',
 		      success: function(data) {
 		          console.log(data);
-		          
+
 		      },
 		      error: function(error) {
 		          //alert(error);

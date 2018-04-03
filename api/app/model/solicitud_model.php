@@ -173,6 +173,8 @@ class SolicitudModel
                                 terceros.FNACIMIENTO_TERCERO,
                                 terceros.TEL_TERCERO,
                                 empleados.NOMBRE_EMPLEADO,
+                                empleados.DOC_EMPLEADO,
+                                empleados.TIPDOC_EMPLEADO,
                                 empleados.FNACIMIENTO_EMPLEADO,
                                 empleados.TEL_EMPLEADO,
                                 empleados.COD_DEPARTAMENTO,
@@ -326,12 +328,12 @@ class SolicitudModel
 
     public function enviarCorreo($datos)
     {
-      //sendMail($to,$cc,$subject,$message)
       return $this->mail->sendMail($datos['to'],$datos['cc'],$datos['bcc'],$datos['subject'] ,$datos['message']);
     }
 
     public function actualizar($data, $cod_solicitud)
     {
+        $mailCompras = $this->obtenerDeptoCompras();
 
         /*DATA MAIL*/
             $datos = [
@@ -351,7 +353,7 @@ class SolicitudModel
                       ->where('COD_SOLICITUD',$cod_solicitud)
                       ->execute();
 
-        $mailCompras = $this->obtenerDeptoCompras();
+
 
         $responseMail = '';
 
@@ -369,7 +371,103 @@ class SolicitudModel
           }
 
 
-        //return $this->response->SetResponse(true);
+    }
+
+    public function liberarSolicitud($data, $cod_solicitud)
+    {
+      /**
+       * Evaluamos si esta definida la variable datosvuelo y si contiene informacion,
+       * Si no se define hace referencia a una solicitud de hoteles por lo que no se envia el correo al proveedor si no
+       * que se procede a registrar en la base de datos quien libera y se muestra un mensaje
+       */
+      if (isset($data['datosvuelo']) && !empty($data['datosvuelo'])) {
+            $contenido = '
+                <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Saludos:</span></font></div>
+                <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+                <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Mario/Eliana por favor su colaboracion con los siguientes tiquetes:</span></font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+                  <table border="1px" style="border-collapse:collapse;width:477pt;">
+                    <tr >
+                        <th colspan="4" align="center"><h3>Nombre: '.$data['nompasajero'].' - '.$data['tipdocpasajero'].' '.$data['docpasajero'].'</h3></th>
+                    </tr>
+                    <tr>
+                      <th>Origen</th>
+                      <th>Destino</th>
+                      <th>Fecha de salida</th>
+                      <th>Fecha de regreso</th>
+                    </tr>
+
+              ';
+
+          foreach ($data['datosvuelo'] as $k) {
+              $contenido .=  '
+                  <tr>
+                    	<td>'.$k['CIUD_ORIGEN'].'</td>
+                    	<td>'.$k['CIUD_DESTINO'].'</td>
+                    	<td>'.$k['FIDA_RESERVA'].'</td>
+                    	<td>'.$k['FREGRESO_RESERVA'].'</td>
+                  </tr>';
+          }
+          $contenido .='
+            </table>
+            <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+                  	<div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Recuerde no responder a este mensaje, puede enviar las cotizaciónes a las siguientes cuentas de correo</span></font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><a href="mailto:german.caranton@duwest.com">german.caranton@duwest.com</a></font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><a href="mailto:adriana.caicedo@duwest.com">adriana.caicedo@duwest.com</a> </font></div>
+
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
+                  <hr>
+                  	<div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Este correo fue generado de manera automatica por nuestro sistema para la gestión de solicitudes de vuelo, Por favor no responder a este correo.</span></font></div>
+          ';
+
+          /**
+           * Se registra el encargado de liberar la solicitud
+           */
+           $datosUpdate = [
+             'LIBERA_SOLICITUD'=> $data['LIBERA_SOLICITUD'],
+             'ESTADO_SOLICITUD'=>'LIBERADA',
+           ];
+           $this->db->update($this->table, $datosUpdate)
+                       ->where('COD_SOLICITUD',$cod_solicitud)
+                       ->execute();
+
+          /**
+           * Se arma el array con los datos de envio
+           */
+
+          $datos = [
+                  'to'=>'david.zambrano@duwest.com',
+                  'cc'=>'',
+                  'bcc'=>'',
+                  'subject'=>'Duwest Colombia - Solicitud de tiquetes - Dufly',
+                  'message'=>$contenido
+                ];
+          /**
+           * Se envia los datos
+           */
+          $responseMail = $this->enviarCorreo($datos);
+          /**
+           * Se evalua la respuesta de este envio, si fue correcto se indica de esta manera, de lo contrario se regresa la respuesta
+           */
+          if ($responseMail === true) {
+
+            return $this->response->SetResponse(true, "La orden fue liberada y el mensaje enviado al proveedor correctamente.");
+          }
+          else {
+            return $this->response->SetResponse(false, $responseMail);
+          }
+
+
+
+      }else {
+        return $this->response->SetResponse(false, "No encontramos vuelos en esta solicitud por lo tanto no se enviara ningun correo al proveedor.");
+      }
+
+
     }
     public function eliminar($cod_solicitud)
     {
@@ -381,3 +479,4 @@ class SolicitudModel
     }
 
 }
+?>

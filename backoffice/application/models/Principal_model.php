@@ -66,6 +66,16 @@ class Principal_Model extends CI_Model{
             $data
         );
     }
+    public function liberarSolicitud($data,$cod_solicitud){
+        //Llamamos a la restApi
+        return RestApi::call(
+        	//le mandamos una peticion get a la ruta empleado listar
+            RestApiMethod::PUT,
+            "solicitud/liberarSolicitud/$cod_solicitud",
+            $data
+        );
+    }
+
     public function eliminar($id){
         //Llamamos a la restApi
         return RestApi::call(

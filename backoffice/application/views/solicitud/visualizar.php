@@ -4,7 +4,7 @@
 
 <div class="container">
 	<h1 class="page-header">
-		<?php echo 'Solicitud # '.$data->COD_SOLICITUD ?>
+		<?php echo 'Solicitud # '.$data->COD_SOLICITUD; ?>
 	</h1>
 	<hr>
 	<ol class="breadcrumb">

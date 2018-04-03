@@ -19,7 +19,7 @@
 	    	        }
 	    	    }
 	    });
-			
+
 	}
 </script>
 
@@ -31,6 +31,7 @@
 		Solicitudes Recientes
 	</h1>
 	<hr>
+	
 	<ol class="breadcrumb">
 	  <li class="breadcrumb-item active" aria-current="page">Solicitudes</li>
 	</ol>

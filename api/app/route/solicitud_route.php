@@ -78,6 +78,20 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->actualizar($req->getParsedBody(), $args['cod_solicitud']))
                    );
     });
+    $this->put('liberarSolicitud/{cod_solicitud}', function ($req, $res, $args) {
+        /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
+
+        if(!$r->response){
+            return $res->withHeader('Content-type', 'application/json')
+                       ->withStatus(422)
+                       ->write(json_encode($r->errors));
+        }
+        */
+        return $res->withHeader('Content-type', 'application/json')
+                   ->write(
+                     json_encode($this->model->solicitud->liberarSolicitud($req->getParsedBody(), $args['cod_solicitud']))
+                   );
+    });
      $this->delete('eliminar/{cod_solicitud}', function ($req, $res, $args) {
         return $res->withHeader('Content-type', 'application/json')
                    ->write(

@@ -65,7 +65,9 @@ class Principal extends CI_Controller {
 
     if ($depto == '2' || $depto == '3') {
         $this->load->view('header',$this->user);
-        //Definimos variables para traer data y mantener logica de paginacion
+        /**
+         * Definimos variables para traer data y mantener logica de paginacion
+         */
         $limite = 10;
         $data = [];
         $total  = 0;
@@ -75,7 +77,7 @@ class Principal extends CI_Controller {
           $result = $this->principal_model->listarTodos();
           $total = $result->total;
           $data = $result->data;
-          //var_dump($data);
+
         } catch (Exception $e) {
           var_dump($e);
         }
@@ -123,7 +125,7 @@ class Principal extends CI_Controller {
 
       if ($cod_solicitud>0) {
 
-       var_dump($this->principal_model->actualizar($data, $cod_solicitud));
+       $this->principal_model->actualizar($data, $cod_solicitud);
 
       }
 
@@ -193,21 +195,70 @@ class Principal extends CI_Controller {
 
   }
   function liberar($cod_solicitud = 0){
+    /**
+     * Inicializamos variables a utilizar
+     */
     $errors = [];
+    $datamsg=[];
+    $nompasajero = "";
+    $docpasajero = "";
 
     foreach ($this->user as $usu) {
           $cod_emp = $usu->COD_EMPLEADO;
           $nom_empleado = $usu->NOMBRE_EMPLEADO;
         }
 
+    $res = $this->principal_model->obtener($cod_solicitud);
 
 
-    /*$data = [
+    /**
+     * Evaluamos si la solicitud que vamos a liberar es para un tercero o es para un empleado ,
+     * Si el doc_tercero es 1 esto nos indica que la persona que va a viajar es un empleado, por lo tal capturamos los datos de el
+     */
+    if ($res->DOC_TERCERO == 1) {
+      $nompasajero = $res->NOMBRE_EMPLEADO;
+      $tdocpasajero = $res->TIPDOC_EMPLEADO;
+      $docpasajero = $res->DOC_EMPLEADO;
+
+    }
+    else {
+      $nompasajero = $res->NOM_TERCERO;
+      $tdocpasajero = $res->TIPDOC_TERCERO;
+      $docpasajero = $res->DOC_TERCERO;
+
+    }
+
+    /**
+     * Llenamos el arreglo con la informacion que vamos a pasar a la funcion enviar del API
+     */
+
+    $data = [
       'LIBERA_SOLICITUD'=> $nom_empleado,
-      'ESTADO_SOLICITUD'=>'AUTORIZADA'
+      'nompasajero'=>$nompasajero,
+      'tipdocpasajero' =>$tdocpasajero,
+      'docpasajero' => $docpasajero,
+      'datosvuelo' => $res->Vuelos
     ];
 
-    try {
+    /**
+     * Enviamos el arreglo a la funcion liberar para su tratamiento
+     */
+    $requestMessage = $this->principal_model->liberarSolicitud($data, $cod_solicitud);
+
+    if ($requestMessage->response === true ) {
+        $this->load->view('header', $this->user);
+        $this->load->view('solicitud/message', ['message' => $requestMessage->message]);
+        $this->load->view('footer');
+      //var_dump($requestMessage->message);
+    }
+    else {
+      $this->load->view('header', $this->user);
+      $this->load->view('solicitud/message', ['message' => $requestMessage->message]);
+      $this->load->view('footer');
+      //var_dump($requestMessage->message );
+    }
+
+  /*  try {
 
       if ($cod_solicitud>0) {
 
@@ -232,11 +283,12 @@ class Principal extends CI_Controller {
     {
         var_dump($errors);
         /*$this->load->view('header', $this->user);
-        $this->load->view('empleado/validation', ['errors' => $errors]);
+        $this->load->view('empleado/validation', ['errors' => $erors]);
         $this->load->view('footer');*/
     //}
 
   }
+
   function guardar(){
     $errors = [];
 
