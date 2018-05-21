@@ -28,6 +28,7 @@ html,
 body {
   height: 100%;
   background-color: #333;
+  margin: 0px;
 
 
 }
@@ -35,10 +36,13 @@ body {
   color: #fff;
   text-align: center;
   text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
-   background-image: url(../img/introDufly.jpg);
-   background-size: 100% 100%;
+   background-image: url(../img/backgroud\ cielo.jpg);
+   background-size: cover;
+   background-position: center center;
+   position: relative;
    background-repeat: no-repeat;
    background-attachment: fixed;
+
 }
 main > img{
   height: 80px;

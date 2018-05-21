@@ -7,7 +7,7 @@
 
             </p>
             <p class="lead">
-              <a href="<?php echo base_url(); ?>index.php/login" >Administrar solicitudes</a>
+              <a href="<?php echo site_url(); ?>index.php/login" >Administrar solicitudes</a>
             </p>
           </main>
 
