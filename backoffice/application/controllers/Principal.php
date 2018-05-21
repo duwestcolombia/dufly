@@ -96,6 +96,7 @@ class Principal extends CI_Controller {
     $res = null;
     if ($cod_solicitud>0) {
       $res = $this->principal_model->obtener($cod_solicitud);
+      
       $resdos = $this->principal_model->obtenerDeptoCompras($cod_solicitud);
 
 

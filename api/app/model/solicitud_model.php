@@ -147,7 +147,7 @@ class SolicitudModel
     {
         return $this->db->from($this->table)
                         ->where('COD_EMPLEADO', $cod_empleado)
-                        ->orderBy('ESTADO_SOLICITUD DESC')
+                        ->orderBy('COD_SOLICITUD DESC')
                         ->fetchAll();
     }
     public function obtener($COD_SOLICITUD)
@@ -202,7 +202,8 @@ class SolicitudModel
                                         ->select(null)->select('
                                                 CH.NOMBRE_CIUDAD "CIUD_HOTEL",
                                                 reservas_hoteles.FINHOTEL_RESERVA,
-                                                reservas_hoteles.FSALHOTEL_RESERVA
+                                                reservas_hoteles.FSALHOTEL_RESERVA,
+                                                reservas_hoteles.TIPOHAB_RESERVA
                                             ')
                                         ->innerJoin('ciudades as CH on reservas_hoteles.CHOTEL_RESERVA = CH.ID_CIUDAD')
                                         ->innerJoin('solicitudes on reservas_hoteles.COD_SOLICITUD = solicitudes.COD_SOLICITUD')
@@ -280,6 +281,7 @@ class SolicitudModel
                       'CHOTEL_RESERVA' => $rHotel['ID_CIUDADH'],
                       'FINHOTEL_RESERVA' => $rHotel['FINGRESO_HOTEL'],
                       'FSALHOTEL_RESERVA' => $rHotel['FSAL_HOTEL'],
+                      'TIPOHAB_RESERVA' => $rHotel['TIPO_HABITACION'],
                       'REGPOR_RESERVA' => $data['COD_EMPLEADO'],
                       'FREG_RESERVA' => $dateTime,
                       'COD_SOLICITUD' => $solicitud_id
@@ -464,6 +466,13 @@ class SolicitudModel
 
 
       }else {
+        $datosUpdate = [
+            'LIBERA_SOLICITUD'=> $data['LIBERA_SOLICITUD'],
+            'ESTADO_SOLICITUD'=>'LIBERADA',
+          ];
+          $this->db->update($this->table, $datosUpdate)
+                      ->where('COD_SOLICITUD',$cod_solicitud)
+                      ->execute();
         return $this->response->SetResponse(false, "No encontramos vuelos en esta solicitud por lo tanto no se enviara ningun correo al proveedor.");
       }
 

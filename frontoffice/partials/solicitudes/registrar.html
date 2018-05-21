@@ -1,5 +1,5 @@
 <div class="content-padded">
-	<!-- MENU DATA VUELO CONTENT --> 
+	<!-- MENU DATA VUELO CONTENT -->
 
 	<ul class="table-view">
 	  <li class="table-view-cell"  >
@@ -7,13 +7,13 @@
 		    VUELO
 		    <div id="vuelo" class="toggle "  ng-click="activeV = !activeV" ng-class="{'active':activeV}" ng-model="TVuelo[$index]">
 		      <div class="toggle-handle" ></div>
-		      
+
 		    </div>
 
 
 	  </li>
 
-	
+
 	    <li class="table-view-cell" ng-show="activeV" ng-model="TIdaRegreso">
 	  	    <i class="fas fa-plane"></i>
 	  	    IDA Y REGRESO
@@ -44,8 +44,10 @@
 	  </li>
 	  <div class="input-group">
 	  	<div class="input-row">
-	  	    <label> <i class="fas fa-bullseye"></i> OBJETIVO DE LA SOLICITUD <strong style="color: red;">*</strong></label>
-	  	    <input type="text" ng-model="txt_objetivo" placeholder="Escriba que objetivo tiene esta solicitud" maxlength="100">
+
+
+					<label> OBJETIVO<strong style="color: red;">*</strong></label>
+	  	    <input type="text" ng-model="txt_objetivo" placeholder="Objetivo de la solicitud" maxlength="100">
 	  	</div>
 	  </div>
 
@@ -53,7 +55,7 @@
 	</ul>
 
 
-	<!-- END MENU DATA VUELO CONTENT --> 
+	<!-- END MENU DATA VUELO CONTENT -->
 
 	<!-- INFORMATION OF FLYING -->
 	<div class="card content-padded" ng-show="activeV">
@@ -69,14 +71,23 @@
 		        </select>
 		    <div class="input-row">
 		        <label>Fecha de salida</label>
-		        <input type="date" ng-model="FSalida">
+		        <input type="date" ng-model="FSalida" >
 		    </div>
+				<div class="input-row">
+					 <label>Hora de salida</label>
+					 <input type="time" ng-model="HSalida" >
+			 </div>
 		    <div class="input-row" ng-show="activeID">
 		        <label>Fecha de regreso</label>
 		        <input type="date" ng-model="Fregreso">
 		    </div>
+				<div class="input-row" ng-show="activeID">
+		        <label>Hora de regreso</label>
+		        <input type="time" ng-model="Hregreso">
+		    </div>
 
 		</div>
+
 		<button class="btn btn-positive btn-outlined btn-block" type="button" ng-click="agregaVuelo()">
 		    Agregar <span class="icon icon-plus"></span>
 		</button>
@@ -119,6 +130,15 @@
 		        <label>Fecha de salida</label>
 		        <input type="date" ng-model="FSalidaHotel">
 		    </div>
+
+		</div>
+		<label>Tipo de habitación</label>
+		<div class="content-padded">
+			<select ng-Model="TipoHabitacion" >
+				<option selected value="SENCILLA">Sencilla</option>
+				<option value="DOBLE">Doble</option>
+			</select>
+
 		</div>
 		<button class="btn btn-positive  btn-block" type="button" ng-click="agregarHotel()">
 		    Agregar <span class="icon icon-plus"></span>
@@ -130,9 +150,9 @@
 	        <li class="table-view-cell" ng-repeat="h in Solicitud.Hoteles" ng-model="RHotel[$index]">
 	            <div class="pedido-detalle">
 	                <i class="fas fa-h-square"></i>
-	                <strong class="producto">{{ h.NOMBRE_CIUDADH }}</strong> 
+	                <strong class="producto">{{ h.NOMBRE_CIUDADH }}</strong>
 	                <div class="descripcion">
-	                	<b>Fecha de ingreso: </b>{{h.FINGRESO_HOTEL}} | <b>Fecha de salida: </b>{{h.FSAL_HOTEL}}
+	                	<b>Fecha de ingreso: </b>{{h.FINGRESO_HOTEL}} | <b>Fecha de salida: </b>{{h.FSAL_HOTEL}} - <b>Tipo de Habitación: </b>{{h.TIPO_HABITACION}} 
 	                </div>
 	            </div>
 	            <button class="btn btn-negative">
@@ -143,18 +163,18 @@
 	    </ul>
 	</div>
 	<!-- END INFORMATION OF HOTEL -->
-	
 
-	<!-- INFORMATION ANOTHER PASSEGER --> 
+
+	<!-- INFORMATION ANOTHER PASSEGER -->
 	<div class="card content-padded" ng-show="activeT">
 		<h2 class="content-padded"><i class="fas fa-male"></i> Informacion del tercero</h2>
 		<a href="#/tercero/registrar" class="content-padded">
 			<span class="icon icon-compose" title="Agrear un nuevo tercero"></span>
 			<span class="">Registra un tercero</span>
-		</a> 
+		</a>
 
 		<div class="input-group ">
-			
+
 		    <div class="input-row">
 		        <label>Numero de documento</label>
 		        <input type="text" placeholder="Ingrese el numero de documento para buscar" ng-model="txt_NumDoc" ng-keyup="searchPassager()" >
@@ -177,21 +197,21 @@
 		    </div>
 		</div>
 	</div>
-	
+
 	<!-- END INFORMATION ANOTHER PASSEGER -->
 
 	<div class="card " ng-if="error_message" >
 	  <ul class="table-view ">
 	    <li class="table-view-cell alert-warning" >{{error_message}}</li>
 	  </ul>
-	</div> 
-		<!-- MENU ACTION --> 
+	</div>
+		<!-- MENU ACTION -->
 	<div class="content-padded">
 	    <button class="btn btn-block btn-primary" type="button" ng-click="registrarSolicitud()">Registrar</button>
-	    
+
 	</div>
 	<!-- END MENU ACTION -->
-</div>   
+</div>
 
 
 <!-- FOOTER MENU -->

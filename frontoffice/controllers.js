@@ -194,8 +194,9 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         //funcion para agregar los vuelos
         $scope.agregaVuelo = function(){
           //Validar si marcaron una ciudad de origen, una de destino y las fechas para el vuelo
+          
           if (typeof($scope.CiuOrigen) === 'undefined' || typeof($scope.CiuDestino) === 'undefined' ||
-              typeof($scope.FSalida) === 'undefined') return;
+              typeof($scope.FSalida) === 'undefined')  return;
 
           if ($scope.CiuOrigen == $scope.CiuDestino) return;
 
@@ -211,10 +212,11 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           })[0];
 
           //DECLARO LAS VARIABLES PARA LA FECHA DE IDA Y REGRESO
-          var fida, fvuelta;
+          var fida, fidaComplete,hida,fvueltaComplete,fvuelta,hvuelta;
           //formateo el valor de la fecha recibida para la ida
           fida = formatearFecha($scope.FSalida);
-
+          hida = formatearHora($scope.HSalida);
+          fidaComplete = fida+" "+hida;
           //evaluo si la fecha de regreso no esta definida, si no
           //se define se deja en blanco de lo contrario se formatea
           //la fecha de regreso y se le asigan a la variable
@@ -224,6 +226,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           else
           {
             fvuelta = formatearFecha($scope.Fregreso);
+            hvuelta = formatearHora($scope.Hregreso);
+            fvueltaComplete = fvuelta+" "+hvuelta;
           }
 
           var reserva = {
@@ -231,8 +235,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             CIUDAD_ORIGEN: sciudadOrigen.NOMBRE_CIUDAD,
             IDCIUDAD_DESTINO: $scope.CiuDestino,
             CIUDAD_DESTINO: sciudadDestino.NOMBRE_CIUDAD,
-            FECHA_SALIDA: fida,
-            FECHA_REGRESO:fvuelta
+            FECHA_SALIDA: fidaComplete,
+            FECHA_REGRESO:fvueltaComplete
 
           };
 
@@ -258,7 +262,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
         }
 
         $scope.agregarHotel = function(){
-          if (typeof($scope.CiuHospedaje) === 'undefined' || typeof($scope.FingresoHotel) === 'undefined' || typeof($scope.FSalidaHotel) === 'undefined') return;
+
+          if (typeof($scope.CiuHospedaje) === 'undefined' || typeof($scope.FingresoHotel) === 'undefined' || typeof($scope.FSalidaHotel) === 'undefined' || typeof($scope.TipoHabitacion) === 'undefined') return;
 
           var ciudadesHospedaje = $scope.Ciudades.filter(function(x){
 
@@ -275,7 +280,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             ID_CIUDADH:ciudadesHospedaje.ID_CIUDAD,
             NOMBRE_CIUDADH:ciudadesHospedaje.NOMBRE_CIUDAD,
             FINGRESO_HOTEL:finHotel,
-            FSAL_HOTEL:fsalHotel
+            FSAL_HOTEL:fsalHotel,
+            TIPO_HABITACION:$scope.TipoHabitacion
           };
 
           //procedimiento para validar si registro ya esta en el array,
@@ -313,6 +319,12 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           var nuevaFecha = fechaOk.getFullYear()+'/'+(fechaOk.getMonth()+1)+'/'+fechaOk.getDate();
 
           return nuevaFecha;
+        }
+        function formatearHora(hora){
+          var horaOk = new Date(hora);
+          var nuevaHora = horaOk.getHours()+":"+horaOk.getMinutes()+":"+horaOk.getSeconds();
+
+          return nuevaHora;
         }
 
         //var dataTerceros = [0];
@@ -354,7 +366,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           if ($scope.activeV == false && $scope.activeH == false && $scope.activeT == false) return;
           if ($scope.txt_objetivo === undefined) {
 
-            $scope.error_message = "<strong>¡Error!</strong> Debe escribir un objetivo para esta solicitud, este campo es obligatorio.";
+            $scope.error_message = "¡Error! Debe escribir un objetivo para esta solicitud, este campo es obligatorio.";
 
             return;
           }

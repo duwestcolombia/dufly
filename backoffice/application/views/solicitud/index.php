@@ -77,7 +77,18 @@
 			} ?>
 
 				<td><?php echo $r->COD_SOLICITUD ?></td>
-				<td><?php echo $r->ESTADO_SOLICITUD ?></td>
+				<td>
+					<?php
+						if ($r->ESTADO_SOLICITUD == 'PENDIENTE') {
+							echo $r->ESTADO_SOLICITUD." POR LIBERAR";
+						} else {
+							echo $r->ESTADO_SOLICITUD;
+						}
+						 
+						 
+					?>
+				
+				</td>
 				<td><?php echo $r->FREG_SOLICITUD ?></td>
 				<td><?php echo $r->NOMBRE_EMPLEADO ?></td>
 				<td><?php echo $r->NOM_TERCERO ?></td>

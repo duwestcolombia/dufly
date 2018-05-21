@@ -13,7 +13,7 @@
         	    	<span ng-if="r.ESTADO_SOLICITUD == 'NUEVA'" class="pedido-estado pedido-estado-nuevo pull-left"></span>
                 <span ng-if="r.ESTADO_SOLICITUD == 'PENDIENTE'" class="pedido-estado pedido-estado-pendiente pull-left"></span>
                 <span ng-if="r.ESTADO_SOLICITUD == 'RECHAZADA'" class="pedido-estado pedido-estado-anulado pull-left"></span>
-        	    	<span ng-if="r.ESTADO_SOLICITUD == 'AUTORIZADA'" class="pedido-estado pedido-estado-finalizado pull-left"></span>
+        	    	<span ng-if="r.ESTADO_SOLICITUD == 'LIBERADA'" class="pedido-estado pedido-estado-finalizado pull-left"></span>
         	      	<b>Solicitud #{{r.COD_SOLICITUD}}</b>
         	      	<span class="badge">{{r.ESTADO_SOLICITUD}}</span>
         	    </a>

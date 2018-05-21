@@ -90,7 +90,7 @@
 					Vuelos <i class="fas fa-plane"></i>
 				</div>
 				<div class="card-body">
-
+					
 					<ul class="list-group">
 						<?php foreach ($data->Vuelos as $dv): ?>
 							<li class="list-group-item">
@@ -130,6 +130,10 @@
 								<span class="float-right">
 									<?php echo '<b>Fecha Salida</b>: '.$dh->FSALHOTEL_RESERVA ?>
 								</span>
+								<br>
+								<span class="float-right">
+									<?php echo '<b>Tipo Habitación</b>: '.$dh->TIPOHAB_RESERVA ?>
+								</span>
 
 							</li>
 						<?php endforeach ?>
@@ -145,22 +149,21 @@
 
 	<ol class="breadcrumb">
 		<li class="breadcrumb-item">
-						<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA' || $data->ESTADO_SOLICITUD == 'AUTORIZADA' || $data->COD_EMPLEADO == $user->COD_EMPLEADO): ?>
+						<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA' || $data->ESTADO_SOLICITUD == 'AUTORIZADA' || $data->ESTADO_SOLICITUD == 'LIBERADA' || $data->ESTADO_SOLICITUD == 'PENDIENTE' || $data->COD_EMPLEADO == $user->COD_EMPLEADO): ?>
 
 						<?php else: ?>
 						<a href="<?php echo site_url('principal/autorizar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-success"><i class="fas fa-check-circle"></i> Autorizar</a>
 					<?php endif ?>
 
-						<?php if ($user->COD_DEPARTAMENTO == '2' || $user->COD_DEPARTAMENTO == '3'): ?>
-								<?php if ($data->AUTORIZA_SOLICITUD != ''	): ?>
-										<button class="btn btn-sm btn-primary" type="submit"><i class="fas fa-save"></i> Actualizar solicitud</button>
-										<a href="<?php echo site_url('principal/liberar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-warning"><i class="fas fa-paper-plane"></i> Liberar y Enviar</a>
+						<?php if ($user->COD_DEPARTAMENTO == '2' || $user->COD_DEPARTAMENTO == '3' ): ?>
+								<?php if ($data->AUTORIZA_SOLICITUD != ''): ?>
+									<button class="btn btn-sm btn-primary" type="submit"><i class="fas fa-save"></i> Actualizar solicitud</button>
+									<a href="<?php echo site_url('principal/liberar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-warning"><i class="fas fa-paper-plane"></i> Liberar y Enviar</a>
 								<?php endif; ?>
-
 						<?php endif; ?>
 
 
-						<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA' || $data->ESTADO_SOLICITUD == 'AUTORIZADA'): ?>
+						<?php if ($data->ESTADO_SOLICITUD == 'RECHAZADA' || $data->ESTADO_SOLICITUD == 'AUTORIZADA' || $data->ESTADO_SOLICITUD == 'LIBERADA'): ?>
 
 						<?php else: ?>
 								<a href="<?php echo site_url('principal/rechazar/'. $data->COD_SOLICITUD); ?>" class="btn btn-sm btn-danger"><i class="fas fa-times-circle"></i> Rechazar</a>
