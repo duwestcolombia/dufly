@@ -255,7 +255,8 @@ class SolicitudModel
                   'FREG_SOLICITUD' => $dateTime,
                   'COD_EMPLEADO' => $data['COD_EMPLEADO'],
                   'ESTADO_SOLICITUD' => 'NUEVA',
-                  'OBJETIVO_SOLICITUD' => $opcion['OBJETIVO_SOLICITUD']
+                  'OBJETIVO_SOLICITUD' => $opcion['OBJETIVO_SOLICITUD'],
+
 
               ])->execute();
           }
@@ -288,7 +289,7 @@ class SolicitudModel
                   ])->execute();
               }
           }
-
+          
           /*DATA MAIL*/
             $datos = [
               'to'=>$mailEMp,
@@ -335,6 +336,8 @@ class SolicitudModel
 
     public function actualizar($data, $cod_solicitud)
     {
+        
+        $dateTime=date('Y/m/d h:i:s', time());
         $mailCompras = $this->obtenerDeptoCompras();
 
         /*DATA MAIL*/

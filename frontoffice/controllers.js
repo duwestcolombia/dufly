@@ -4,6 +4,11 @@ var authControllers   = angular.module('authControllers', [])
     terceroControllers = angular.module('terceroControllers', [])
     testControllers   = angular.module('testControllers', []);
 
+    var dataOffline = {
+      datos:[]
+    };
+    
+
 // Auth Controller
 authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', 'auth',
   function ($scope, restApi, $location, auth) {
@@ -47,15 +52,25 @@ authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', '
   }]);
 
 // Logout
-authControllers.controller('AuthLogoutCtrl', ['$scope', 'restApi', '$location', 'auth',
-  function ($scope, $http, $location, auth) {
+authControllers.controller('AuthLogoutCtrl', ['auth',
+  function (auth) {
       auth.logout();
   }]);
 
 // Listar las solicitudes por usuario
-solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'auth',
-  function ($scope, restApi, auth) {
+solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'auth','validaDataOffLine',
+  function ($scope, restApi, auth,validaDataOffLine) {
       auth.redirectIfNotExists();
+
+      var dOffline = validaDataOffLine.consigueData();
+      //console.log(dOffline.datos);
+      
+      if(typeof(dOffline) != 'undefined'){
+        $scope.datosOffline = dOffline.datos;
+        console.log($scope.datosOffline);
+      }
+      
+      
 
       var user = auth.getUserData();
 
@@ -83,6 +98,54 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
         });
       }
 
+      $scope.enviarSolicitudes = function(){
+        //loader.show(true);
+        dOffline.datos.forEach(function(data){
+
+          //registro solicitudes que se encuentran offline
+          restApi.call({
+            method: 'post',
+            url: 'solicitud/registrar',
+            data:data,
+            response: function(r){
+              if (r.response) {
+                console.log(r);
+                localStorage.removeItem('data');
+                location.reload(true);
+
+              }
+            },
+            error: function(r){
+              console.log('Error '+r);
+              
+                         
+            },
+            validationError: function(r){
+              console.log('Validation: '+r);
+              
+            }
+          });
+
+
+          
+          
+        })
+      }
+
+      $scope.rechazarSolicitudes= function() {
+        var conf = confirm("¿ Esta seguro que desea eliminar todas las solicitudes pendientes ? ");
+        if (conf) {
+          
+          localStorage.removeItem('data');
+          alert("Todas las solicitudes pendientes se eliminaron");
+
+          location.reload(true);
+
+        } else {
+          return;
+        }
+      }
+
   }]);
 
 //Registrar las solicitudes
@@ -96,7 +159,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
         $scope.usuario= user.COD_EMPLEADO;
         //Cargo el select con las ciudades
-
+   
 
 
         cargarCiudades();
@@ -221,7 +284,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           //se define se deja en blanco de lo contrario se formatea
           //la fecha de regreso y se le asigan a la variable
           if (typeof($scope.Fregreso) === 'undefined') {
-            fvuelta = '';
+         
+            fvueltaComplete = '';
           }
           else
           {
@@ -240,6 +304,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
           };
 
+          
+
           var validaVueloExistente = -1;
 
           $scope.Solicitud.Reservas.forEach(function(x,i){
@@ -253,6 +319,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           {
 
             $scope.Solicitud.Reservas.push(reserva);
+            
+            
           }else{
             $scope.Solicitud.Reservas[validaVueloExistente] = reserva;
           }
@@ -361,6 +429,9 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
 
         }
 
+
+
+
         $scope.registrarSolicitud = function(){
           //si no selecciono ninguna opcion para registrar no hacemos nada
           if ($scope.activeV == false && $scope.activeH == false && $scope.activeT == false) return;
@@ -402,6 +473,9 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           //Validamos si envio un hotel o un vuelo, si estos array estan vacios no hacemos nada
           //if ($scope.Solicitud.Reservas.length == 0  || $scope.Solicitud.Hoteles.length == 0) return;
 
+          
+          
+
           restApi.call({
             method: 'post',
             url: 'solicitud/registrar',
@@ -413,39 +487,11 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
               }
             },
             error: function(r){
-              console.log(r.errors);
-              /*Guardar en el localstorange si no hay conexion o si se presento un problema*/
-              /*if (window.localStorage) {
-
-                var guardado = localStorage.getItem('data');
-
-                $scope.DataError = {
-                  data:[]
-                }
-
-                if (guardado) {
-                  console.log('objetoobtenido', JSON.parse(guardado));
-                  localStorage.removeItem('data');
-                  $scope.DataError.data.push($scope.Solicitud);
-                  localStorage.setItem('data',JSON.stringify($scope.DataError));
-                }
-                else
-                {
-
-                  $scope.DataError.data.push($scope.Solicitud);
-                  localStorage.setItem('data',JSON.stringify($scope.DataError));
-                }
-
-
-              }
-              else
-              {
-                console.log(false);
-              }*/
-              /*http://anexsoft.com/p/140/html-5-diferencias-y-ejemplos-entre-local-storage-y-session-storage
-              http://www.maestrosdelweb.com/tutorial-local-session-storage/
-              https://www.htmlcinco.com/guardar-un-objeto-o-array-en-localstorage/
-              */
+              console.log(r);
+              
+              dataOffline.datos.push($scope.Solicitud);
+                           
+              localStorage.setItem('data',JSON.stringify(dataOffline));              
             },
             validationError: function(r){
 

@@ -4,6 +4,19 @@
     <div class="clear"></div>
 </div>
 
+<div class="card" ng-if="datosOffline.length > 0">
+	<ul class="table-view">
+		<li class="table-view-cell" >
+				<span class="icon icon-info"></span>
+				Actualmente usted tiene  solicitudes pendientes por registrar.
+				<span class="badge badge-negative"># solicitudes:  {{datosOffline.length}}</span>
+
+		</li>
+		<button class="btn btn-block btn-positive remove-border-radius" ng-click="enviarSolicitudes()">Enviar solicitudes pendientes</button>
+		<button class="btn btn-block btn-negative remove-border-radius" ng-click="rechazarSolicitudes()" >Rechazar solicitudes pendientes</button>
+	</ul>
+</div>
+
 <div class="card">
     <a class="btn btn-block btn-primary remove-border-radius" href="#/principal/registrar">Nueva solicitud</a>
     <ul class="table-view">

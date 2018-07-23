@@ -52,11 +52,23 @@ frontApp.service('loader',['$location','auth', function ($location,auth) {
         $location.path('/principal');
     }
 }]);
+//servicio para conseguir data almacenada en el storage
+frontApp.service('validaDataOffLine',['$http',function($http){
+    var datosOffline = {};
+    this.consigueData = function (){
+        if(localStorage.getItem('data')){
+            datosOffline = JSON.parse(localStorage.getItem('data'));
+            return datosOffline;            
+        }
+    };
+}]);
 
-frontApp.service('restApi', ['$http', 'loader', 'auth', function ($http, loader, auth) {
+frontApp.service('restApi', ['$http', 'loader', 'auth','validaDataOffLine', function ($http, loader, auth,validaDataOffLine) {
     this.call = function (config) {
         var headers = {};
         headers[API.token_name] = auth.getToken();
+
+        validaDataOffLine.consigueData();
 
         loader.show(true);
 

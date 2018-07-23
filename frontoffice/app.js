@@ -18,4 +18,7 @@ var frontApp = angular.module(MODULE, [
     if(typeof(localStorage[API.token_name]) === 'undefined'){
         localStorage[API.token_name] = '';
     }
+
+    
+
 }());
