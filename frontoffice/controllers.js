@@ -23,11 +23,13 @@ authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', '
        }
        else{
 
+        var correo = $scope.Correo;
+
         restApi.call({
             method: 'post',
             url: 'auth/autenticar',
             data: {
-              Correo:$scope.Correo,
+              Correo: correo.toLowerCase(),
               Password:$scope.Password
             },
             response: function(r){
@@ -330,6 +332,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           Hoteles:[]
         };
 
+        
+        
 
 
         //funcion para agregar los vuelos
@@ -337,7 +341,10 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           //Validar si marcaron una ciudad de origen, una de destino y las fechas para el vuelo
           
           if (typeof($scope.CiuOrigen) === 'undefined' || typeof($scope.CiuDestino) === 'undefined' ||
-              typeof($scope.FSalida) === 'undefined')  return;
+              typeof($scope.FSalida) === 'undefined' || typeof($scope.HSalida) ==='undefined')  return;
+
+              
+              
 
           if ($scope.CiuOrigen == $scope.CiuDestino) return;
 
@@ -397,6 +404,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           {
 
             $scope.Solicitud.Reservas.push(reserva);
+            
             
             
           }else{
@@ -549,9 +557,8 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           $scope.Solicitud.Op[0] = opciones;
 
           //Validamos si envio un hotel o un vuelo, si estos array estan vacios no hacemos nada
-          //if ($scope.Solicitud.Reservas.length == 0  || $scope.Solicitud.Hoteles.length == 0) return;
-
-          
+     
+          if ($scope.Solicitud.Reservas.length < 1 && $scope.Solicitud.Hoteles.length < 1) return;
           
 
           restApi.call({
@@ -658,6 +665,8 @@ solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi',
           method: 'get',
           url: 'solicitud/obtener/' + $routeParams.id,
           response: function(r){
+            console.log(r);
+            
              $scope.rSolicitud = r;
 
           },
@@ -741,6 +750,7 @@ perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth'
           url: 'empleado/actualizar/'+$scope.usuario,
           data:datos,
           response: function(r){
+            alert('La información del usuario se actualizo correctamente.');
              //console.log(r);
           },
           error: function(r){

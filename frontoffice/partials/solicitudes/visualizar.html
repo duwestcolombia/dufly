@@ -23,7 +23,7 @@
 		      <dt>Solicitud para un tercero</dt>
 		      <dd>NO</dd>
 		      <dt>Estado de la solicitud</dt>
-		      <dd><span class="badge badge-negative">{{rSolicitud.ESTADO_SOLICITUD}}</span></dd>
+		      <dd><span class="badge badge-primary">{{rSolicitud.ESTADO_SOLICITUD}}</span></dd>
 		      <dt>Objetivo de la solicitud</dt>
 		      <dd>{{rSolicitud.OBJETIVO_SOLICITUD}}</dd>
 		    </dl>
@@ -64,7 +64,7 @@
 			<div class="solicitud-detalle">
 				<strong>Origen: </strong>{{rv.CIUD_ORIGEN}} - <strong>Destino: </strong>{{rv.CIUD_DESTINO}}
 				<div class="descripcion">
-					<b>Fecha: </b>{{rv.FIDA_RESERVA}}
+					<b>Fecha Salida: </b>{{rv.FIDA_RESERVA}} | <b>Fecha regreso: </b>{{ rv.FREGRESO_RESERVA}}
 				</div>
 			</div>
 		</li>

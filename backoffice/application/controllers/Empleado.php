@@ -30,49 +30,67 @@ class Empleado extends CI_Controller {
       }
 
       $dataEmp = $this->empleado_model->obtener($COD_EMPLEADO);
+      $dataEmp->PASS_EMPLEADO = ':)';
       $datos['data'] = $dataEmp;
 
       $this->load->view('empleado/index',$datos);
       $this->load->view('footer');
   }
   function actualizar(){
-
-  }
-  function guardar(){
     $errors = [];
 
-    $cod_solicitud = $this->input->post('txt_codsolicitud');
+    $pass = $this->input->post('txt_pass');
+    $pass2 = $this->input->post('txt_passConfig');
 
-    $data = [
-      'OBSERVACION_SOLICITUD'=>$this->input->post('txt_observacion')
-    ];
+    if ($pass === $pass2) {
 
-    try {
+      if ($pass <> '') {
+        $data = [
+          'NOMBRE_EMPLEADO' => $this->input->post('txt_nomempleado'),
+          'EMAIL_EMPLEADO' => $this->input->post('txt_email'),
+          'TEL_EMPLEADO'=> $this->input->post('txt_telefono'),
+          'FNACIMIENTO_EMPLEADO'=>$this->input->post('txt_fnacimiento'),  
+          'PASS_EMPLEADO' => $pass
+        ];
+      }else{
 
-      $this->principal_model->actualizar($data, $cod_solicitud);
-
-    } catch (Exception $e) {
-
-      if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
-
-          $errors = RestApi::getEntityValidationFieldsError();
-          var_dump($errors);
-
-
+        $data = [
+          'NOMBRE_EMPLEADO' => $this->input->post('txt_nomempleado'),
+          'EMAIL_EMPLEADO' => $this->input->post('txt_email'),
+          'TEL_EMPLEADO'=> $this->input->post('txt_telefono'),
+          'FNACIMIENTO_EMPLEADO'=>$this->input->post('txt_fnacimiento'), 
+        ];
       }
 
-    }
-    if (count($errors)=== 0)redirect('principal');
-    else
-    {
-        var_dump($errors);
-        /*$this->load->view('header', $this->user);
-        $this->load->view('empleado/validation', ['errors' => $errors]);
-        $this->load->view('footer');*/
+
+      try {
+        $usuario = $this->user['user']->COD_EMPLEADO;
+
+     
+        $resp =  $this->empleado_model->actualizar($usuario, $data);
+
+
+      }catch (Exception $e){
+          if ($e->getMessage() === RestApiErrorCode::UNPROCESSABLE_ENTITY) {
+
+            $errors = RestApi::getEntityValidationFieldsError();
+            var_dump($errors);
+
+
+          }
+      }
+
+      if (count($errors)=== 0)redirect('empleado');
+
+      
+    }else{
+      echo '<script>alert("Las contraseñas no coinciden");</script>';
+      $this->index();
     }
 
 
   }
+
 
 
 

@@ -26,14 +26,15 @@
 						<h5 class="card-title">Codigo empleado</h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->COD_EMPLEADO ?></p>
 						<h5 class="card-title">Correo</h5>
-			  		<p class="card-text font-weight-light"><?php echo $data->EMAIL_EMPLEADO ?></p>
+					  <p class="card-text font-weight-light"><?php echo $data->EMAIL_EMPLEADO ?></p>
+					  <input type="text" name="txt_email" hidden value="<?php echo $data->EMAIL_EMPLEADO ?>">
 						<h5 class="card-title">Nombres</h5>
-			  		<input type="text" class="form-control" value="<?php echo $data->NOMBRE_EMPLEADO ?>">
+			  		<input type="text" name="txt_nomempleado" class="form-control" value="<?php echo $data->NOMBRE_EMPLEADO ?>">
 						<h5 class="card-title">Teléfono/Celular </h5>
-						<input type="text" class="form-control" value="<?php echo $data->TEL_EMPLEADO ?>">
+						<input type="number" name="txt_telefono" class="form-control" value="<?php echo $data->TEL_EMPLEADO ?>">
 
 			  		<h5 class="card-title">Fecha de nacimiento</h5>
-						<input type="date" class="form-control" name="" value="<?php echo $data->FNACIMIENTO_EMPLEADO ?>">
+						<input type="date" name="txt_fnacimiento" class="form-control" name="" value="<?php echo $data->FNACIMIENTO_EMPLEADO ?>">
 
 
 

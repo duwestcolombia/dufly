@@ -42,12 +42,12 @@ class Empleado_Model extends CI_Model{
             $data
         );
     }
-    public function actualizar($data,$cod_solicitud){
+    public function actualizar($COD_EMPLEADO,$data){
         //Llamamos a la restApi
         return RestApi::call(
-        	//le mandamos una peticion get a la ruta empleado listar
+        	//le mandamos una peticion put a la ruta empleado actualizar
             RestApiMethod::PUT,
-            "solicitud/actualizar/$cod_solicitud",
+            "empleado/actualizar/$COD_EMPLEADO",
             $data
         );
     }
