@@ -63,10 +63,15 @@ frontApp.service('validaDataOffLine',['$http',function($http){
     };
 }]);
 
-frontApp.service('restApi', ['$http', 'loader', 'auth','validaDataOffLine', function ($http, loader, auth,validaDataOffLine) {
+
+
+frontApp.service('restApi', ['$http', 'loader', 'auth','validaDataOffLine',
+                            function ($http, loader, auth,validaDataOffLine ) {
     this.call = function (config) {
         var headers = {};
         headers[API.token_name] = auth.getToken();
+
+        
 
         validaDataOffLine.consigueData();
 

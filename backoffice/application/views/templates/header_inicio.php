@@ -9,8 +9,16 @@
     	<link rel="icon" type="image/png" href="<?php echo base_url();?>assets/img/logo.png">
     <title>Dufly | Inicio</title>
 
-    <link href="<?php echo base_url(); ?>tools/css/cover.css" rel="stylesheet">
+    <!-- <link href="<?php //echo base_url(); ?>tools/css/cover.css" rel="stylesheet"> -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+
+    <!-- Style from lading page -->
+
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/new-age.min.css">
+
+    <!-- style from mockup -->
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/device-mockups.min.css">
+  
   </head>
 
   <body>

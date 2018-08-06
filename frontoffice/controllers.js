@@ -8,6 +8,7 @@ var authControllers   = angular.module('authControllers', [])
       datos:[]
     };
     
+    
 
 // Auth Controller
 authControllers.controller('AuthLoginCtrl', ['$scope', 'restApi', '$location', 'auth',
@@ -68,13 +69,13 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
       if(typeof(dOffline) != 'undefined'){
         $scope.datosOffline = dOffline.datos;
         console.log($scope.datosOffline);
-      }
-      
+      }      
       
 
       var user = auth.getUserData();
+      
+      $scope.Usuario = user;
 
-      $scope.NomUsuario = user.NOMBRE_EMPLEADO;
 
       cargarSolicitudes();
 
@@ -84,7 +85,7 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
             method: 'get',
             url: 'solicitud/listarPorEmpleado/' + user.COD_EMPLEADO,
             response: function(r){
-              //console.log(r);
+              
                $scope.resultado = r;
                $scope.usuario = user.COD_EMPLEADO;
 
@@ -145,6 +146,83 @@ solicitudControllers.controller('solicitudListarCtrl', ['$scope', 'restApi', 'au
           return;
         }
       }
+
+    // *************************************************************************
+    // FUNCIONES PARA ACTUALIZAR CONTRASEÑA POR PRIMERA VEZ 
+    // *****************************************************************************
+  //   $scope.actualizaPass = function(){
+  //     console.log("ingresamos al controller listar  a la funcion actualizar");
+      
+  //     console.log($scope.txt_passwd,$scope.txt_confipasswd);
+      
+
+  //     if (validaPass($scope.txt_pass,$scope.txt_confipass))
+  //     {
+  //       var data = {
+          
+  //         PASS_EMPLEADO:$scope.txt_pass
+
+  //       };
+  //       // actualizar(data);
+  //     }
+  //     else{
+
+  //       $scope.errorPass = "Las contraseñas no coinciden";
+  //     }
+
+
+  //  }
+
+  // //  function actualizar(datos){
+  // //   //console.log(datos);
+  // //    restApi.call({
+  // //       method: 'put',
+  // //       url: 'empleado/actualizar/'+$scope.usuario,
+  // //       data:datos,
+  // //       response: function(r){
+  // //          //console.log(r);
+  // //       },
+  // //       error: function(r){
+  // //         console.log(r);
+  // //       },
+  // //       validationError: function(r){
+  // //           console.log(r);
+  // //       }
+  // //   });
+  // //  }
+
+  //  function validaPass(pass, confipass){
+  //     if (pass == confipass) {
+  //       return true;
+  //     }
+  //     else
+  //     {
+  //       return false;
+  //     }
+  //  }
+  $scope.a = function(){
+    $scope.passwd="";
+    console.log(document.getElementsByName('passwd').value);
+    
+    $scope.user = '';
+    if ($scope.passwd === undefined) {
+      console.log("algo salio mal");
+      
+    }else{
+
+      console.log($scope.passwd);
+    }
+
+  }
+
+  $scope.tprueba = "juanito";
+
+  $scope.prueba = function(){
+    console.log($scope.tprueba);
+     
+  }
+      
+
 
   }]);
 
@@ -594,8 +672,8 @@ solicitudControllers.controller('SolicitudVisualizarCtrl', ['$scope', 'restApi',
 }]);
 
 //visualizar el perfil del usuario
-perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth', '$routeParams',
-  function($scope,restApi,auth,$routeParams){
+perfilControllers.controller('PerfilVisualizarCtrl',['$scope', 'restApi', 'auth', 
+  function($scope,restApi,auth){
       auth.redirectIfNotExists();
 
       var user = auth.getUserData();

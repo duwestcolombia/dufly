@@ -1,8 +1,9 @@
 <div class="user-dashboard">
     <img src="assets/images/default-user.png" class="avatar" />
-    Bienvenido <b>{{NomUsuario}}</b>, desde aquí usted puede realizar sus solicitudes de vuelo y hoteles.
+    Bienvenido <b>{{Usuario.NOMBRE_EMPLEADO}}</b>, desde aquí usted puede realizar sus solicitudes de vuelo y hoteles.
     <div class="clear"></div>
 </div>
+
 
 <div class="card" ng-if="datosOffline.length > 0">
 	<ul class="table-view">
@@ -17,7 +18,7 @@
 	</ul>
 </div>
 
-<div class="card">
+<div class="card" ng-if="Usuario.CAMBIA_PASSWORD">
     <a class="btn btn-block btn-primary remove-border-radius" href="#/principal/registrar">Nueva solicitud</a>
     <ul class="table-view">
         <li class="table-view-cell" ng-repeat="r in resultado">
@@ -36,6 +37,38 @@
     </ul>
 </div>
 
+<!-- FORMULARIO PARA CAMBIAR LA CONTRASEÑA -->
+
+<!-- <div class="card" ng-if="Usuario.CAMBIA_PASSWORD">
+		
+		<ul class="table-view">
+			<li class="table-view-divider" style="color:red;">Por su seguridad actualice su contraseña antes de continuar. <i class="fas fa-key"></i></li>
+			<h5 	style="color:red;">{{errorPass}}</h5>
+			<li class="table-cell">
+				<form class="input-group">
+					<div class="input-row">
+						<label>Nueva contraseña</label>
+						<input type="password" placeholder="*******" ng-model="passwd" name="passwd" ng-change="a()">
+						
+					</div>
+					<div class="input-row">
+						<label>Confirmar contraseña</label>
+						<input type="password" placeholder="*******" ng-model="user.txt_confipasswd">
+					</div>
+				</form>
+			</li>
+			<li class="table-cell">
+					
+				<div class="content-padded">
+					<button class="btn btn-block btn-primary" type="button" ng-click="actualizaPass()">Actualizar</button>
+				</div>
+			</li>
+		</ul>
+</div> -->
+	
+
+<!-- FIN FORMULARIO CAMBIAR CONTRASEÑA -->
+
 <!-- Logout -->
 
 <nav class="bar bar-tab">
@@ -47,7 +80,11 @@
 		<span class="icon icon-person"></span>
 	    <span class="tab-label">Mi perfil</span>
 	</a>
-	<a class="tab-item" href="#/principal/registrar">
+	<!-- <a ng-if="!Usuario.CAMBIA_PASSWORD" class="tab-item" href="#/principal/registrar">
+		<span class="icon icon-compose"></span>
+		<span class="tab-label">Nueva solicitud</span>
+	</a> -->
+	<a  class="tab-item" href="#/principal/registrar">
 		<span class="icon icon-compose"></span>
 		<span class="tab-label">Nueva solicitud</span>
 	</a>
@@ -57,6 +94,8 @@
 	</a>
 
 </nav>
+
+
 <!--<div class="bar bar-standard bar-footer-secondary">
   <a href="#/logout" class="btn btn-block btn-negative">Desconectarse</a>
 </div>-->

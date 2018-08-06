@@ -31,7 +31,8 @@ class AuthModel
                 'NOMBRE_EMPLEADO' => $nombre,
                 'ADMIN_EMPLEADO'=>$empleado->ADMIN_EMPLEADO,
                 'ROOT_EMPLEADO'=>$empleado->ROOT_EMPLEADO,
-                'COD_DEPARTAMENTO'=>$empleado->COD_DEPARTAMENTO
+                'COD_DEPARTAMENTO'=>$empleado->COD_DEPARTAMENTO,
+                'CAMBIA_PASSWORD'=>$empleado->CAMBIAPASS_EMPLEADO
                 //'EsAdmin' => (bool)$empleado->EsAdmin
             ]);
 

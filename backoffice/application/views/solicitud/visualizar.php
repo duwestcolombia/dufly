@@ -14,9 +14,7 @@
 	  	<li class="breadcrumb-item active" aria-current="page">	<?php echo 'Solicitud # '.$data->COD_SOLICITUD ?>
 	  	</li>
 	</ol>
-
-
-
+	
 	<div class="row">
 		<div class="col-md-4">
 			<?php echo form_open('principal/guardar'); ?>
@@ -61,13 +59,17 @@
 						} ?>
 
 						<?php if ($data->AUTORIZA_SOLICITUD != ''): ?>
-							<h5 class="card-title">Autorizado por </h5>
+							<h5 class="card-title">Autorizado/Rechazado por </h5>
 							<p class="card-text font-weight-light"><?php echo $data->AUTORIZA_SOLICITUD ?></p>
+							<h5 class="card-title">Fecha de Autorización o Rechazo </h5>
+							<p class="card-text font-weight-light"><?php echo $data->FAUTORIZA_SOLICITUD ?></p>
 
 						<?php endif; ?>
 						<?php if ($data->LIBERA_SOLICITUD != null): ?>
 							<h5 class="card-title">Liberado por </h5>
 							<p class="card-text font-weight-light"><?php echo $data->LIBERA_SOLICITUD ?></p>
+							<h5 class="card-title">Fecha de liberación </h5>
+							<p class="card-text font-weight-light"><?php echo $data->FLIBERA_SOLICITUD ?></p>
 						<?php endif; ?>
 						<?php if ($user->COD_DEPARTAMENTO == '2' || $user->COD_DEPARTAMENTO == '3'): ?>
 							<h5 class="card-title"> Registrar Observación</h5>
@@ -85,6 +87,12 @@
 
 		</div>
 		<div class="col-md-8">
+			<div class="card" style="margin-bottom: 8px;">
+				<div class="card-header">Objetivo de la solicitud</div>
+				<div class="card-body">
+					<b><?php echo $data->OBJETIVO_SOLICITUD ?></b>
+				</div>
+			</div>
 			<div class="card" style="margin-bottom: 8px;">
 				<div class="card-header">
 					Vuelos <i class="fas fa-plane"></i>

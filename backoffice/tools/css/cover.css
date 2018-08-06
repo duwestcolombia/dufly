@@ -24,14 +24,14 @@ a:hover {
  * Base structure
  */
 
-html,
+/* html,
 body {
   height: 100%;
   background-color: #333;
 
 
-}
-body {
+} */
+/* body {
   color: #fff;
   text-align: center;
   text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
@@ -39,7 +39,7 @@ body {
    background-size: 100% 100%;
    background-repeat: no-repeat;
    background-attachment: fixed;
-}
+} */
 main > img{
   height: 80px;
 }

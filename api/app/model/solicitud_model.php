@@ -32,6 +32,8 @@ class SolicitudModel
                                 solicitudes.FREG_SOLICITUD,
                                 solicitudes.OBSERVACION_SOLICITUD,
                                 solicitudes.OBJETIVO_SOLICITUD,
+                                solicitudes.FAUTORIZA_SOLICITUD,
+                                solicitudes.FLIBERA_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -167,6 +169,8 @@ class SolicitudModel
                                 solicitudes.OBSERVACION_SOLICITUD,
                                 solicitudes.COD_EMPLEADO,
                                 solicitudes.OBJETIVO_SOLICITUD,
+                                solicitudes.FAUTORIZA_SOLICITUD,
+                                solicitudes.FLIBERA_SOLICITUD,
                                 terceros.DOC_TERCERO,
                                 terceros.TIPDOC_TERCERO,
                                 terceros.NOM_TERCERO,
@@ -190,11 +194,15 @@ class SolicitudModel
                                     ->select(null)->select('
                                             CO.NOMBRE_CIUDAD "CIUD_ORIGEN",
                                             CD.NOMBRE_CIUDAD "CIUD_DESTINO",
+                                            PACO.NOMBRE_PAIS "PAIS_ORIGEN", 
+                                            PACD.NOMBRE_PAIS "PAIS_DESTINO",
                                             reservas.FIDA_RESERVA,
                                             reservas.FREGRESO_RESERVA
                                         ')
                                     ->innerJoin('ciudades as CO on reservas.VORIGEN_RESERVA = CO.ID_CIUDAD')
                                     ->innerJoin('ciudades as CD on reservas.VDESTINO_RESERVA = CD.ID_CIUDAD')
+                                    ->innerJoin('paises as PACO on CO.ID_PAIS = PACO.ID_PAIS')
+                                    ->innerJoin('paises as PACD on CD.ID_PAIS = PACD.ID_PAIS')
                                     ->innerJoin('solicitudes on reservas.COD_SOLICITUD = solicitudes.COD_SOLICITUD')
                                     ->where('solicitudes.COD_SOLICITUD', $COD_SOLICITUD)
                                     ->fetchAll();
@@ -338,6 +346,8 @@ class SolicitudModel
     {
         
         $dateTime=date('Y/m/d h:i:s', time());
+        $data['FAUTORIZA_SOLICITUD'] = $dateTime;
+
         $mailCompras = $this->obtenerDeptoCompras();
 
         /*DATA MAIL*/
@@ -389,7 +399,7 @@ class SolicitudModel
             $contenido = '
                 <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Saludos:</span></font></div>
                 <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
-                <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Mario/Eliana por favor su colaboracion con los siguientes tiquetes:</span></font></div>
+                <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Eliana por favor su colaboracion con los siguientes tiquetes:</span></font></div>
                   <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
                   <table border="1px" style="border-collapse:collapse;width:477pt;">
                     <tr >
@@ -407,8 +417,8 @@ class SolicitudModel
           foreach ($data['datosvuelo'] as $k) {
               $contenido .=  '
                   <tr>
-                    	<td>'.$k['CIUD_ORIGEN'].'</td>
-                    	<td>'.$k['CIUD_DESTINO'].'</td>
+                    	<td>'.$k['PAIS_ORIGEN'].'/'.$k['CIUD_ORIGEN'].'</td>
+                    	<td>'.$k['PAIS_DESTINO'].'/'.$k['CIUD_DESTINO'].'</td>
                     	<td>'.$k['FIDA_RESERVA'].'</td>
                     	<td>'.$k['FREGRESO_RESERVA'].'</td>
                   </tr>';
@@ -419,22 +429,26 @@ class SolicitudModel
                   	<div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Recuerde no responder a este mensaje, puede enviar las cotizaciónes a las siguientes cuentas de correo</span></font></div>
                   <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
 
-                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><a href="mailto:german.caranton@duwest.com">german.caranton@duwest.com</a></font></div>
-                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><a href="mailto:adriana.caicedo@duwest.com">adriana.caicedo@duwest.com</a> </font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><a href="mailto:jeimmy.perez@duwest.com">jeimmy.perez@duwest.com</a></font></div>
+                
 
                   <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
                   <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
                   <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">&nbsp;</span></font></div>
                   <hr>
-                  	<div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Este correo fue generado de manera automatica por nuestro sistema para la gestión de solicitudes de vuelo, Por favor no responder a este correo.</span></font></div>
+                  <div style="margin:0;"><font face="Calibri,sans-serif" size="2"><span style="font-size:11pt;">Este correo fue generado de manera automatica por nuestro sistema para la gestión de solicitudes de vuelo Dufly, Por favor no responder a este correo.</span></font></div>
           ';
 
           /**
            * Se registra el encargado de liberar la solicitud
            */
-           $datosUpdate = [
+          $dateTime=date('Y/m/d h:i:s', time());
+            $data['FLIBERA_SOLICITUD'] = $dateTime;
+           
+            $datosUpdate = [
              'LIBERA_SOLICITUD'=> $data['LIBERA_SOLICITUD'],
              'ESTADO_SOLICITUD'=>'LIBERADA',
+             'FLIBERA_SOLICITUD' =>$dateTime
            ];
            $this->db->update($this->table, $datosUpdate)
                        ->where('COD_SOLICITUD',$cod_solicitud)
@@ -445,11 +459,12 @@ class SolicitudModel
            */
 
           $datos = [
-                  'to'=>'david.zambrano@duwest.com',
-                  'cc'=>'',
-                  'bcc'=>'',
-                  'subject'=>'Duwest Colombia - Solicitud de tiquetes - Dufly',
-                  'message'=>$contenido
+                //   'to'=>'eliana.cardenas@aviatur.com',
+                    'to'=>'david.zambrano@duwest.com',
+                    'cc'=>'',
+                    'bcc'=>'jeimmy.perez@duwest.com',
+                    'subject'=>'Duwest Colombia - Solicitud # '.$cod_solicitud.' - Dufly',
+                    'message'=>$contenido
                 ];
           /**
            * Se envia los datos

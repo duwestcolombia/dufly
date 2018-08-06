@@ -119,7 +119,8 @@ class Principal extends CI_Controller {
 
     $data = [
       'AUTORIZA_SOLICITUD'=> $nom_empleado,
-      'ESTADO_SOLICITUD'=>'PENDIENTE'
+      'ESTADO_SOLICITUD'=>'PENDIENTE',
+      'FAUTORIZA_SOLICITUD' => ''
     ];
 
     try {

@@ -3,6 +3,7 @@ var MODULE = 'front-app', // DEJAR CON EL MISMO NOMBRE
     API = {
         'token_name': 'DUFLY-TOKEN', // EL NOMBRE DEL TOKEN QUE HAN DEFINIDO PARA SU API
         'base_url': 'http://localhost/dufly/api/public/' // LA URL DE SU API
+        // 'base_url': 'http://dufly.duwestcolombia.com/api/public/'
     };
 
 var frontApp = angular.module(MODULE, [
