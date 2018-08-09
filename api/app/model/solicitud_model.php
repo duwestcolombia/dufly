@@ -183,11 +183,14 @@ class SolicitudModel
                                 empleados.TEL_EMPLEADO,
                                 empleados.COD_DEPARTAMENTO,
                                 jefe.NOMBRE_EMPLEADO "NOM_JEFE",
-                                jefe.EMAIL_EMPLEADO "EMAIL_JEFE"
+                                jefe.EMAIL_EMPLEADO "EMAIL_JEFE",
+                                cecos.ID_CECO,
+                                cecos.NOMBRE_CECO
                             ')
                         ->innerJoin('terceros on solicitudes.DOC_TERCERO = terceros.DOC_TERCERO')
                         ->innerJoin('empleados on solicitudes.COD_EMPLEADO = empleados.COD_EMPLEADO')
                         ->innerJoin('empleados jefe on jefe.COD_EMPLEADO = empleados.JEFE_EMPLEADO')
+                        ->innerJoin('cecos on empleados.ID_CECO = cecos.ID_CECO')
                         ->where('COD_SOLICITUD', $COD_SOLICITUD)
                         ->fetch();
         $row->{'Vuelos'} = $this->db->from('reservas')

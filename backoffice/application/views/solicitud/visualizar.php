@@ -21,6 +21,10 @@
 			<div class="card" >
 
 			  <div class="card-body">
+			  	<?php if ($data->DOC_TERCERO > 1): ?>
+					<h5 class="card-tittle">Empleado Solicitante</h5>
+					<p class="card-text font-weight-light"><?php echo $data->NOMBRE_EMPLEADO?></p>					  
+				<?php endif ?>
 			  	<h5 class="card-title">Pasajero</h5>
 			  	<?php if ($data->DOC_TERCERO > 1): ?>
 			  		<p class="card-text font-weight-light"><?php echo $data->NOM_TERCERO ?></p>
@@ -31,12 +35,12 @@
 			  	<?php if ($data->DOC_TERCERO > 1): ?>
 			  		<h5 class="card-title">Num. documento</h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->TIPDOC_TERCERO .":". $data->DOC_TERCERO ?></p>
-			  		<h5 class="card-title">Telefono </h5>
+			  		<h5 class="card-title">Teléfono </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->TEL_TERCERO ?></p>
 			  		<h5 class="card-title">Fecha de nacimiento </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->FNACIMIENTO_TERCERO ?></p>
 			  	<?php else: ?>
-			  		<h5 class="card-title">Telefono </h5>
+			  		<h5 class="card-title">Teléfono </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->TEL_EMPLEADO ?></p>
 			  		<h5 class="card-title">Fecha de nacimiento </h5>
 			  		<p class="card-text font-weight-light"><?php echo $data->FNACIMIENTO_EMPLEADO ?></p>
@@ -75,7 +79,7 @@
 							<h5 class="card-title"> Registrar Observación</h5>
 
 							<input type="hidden" name="txt_codsolicitud" value="<?php echo $data->COD_SOLICITUD ?>">
-				    	<textarea name="txt_observacion" cols="30" rows="3" class="form-control" maxlength="300"><?php echo $data->OBSERVACION_SOLICITUD ?></textarea>
+				    	<textarea name="txt_observacion" cols="30" rows="6" class="form-control" maxlength="300"><?php echo $data->OBSERVACION_SOLICITUD ?></textarea>
 						<?php endif; ?>
 
 
@@ -87,10 +91,25 @@
 
 		</div>
 		<div class="col-md-8">
-			<div class="card" style="margin-bottom: 8px;">
-				<div class="card-header">Objetivo de la solicitud</div>
-				<div class="card-body">
-					<b><?php echo $data->OBJETIVO_SOLICITUD ?></b>
+			<div class="row">
+			
+				<div class="col-md-6">
+				
+					<div class="card" style="margin-bottom: 8px;">
+						<div class="card-header">Información Financiera</div>
+						<div class="card-body">
+							<b>Centro de costos: </b><?php echo $data->ID_CECO . ' - '.$data->NOMBRE_CECO  ?>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6">
+				
+					<div class="card" style="margin-bottom: 8px;">
+						<div class="card-header">Objetivo de la solicitud</div>
+						<div class="card-body">
+							<b><?php echo $data->OBJETIVO_SOLICITUD ?></b>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="card" style="margin-bottom: 8px;">
