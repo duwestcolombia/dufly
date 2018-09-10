@@ -109,6 +109,8 @@
 						<div class="card-body">
 							<b><?php echo $data->OBJETIVO_SOLICITUD ?></b>
 						</div>
+						
+						
 					</div>
 				</div>
 			</div>
@@ -169,6 +171,13 @@
 					</ul>
 				</div>
 
+			</div>
+
+			<div class="card" style="margin-top:8px;">
+				<div class="card-header">Comentarios de la solicitud</div>
+				<div class="card-body">
+					<b><?php echo $data->COMENTARIO_SOLICITUD ?></b>
+				</div>
 			</div>
 
 		</div>

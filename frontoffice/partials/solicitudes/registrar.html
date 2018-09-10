@@ -92,8 +92,7 @@
 		    Agregar <span class="icon icon-plus"></span>
 		</button>
 	</div>
-
-	<div class="card">
+	<div class="card" ng-if="Solicitud.Reservas.length > 0">
 	    <ul class="table-view">
 	        <li class="table-view-cell" ng-repeat="v in Solicitud.Reservas" ng-model="RVuelo[$index]">
 	            <div class="pedido-detalle">
@@ -145,7 +144,7 @@
 		</button>
 	</div>
 
-	<div class="card">
+	<div class="card" ng-if="Solicitud.Hoteles.length > 0 ">
 	    <ul class="table-view">
 	        <li class="table-view-cell" ng-repeat="h in Solicitud.Hoteles" ng-model="RHotel[$index]">
 	            <div class="pedido-detalle">
@@ -197,6 +196,13 @@
 		    </div>
 		</div>
 	</div>
+
+	<!-- OBSERVACION DE LA SOLICITUD -->
+	<div class="card content-padded">
+		<h2 class="content-padded">Comentarios de la solicitud:</h2>
+		<textarea ng-model="coment_solicitud" rows="3" class="form-control" placeholder="Aqui puede indicar información adicional a su solicitud por ejemplo: Necesito una sala en el hotel donde me voy a hospedar."></textarea>
+	</div>
+	<!-- FIN DE LA OBSERVACION -->
 
 	<!-- END INFORMATION ANOTHER PASSEGER -->
 

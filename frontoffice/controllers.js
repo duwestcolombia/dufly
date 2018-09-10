@@ -522,7 +522,7 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
           //si no selecciono ninguna opcion para registrar no hacemos nada
           if ($scope.activeV == false && $scope.activeH == false && $scope.activeT == false) return;
           if ($scope.txt_objetivo === undefined) {
-
+            
             $scope.error_message = "¡Error! Debe escribir un objetivo para esta solicitud, este campo es obligatorio.";
 
             return;
@@ -551,8 +551,10 @@ solicitudControllers.controller('solicitudRegistrarCtrl', ['$scope', 'restApi', 
             OBJETIVO_SOLICITUD:$scope.txt_objetivo,
             MAIL_EMPLEADO:$scope.mailEmp,
             NOM_EMPLEADO:$scope.nomEmp,
-            MAIL_JEFE:$scope.mailJefe
+            MAIL_JEFE:$scope.mailJefe,
+            COMENTARIO_SOLICITUD:$scope.coment_solicitud
           };
+             
 
           $scope.Solicitud.Op[0] = opciones;
 
