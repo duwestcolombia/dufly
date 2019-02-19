@@ -64,6 +64,13 @@ $app->group('/solicitud/', function () {
                       json_encode($this->model->solicitud->enviarCorreo($req->getParsedBody()))
                    );
     });
+    $this->put('guardar/{cod_solicitud}', function ($req, $res, $args) {
+
+      return $res->withHeader('Content-type', 'application/json')
+                 ->write(
+                   json_encode($this->model->solicitud->guardar($req->getParsedBody(), $args['cod_solicitud']))
+                 );
+  });
     $this->put('actualizar/{cod_solicitud}', function ($req, $res, $args) {
         /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
 
@@ -78,6 +85,7 @@ $app->group('/solicitud/', function () {
                      json_encode($this->model->solicitud->actualizar($req->getParsedBody(), $args['cod_solicitud']))
                    );
     });
+
     $this->put('liberarSolicitud/{cod_solicitud}', function ($req, $res, $args) {
         /*$r = SolicitudValidation::validate($req->getParsedBody(), true);
 

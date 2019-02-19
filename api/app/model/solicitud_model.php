@@ -347,6 +347,12 @@ class SolicitudModel
       return $this->mail->sendMail($datos['to'],$datos['cc'],$datos['bcc'],$datos['subject'] ,$datos['message']);
     }
 
+    public function guardar($data, $cod_solicitud){
+        $this->db->update($this->table, $data)
+                      ->where('COD_SOLICITUD',$cod_solicitud)
+                      ->execute();
+    }
+
     public function actualizar($data, $cod_solicitud)
     {
         
@@ -368,7 +374,7 @@ class SolicitudModel
               '
             ];
 
-          /*EN DATA MAIL*/
+          /*END DATA MAIL*/
           $this->db->update($this->table, $data)
                       ->where('COD_SOLICITUD',$cod_solicitud)
                       ->execute();

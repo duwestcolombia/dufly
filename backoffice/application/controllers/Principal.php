@@ -302,7 +302,7 @@ class Principal extends CI_Controller {
 
     try {
 
-      $this->principal_model->actualizar($data, $cod_solicitud);
+      $this->principal_model->guardar($data, $cod_solicitud);
 
     } catch (Exception $e) {
 

@@ -66,6 +66,15 @@ class Principal_Model extends CI_Model{
             $data
         );
     }
+    public function guardar($data,$cod_solicitud){
+        //Llamamos a la restApi
+        return RestApi::call(
+        	//le mandamos una peticion get a la ruta empleado listar
+            RestApiMethod::PUT,
+            "solicitud/guardar/$cod_solicitud",
+            $data
+        );
+    }
     public function liberarSolicitud($data,$cod_solicitud){
         //Llamamos a la restApi
         return RestApi::call(
